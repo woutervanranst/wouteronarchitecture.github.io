@@ -10,32 +10,11 @@ plugins:
   - jekyll-paginate
 
 paginate: 8
-paginate_path: "/page:num/"
+paginate_path: "/posts/page:num/"
 
 name: Wouter van Ranst
 author: Wouter van Ranst
 author_bio: Writing about architecture, distributed systems, Azure, and .NET.
-logo: /assets/images/brand-avatar.svg
-author_image: /assets/images/brand-avatar.svg
 cover: /assets/images/brand-cover.svg
-float_logo: true
-
-social:
-  - icon: github
-    url: https://github.com/woutervanranst
-    desc: Follow me on GitHub
-    share_url:
-    share_title:
-    share_link:
-  - icon: linkedin
-    url: https://www.linkedin.com/in/woutervanranst/
-    desc: Connect with me on LinkedIn
-    share_url:
-    share_title:
-    share_link:
-  - icon: twitter
-    url:
-    desc:
-    share_url: https://twitter.com/share
-    share_title: "?text="
-    share_link: "&url="
+github_username: woutervanranst
+linkedin_username: woutervanranst

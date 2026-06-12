@@ -1,58 +1,35 @@
 ---
+layout: default
 ---
-<!DOCTYPE html>
-<html>
-  {% include head.html %}
-  <body itemscope itemtype="http://schema.org/Article">
-    {% include header.html %}
-    <main class="content" role="main">
-      <article class="post">
-        {% if page.image %}
-        <div class="article-image">
-          <div class="post-image-image" style="background-image: url({{ page.image | relative_url }})">
-            Article Image
-          </div>
-          <div class="post-meta">
-            <h1 class="post-title">{{ page.title }}</h1>
-            <div class="cf post-meta-text">
-              <div class="author-image" style="background-image: url({{ site.author_image | relative_url }})">Blog Logo</div>
-              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">{{ site.author }}</h4>
-            </div>
-            <div style="text-align:center">
-              <a href="#topofpage" class="topofpage"><i class="fa fa-angle-down"></i></a>
-            </div>
+
+<!-- Page Header -->
+{% assign header_background = page.background | default: site.cover %}
+{% if header_background %}
+<header class="masthead" style="background-image: url('{{ header_background | relative_url }}')">
+  {% else %}
+  <header class="masthead">
+    {% endif %}
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="page-heading">
+            <h1>{{ page.title }}</h1>
+            {% if page.description %}
+            <span class="subheading">{{ page.description }}</span>
+            {% endif %}
           </div>
         </div>
-        {% else %}
-        <div class="noarticleimage">
-          <div class="post-meta">
-            <h1 class="post-title">{{ page.title }}</h1>
-            <div class="cf post-meta-text">
-              <div class="author-image" style="background-image: url({{ site.author_image | relative_url }})">Blog Logo</div>
-              <h4 class="author-name" itemprop="author" itemscope itemtype="http://schema.org/Person">{{ page.author | default: site.author }}</h4>
-            </div>
-          </div>
-        </div>
-        <br>
-        <br>
-        <br>
-        {% endif %}
-        <section class="post-content">
-          <a name="topofpage"></a>
-          {{content}}
-        </section>
-      </article>
-    </main>
-    <div class="bottom-closer">
-      <div class="background-closer-image" {% if site.cover %}style="background-image: url({{ site.cover | relative_url }})"{% endif %}>
-        Image
-      </div>
-      <div class="inner">
-        <h1 class="blog-title">{{ site.title }}</h1>
-        <h2 class="blog-description">{{ site.description }}</h2>
-        <a href="{{ '/' | relative_url }}" class="btn">Back to Overview</a>
       </div>
     </div>
-    {% include javascripts.html %}
-  </body>
-</html>
+  </header>
+
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+
+        {{ content }}
+
+      </div>
+    </div>
+  </div>
