@@ -9,13 +9,12 @@ permalink: /optimal-usage-of-global-usings/
 
 <p>The question I have is, how do I 'get' the most commonly used namespaces and how do I do that <em>at scale</em>.</p>
 
-<!--more-->
 
-<h2 class="wp-block-heading">Getting an idea of what is 'used'</h2>
+<h2>Getting an idea of what is 'used'</h2>
 
 <p>This (LINQPad script) gives you an idea of the most commonly used ones, <em>across your solution</em>.</p>
 
-<pre class="wp-block-syntaxhighlighter-code alignwide">var solutionPath = @"path-to-solution";
+<pre>var solutionPath = @"path-to-solution";
 var files = Directory.EnumerateFiles(solutionPath, "*.cs", SearchOption.AllDirectories);
 
 var usingStatements = files
@@ -30,13 +29,13 @@ usingStatements.Dump();</pre>
 
 <p>You will not be surprised with the results:</p>
 
-<figure class="wp-block-image size-large"><img src="/wp-content/uploads/2024/09/image.png" alt="" class="wp-image-188"/></figure>
+<figure><img src="/wp-content/uploads/2024/09/image.png" alt=""/></figure>
 
-<h2 class="wp-block-heading">Generating GlobalUsings.cs</h2>
+<h2>Generating GlobalUsings.cs</h2>
 
 <p>How do I now add a GlobalUsings.cs file to every one of these 40 projects, with the relevant usings?</p>
 
-<ol class="wp-block-list">
+<ol>
 <li>I define a variable <code>commonUsings</code> which has the most reasonable candidates.</li>
 
 <li>I scan every project directory and tally up the usings.</li>
@@ -46,7 +45,7 @@ usingStatements.Dump();</pre>
 <li>Done</li>
 </ol>
 
-<pre class="wp-block-syntaxhighlighter-code alignwide">var solutionPath = @"path-to-solution";
+<pre>var solutionPath = @"path-to-solution";
 var globalUsingsFileName = "GlobalUsings.cs";
 
 // Define the list of namespaces to intersect with (System, System.Linq)
@@ -100,4 +99,4 @@ foreach (var projectDirectory in projectDirectories)
 
 <p>Enjoy!</p>
 
-<figure class="wp-block-image aligncenter size-large"><img src="/wp-content/uploads/2024/09/image-1.png" alt="" class="wp-image-192"/></figure>
+<figure><img src="/wp-content/uploads/2024/09/image-1.png" alt=""/></figure>

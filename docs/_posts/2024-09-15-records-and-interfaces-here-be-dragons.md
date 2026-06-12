@@ -7,25 +7,24 @@ permalink: /records-and-interfaces-here-be-dragons/
 
 <p>When it comes to C# types—<strong>classes</strong>, <strong>structs</strong>, and <strong>records</strong>—understanding the difference between value and reference equality is crucial. Each type behaves differently in terms of equality checks, inheritance, and how they manage their internal state. However, things can get tricky when you introduce <strong>interfaces</strong> into the mix, particularly when dealing with records.</p>
 
-<!--more-->
 
 <p>C# introduced <strong>records</strong> in C# 9.0 to address common scenarios where developers needed to create immutable data types efficiently and with less boilerplate code. The primary purpose of records is to represent <strong>data models</strong> or <strong>DTOs (Data Transfer Objects)</strong> that are focused on holding data rather than behavior, making it easier to create concise, immutable, and value-based objects.</p>
 
 <p>In this blog post, we'll explore how equality works with records and interfaces, and uncover the nuances (and potential pitfalls) of combining these two features in C#. Let’s first start by comparing the basic C# types.</p>
 
-<hr class="wp-block-separator has-alpha-channel-opacity"/>
+<hr />
 
-<h3 class="wp-block-heading">Classes, Structs, and Records: A Comparison</h3>
+<h3>Classes, Structs, and Records: A Comparison</h3>
 
 <p>Below is a comparison of <strong>classes</strong>, <strong>structs</strong>, and <strong>records</strong> in terms of value/reference equality, inheritance support, and typical use cases.</p>
 
-<figure class="wp-block-table alignwide is-style-stripes"><table class="has-fixed-layout"><thead><tr><th>Feature</th><th><strong>Class</strong></th><th><strong>Struct</strong></th><th><strong>Record</strong></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>Reference Type</td><td>Value Type</td><td>Reference Type</td></tr><tr><td><strong>Equality</strong></td><td>Reference equality</td><td>Value equality</td><td>Value equality (based on properties)</td></tr><tr><td><strong>Inheritance Support</strong></td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td><strong>Memory Location</strong></td><td>Heap</td><td>Stack (or inline in the heap for large structs)</td><td>Heap</td></tr><tr><td><strong>Default <code>==</code> Operator</strong></td><td>Reference comparison</td><td>Field-by-field comparison</td><td>Value-based comparison</td></tr></tbody></table></figure>
+<figure><table><thead><tr><th>Feature</th><th><strong>Class</strong></th><th><strong>Struct</strong></th><th><strong>Record</strong></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>Reference Type</td><td>Value Type</td><td>Reference Type</td></tr><tr><td><strong>Equality</strong></td><td>Reference equality</td><td>Value equality</td><td>Value equality (based on properties)</td></tr><tr><td><strong>Inheritance Support</strong></td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td><strong>Memory Location</strong></td><td>Heap</td><td>Stack (or inline in the heap for large structs)</td><td>Heap</td></tr><tr><td><strong>Default <code>==</code> Operator</strong></td><td>Reference comparison</td><td>Field-by-field comparison</td><td>Value-based comparison</td></tr></tbody></table></figure>
 
-<h2 class="wp-block-heading">Records and Equality</h2>
+<h2>Records and Equality</h2>
 
 <p>Let's begin with a simple <code>Foo</code> type that has a single string property, <code>Bar</code>.</p>
 
-<pre class="wp-block-code alignwide"><code><code>record Foo(string Bar);</code>
+<pre><code><code>record Foo(string Bar);</code>
 var foo1 = new Foo("bar");
 var foo2 = new Foo("bar");
 
@@ -33,11 +32,11 @@ var foo2 = new Foo("bar");
 foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is overridden to compare values in records
 (foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as the hash codes are based on the values of the properties</code></pre>
 
-<h2 class="wp-block-heading">Records with an Interface and Equality</h2>
+<h2>Records with an Interface and Equality</h2>
 
 <p>Now consider this change</p>
 
-<pre class="wp-block-code alignwide"><code><strong>interface IFoo
+<pre><code><strong>interface IFoo
 {
     string Bar { get; }
 }</strong>
@@ -51,7 +50,7 @@ IFoo foo2 = new Foo("bar");</code></pre>
 
 <p>The first one!</p>
 
-<pre class="wp-block-code alignwide"><code>(foo1 == foo2).Should().<strong>BeFalse</strong>(); // <strong>FALSE!!, because now we are comparing interface types, which defaults to reference equality</strong>
+<pre><code>(foo1 == foo2).Should().<strong>BeFalse</strong>(); // <strong>FALSE!!, because now we are comparing interface types, which defaults to reference equality</strong>
 foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is still overridden in the record and compares values
 (foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as hash codes are based on the underlying record's properties
 </code></pre>
@@ -60,11 +59,11 @@ foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is still overridden
 
 <p>This bit me when I refactored a record type to make it <code>internal</code> and exposed it through a <code>public interface</code> - this suddenly broke my unit tests :/. I struggled to understand why, until I stumbled upon <a href="https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records">https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records</a>.</p>
 
-<h2 class="wp-block-heading">Classes with an Interface and Equality</h2>
+<h2>Classes with an Interface and Equality</h2>
 
 <p>For good measure - a refresher, if now we make Foo a <code>class</code>:</p>
 
-<pre class="wp-block-code alignwide"><code><strong>class </strong>Foo(string Bar) : IFoo
+<pre><code><strong>class </strong>Foo(string Bar) : IFoo
 {
     public string Bar { get; init; } = Bar;
 }
@@ -78,11 +77,11 @@ foo1.Equals(foo2).Should().<strong>BeFalse</strong>(); // By default, the Equals
 
 (foo1.GetHashCode() == foo2.GetHashCode()).Should().<strong>BeFalse</strong>(); // HashCode is based on the object reference when using interfaces, so the hash codes will be different </code></pre>
 
-<h3 class="wp-block-heading">Conclusion</h3>
+<h3>Conclusion</h3>
 
 <p>Combining <strong>records</strong> with <strong>interfaces</strong> introduces a subtle, but important, behavior change. While records are designed to provide value equality, casting them to an interface causes equality to fall back to <strong>reference equality</strong> when using the <code>==</code> operator.</p>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Records use value-based equality</strong>, comparing properties by default.</li>
 
 <li><strong>Classes and structs</strong> behave differently: classes use reference equality by default, while structs use value equality.</li>
@@ -92,6 +91,6 @@ foo1.Equals(foo2).Should().<strong>BeFalse</strong>(); // By default, the Equals
 <li><strong>To avoid confusion</strong>, you should rely on <code>Equals</code> when working with records through interfaces, or avoid casting records to interfaces when performing equality checks.</li>
 </ul>
 
-<figure class="wp-block-table alignwide is-style-stripes"><table class="has-fixed-layout"><thead><tr><th><strong>Scenario</strong></th><th><strong><code>==</code></strong></th><th><strong><code>Equals</code></strong></th><th><strong><code>GetHashCode()</code></strong></th></tr></thead><tbody><tr><td><strong>Record</strong></td><td><code>True</code> (value equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Record with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Class with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference-based)</td></tr></tbody></table></figure>
+<figure><table><thead><tr><th><strong>Scenario</strong></th><th><strong><code>==</code></strong></th><th><strong><code>Equals</code></strong></th><th><strong><code>GetHashCode()</code></strong></th></tr></thead><tbody><tr><td><strong>Record</strong></td><td><code>True</code> (value equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Record with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Class with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference-based)</td></tr></tbody></table></figure>
 
-<h3 class="wp-block-heading"></h3>
+<h3></h3>

@@ -5,11 +5,10 @@ date: 2025-01-07 07:30:00
 permalink: /david-deutsch-on-unsustainability-climate-optimism/
 ---
 
-<figure class="wp-block-image aligncenter size-large"><img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1311705051i/10483171.jpg" alt=""/><figcaption class="wp-element-caption"><a href="https://www.goodreads.com/book/show/10483171-the-beginning-of-infinity">David Deutsch - The Beginning of Infinity</a></figcaption></figure>
+<figure><img src="https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1311705051i/10483171.jpg" alt=""/><figcaption><a href="https://www.goodreads.com/book/show/10483171-the-beginning-of-infinity">David Deutsch - The Beginning of Infinity</a></figcaption></figure>
 
 <p>David Deutsch’s <em>The Beginning of Infinity</em> brims with ideas that turn conventional wisdom on its head. One especially eye-opening chapter in this book, titled “Unsustainable,” challenges the familiar notion that human progress inevitably stumbles over finite resources. Deutsch suggests that <strong>what truly brings about societal collapse isn’t the depletion of a particular resource, but rather a failure to keep creating new knowledge</strong>. It’s a perspective that, paradoxically, leads to optimism—even about environmental issues such as climate change—because creativity and innovation can render the “limits of nature” far less limiting than we might think.</p>
 
-<!--more-->
 
 <p>One of the most memorable illustrations Deutsch draws upon is the well-known story of <strong>Easter Island</strong>. For centuries, the inhabitants of this remote island in the Pacific Ocean built giant stone statues, famously scattered across the landscape like silent sentinels. According to the standard narrative, the Islanders cut down so many trees for transporting and erecting their monuments that they ended up destroying the very means of their survival. Their <strong>deforestation</strong> fiasco, the argument goes, caused soil erosion, decimated fishing by eliminating wooden canoes, and ultimately sent Easter Island’s culture into a tragic <strong>collapse</strong>. At face value, this is a cautionary tale about “unsustainable” resource management—a tiny, isolated “world” undone by folly.</p>
 
@@ -29,4 +28,3 @@ permalink: /david-deutsch-on-unsustainability-climate-optimism/
 
 <p>To Deutsch, that is the greatest hope. From the vantage point of creative thinking, we need not fear that tomorrow’s challenges will be our undoing. We have a track record, however imperfect, of surmounting problems that yesterday looked insoluble. Embracing that tradition of criticism, wealth creation, science, and daring might be our best bet, not just for surviving climate change, but for embracing an unbounded future. It’s certainly how we can avoid building statues in the desert while our forests dwindle—and how we can leave behind the toxic assumption that we’re all trapped on a tiny island with no way out.</p>
 
-<p></p>

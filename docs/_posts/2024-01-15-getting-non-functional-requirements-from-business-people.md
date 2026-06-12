@@ -9,13 +9,12 @@ permalink: /getting-non-functional-requirements-from-business-people/
 
 <p>In this blog post, I’ll share a couple of conversations starters for each of the <a href="https://iso25000.com/index.php/en/iso-25000-standards/iso-25010" rel="noreferrer noopener" target="_blank">ISO 25010</a> quality attributes (also known as non-functional requirements), which will eventually drive a lot of the software architecture and associated cost.</p>
 
-<!--more-->
 
-<figure class="wp-block-image"><img src="/wp-content/uploads/2024/01/82821-0bsn6oghg1-rizt4x.png" alt=""/></figure>
+<figure><img src="/wp-content/uploads/2024/01/82821-0bsn6oghg1-rizt4x.png" alt=""/></figure>
 
-<h4 class="wp-block-heading">Functional Suitability</h4>
+<h4>Functional Suitability</h4>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Functional Completeness</strong>: “Can you describe the tasks and functions you expect the software to perform for your business?”</li>
 
 <li><strong>Functional Correctness</strong>: “What does ideal performance of these tasks look like in your view?”</li>
@@ -23,9 +22,9 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Functional Appropriateness</strong>: “How do you envision these features fitting into your daily business activities?”</li>
 </ul>
 
-<h4 class="wp-block-heading">Performance Efficiency</h4>
+<h4>Performance Efficiency</h4>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Time Behavior</strong>: “What are your expectations about the time it takes for the software to complete various tasks?”</li>
 
 <li><strong>Resource Utilization</strong>: “What are your thoughts on how the software should use the existing resources of your computers or systems?”</li>
@@ -35,17 +34,17 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Scalability</strong>: “How do you see the software adapting to the growth of your business in terms of users and workload?”</li>
 </ul>
 
-<h4 class="wp-block-heading">Compatibility</h4>
+<h4>Compatibility</h4>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Co-existence</strong>: “What other systems or software do you use, and how do you expect this new software to function alongside them?”</li>
 
 <li><strong>Interoperability</strong>: “What are the types of interactions or data exchanges you expect the software to have with other systems?”</li>
 </ul>
 
-<h4 class="wp-block-heading">Usability</h4>
+<h4>Usability</h4>
 
-<ol class="wp-block-list">
+<ol>
 <li><strong>Appropriateness Recognizability</strong>: “What are your thoughts on how new users should experience learning and using the software?”</li>
 
 <li><strong>Operability</strong>: “What are your expectations regarding the ease of managing and customizing the software?”</li>
@@ -59,9 +58,9 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Maturity</strong>: “What is your tolerance for minor bugs or issues in the software, and how often do you think they should occur?”</li>
 </ol>
 
-<h4 class="wp-block-heading">Reliability</h4>
+<h4>Reliability</h4>
 
-<ol class="wp-block-list">
+<ol>
 <li><strong>Availability</strong>: “What are your thoughts on the acceptable amount of downtime, if any, for the software?”</li>
 
 <li><strong>Fault Tolerance</strong>: “In what ways do you expect the software to handle unexpected errors or failures?”</li>
@@ -69,9 +68,9 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Recoverability</strong>: “How do you envision the process of recovering data or regaining functionality after a system failure?”</li>
 </ol>
 
-<h4 class="wp-block-heading">Security</h4>
+<h4>Security</h4>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Confidentiality</strong>: “Can you describe the types of sensitive information the software will handle and your expectations for its protection?”</li>
 
 <li><strong>Integrity</strong>: “What is your perspective on maintaining the accuracy and consistency of data within the software?”</li>
@@ -83,9 +82,9 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Accountability</strong>: “What kind of tracking or auditing of user actions within the software would you consider necessary?”</li>
 </ul>
 
-<h4 class="wp-block-heading">Maintainability</h4>
+<h4>Maintainability</h4>
 
-<ol class="wp-block-list">
+<ol>
 <li><strong>Modularity</strong>: “How do you view the importance of being able to update or modify parts of the software independently?”</li>
 
 <li><strong>Reusability</strong>: “What are your thoughts on the potential to reuse parts of this software for different functions in the future?”</li>
@@ -99,9 +98,9 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Deployability</strong>: “What are your expectations or preferences regarding the ease of deploying the software in your environment?”</li>
 </ol>
 
-<h4 class="wp-block-heading">Portability</h4>
+<h4>Portability</h4>
 
-<ul class="wp-block-list">
+<ul>
 <li><strong>Adaptability</strong>: “How do you envision the software adapting to different types of devices or operating systems?”</li>
 
 <li><strong>Installability</strong>: “What are your thoughts on the installation process of the software?”</li>
@@ -109,4 +108,3 @@ permalink: /getting-non-functional-requirements-from-business-people/
 <li><strong>Replaceability</strong>: “How do you feel about the ability to replace this software with a different one in the future, if needed?”</li>
 </ul>
 
-<p></p>
