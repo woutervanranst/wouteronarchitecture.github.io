@@ -95,16 +95,16 @@ header.masthead {
 }
 
 header.masthead.masthead-home {
-    min-height: 360px;
-    background-size: contain;
-    background-position: center top;
+    min-height: 420px;
+    background-size: auto 140px;
+    background-position: center 72px;
 
     .page-heading,
     .site-heading {
-        padding: 150px 0 70px;
+        padding: 220px 0 70px;
 
         @media only screen and (min-width: 768px) {
-            padding: 150px 0 70px;
+            padding: 220px 0 70px;
         }
     }
 }
