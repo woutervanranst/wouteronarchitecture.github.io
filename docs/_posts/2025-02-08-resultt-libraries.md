@@ -17,7 +17,7 @@ As an example use case, imagine a method that returns either a Success or an Err
 
 This would be the (hypothetical) C# code once type unions are implemented in the language
 
-```
+```csharp
 public record Success(string Message);
 public record Error(string Message);
 
@@ -35,7 +35,7 @@ FluentResults is not really a type union, rather a library for the [Result patte
 
 #### Syntax
 
-```
+```csharp
 using FluentResults;
 
 Result<string> result = Result.Ok("Hello World"); // Has a built-in Result type
@@ -70,7 +70,7 @@ Like FluentResults (not really a type union) also provides a `Maybe<T>` construc
 
 #### Syntax
 
-```
+```csharp
 using CSharpFunctionalExtensions;
 
 Result<string> result = Result.Success("Hello World"); // Has a built-in Result type
@@ -102,7 +102,7 @@ Truly models discriminated unions using generics (`OneOf<T1, T2>`), aligning dir
 
 #### Syntax
 
-```
+```csharp
 using OneOf;
 
 OneOf<Success, Error> result = OneOf<Success, Error>.FromT0(new Success("Hello World"));
@@ -133,7 +133,7 @@ Like OneOf (truly models discriminated unions) but also provides more functional
 
 #### Syntax
 
-```
+```csharp
 using LanguageExt;
 
 Either<Success, Error> result = new Success("Hello World");
@@ -172,7 +172,7 @@ You may opt to roll your own `Result<T>` record. This gives you maximum flexibil
 
 #### Syntax
 
-```
+```csharp
 public record Result<T>(bool IsSuccess, T? Data, string? Error);
 
 public class Command : IRequest<Result<string>> { }

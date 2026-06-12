@@ -30,7 +30,7 @@ permalink: /value-objects-in-c-part-1/
 
 -   **Classes** have the concept of `MemberwiseClone()`. It creates a shallow copy of an object. This means that for each field in the original object, a new object is created with a copy of the field's value. If the field is a value type, a direct copy of the value is performed. For reference types, however, the copy is of the reference itself, not the object it points to, leading to both the original and the cloned object referring to the same instances of those reference types. This is the default behavior, also known as a **shallow copy**. By contrast, a **deep copy**, where new instances are created for all reference types within the object, requires a custom implementation.
 
-```
+```csharp
 public class Person
 {
     public int Age;

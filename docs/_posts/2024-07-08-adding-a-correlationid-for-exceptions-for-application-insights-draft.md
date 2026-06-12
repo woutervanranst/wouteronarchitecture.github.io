@@ -79,7 +79,7 @@ Now that we've established that we want to return the TraceId in case of an exce
 
 Add the middleware class:
 
-```
+```csharp
 public class ExceptionHandlingMiddleware
 {
     private readonly RequestDelegate _next;
@@ -122,7 +122,7 @@ public class ExceptionHandlingMiddleware
 
 Register the middleware:
 
-```
+```csharp
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 ```
 

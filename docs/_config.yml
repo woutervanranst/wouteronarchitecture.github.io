@@ -4,6 +4,7 @@ url: https://woutervanranst.github.io
 baseurl: ""
 permalink: pretty
 markdown: kramdown
+highlighter: rouge
 excerpt_separator: "<!--more-->"
 
 plugins:

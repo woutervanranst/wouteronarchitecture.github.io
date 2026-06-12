@@ -32,7 +32,7 @@ Link to the samples: [https://github.com/woutervanranst/CSharpRestApis](https://
 
 [Microsoft Docs](https://learn.microsoft.com/en-us/aspnet/core/web-api)
 
-```
+```csharp
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 
@@ -59,7 +59,7 @@ public class HelloController : ControllerBase
 
 [Microsoft Docs](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview)
 
-```
+```csharp
 var builder = WebApplication.CreateBuilder(args);
 
 var app = builder.Build();
@@ -74,7 +74,7 @@ app.Run();
 
 [Microsoft Docs](https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger)
 
-```
+```csharp
 var builder = FunctionsApplication.CreateBuilder(args);
 builder.Build().Run();
 
@@ -96,7 +96,7 @@ public class HttpTriggerFunction
 
 [Microsoft Docs](https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=hostbuilder%2Cwindows#aspnet-core-integration)
 
-```
+```csharp
 var builder = FunctionsApplication.CreateBuilder(args);
 builder.ConfigureFunctionsWebApplication();
 builder.Build().Run();

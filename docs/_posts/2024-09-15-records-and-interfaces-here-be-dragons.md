@@ -29,7 +29,7 @@ Below is a comparison of **classes**, **structs**, and **records** in terms of v
 
 Let's begin with a simple `Foo` type that has a single string property, `Bar`.
 
-```
+```csharp
 record Foo(string Bar);
 var foo1 = new Foo("bar");
 var foo2 = new Foo("bar");
@@ -43,7 +43,7 @@ foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is overridden to co
 
 Now consider this change
 
-```
+```csharp
 interface IFoo
 {
     string Bar { get; }
@@ -59,7 +59,7 @@ Now stop and think, which of the assertions will fail?
 
 The first one!
 
-```
+```csharp
 (foo1 == foo2).Should().BeFalse(); // FALSE!!, because now we are comparing interface types, which defaults to reference equality
 foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is still overridden in the record and compares values
 (foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as hash codes are based on the underlying record's properties
@@ -73,7 +73,7 @@ This bit me when I refactored a record type to make it `internal` and exposed it
 
 For good measure - a refresher, if now we make Foo a `class`:
 
-```
+```csharp
 class Foo(string Bar) : IFoo
 {
     public string Bar { get; init; } = Bar;

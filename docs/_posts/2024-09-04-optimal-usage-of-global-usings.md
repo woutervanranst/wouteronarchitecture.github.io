@@ -13,7 +13,7 @@ The question I have is, how do I 'get' the most commonly used namespaces and how
 
 This (LINQPad script) gives you an idea of the most commonly used ones, *across your solution*.
 
-```
+```csharp
 var solutionPath = @"path-to-solution";
 var files = Directory.EnumerateFiles(solutionPath, "*.cs", SearchOption.AllDirectories);
 
@@ -41,7 +41,7 @@ How do I now add a GlobalUsings.cs file to every one of these 40 projects, with 
 3.  The intersection between #1 and #2 I write to a GlobalUsings.cs file
 4.  Done
 
-```
+```csharp
 var solutionPath = @"path-to-solution";
 var globalUsingsFileName = "GlobalUsings.cs";
 

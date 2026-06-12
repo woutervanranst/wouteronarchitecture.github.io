@@ -11,7 +11,7 @@ Imagine you start a bunch of files (say, uploading or downloading files big and 
 
 There are many existing data structures in .NET, but most are FIFO based. In this case, I don't care about the order they were added ('produced'), I care about whether the `Task` is completed, and I want consume the completed ones:
 
-```
+```csharp
 var taskCollection = new ConcurrentConsumingTaskCollection<string>();
 
 taskCollection.Add(UploadFileAsync("largefile"));
@@ -64,7 +64,7 @@ By tracking the number of active tasks with `activeTaskCount`, the system only c
 
 Check out the latest code on [WouterVanRanst.Utils on GitHub](https://github.com/woutervanranst/utils/blob/main/src/WouterVanRanst.Utils/Collections/ConcurrentConsumingTaskCollection.cs) or the snippet below (!) may be out of date.
 
-```
+```csharp
 using System.Runtime.CompilerServices;
 using System.Threading.Channels;
 

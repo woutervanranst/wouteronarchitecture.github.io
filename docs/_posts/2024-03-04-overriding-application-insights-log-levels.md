@@ -11,7 +11,7 @@ permalink: /overriding-application-insights-log-levels/
 
 From this docs page: [https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup](https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup)
 
-```
+```csharp
 var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
     .ConfigureServices(services => {
@@ -39,7 +39,7 @@ Note the removal of the `defaultRule` ***after*** `ConfigureServices`.
 
 Then, in your config.json (or whatever configuration provider you are referring), you can override the log level:
 
-```
+```json
     "Logging": {
         "LogLevel": {
             "Default": "Warning",

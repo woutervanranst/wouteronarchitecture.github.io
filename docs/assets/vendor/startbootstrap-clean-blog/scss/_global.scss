@@ -36,6 +36,111 @@ blockquote {
     color: $gray-600;
 }
 
+pre,
+code {
+    font-family: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+}
+
+.highlight {
+    margin: 1.75rem 0;
+    border: 1px solid rgba($gray-900, 0.08);
+    border-radius: 0.85rem;
+    background: #0f172a;
+    box-shadow: 0 18px 40px rgba($gray-900, 0.12);
+    overflow: hidden;
+
+    pre {
+        margin: 0;
+        padding: 1.1rem 1.25rem;
+        background: transparent;
+        color: #e2e8f0;
+        font-size: 0.9rem;
+        line-height: 1.7;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+
+    code {
+        color: inherit;
+        background: transparent;
+    }
+
+    .c,
+    .cm,
+    .c1,
+    .cs {
+        color: #94a3b8;
+        font-style: italic;
+    }
+
+    .k,
+    .kd,
+    .kn,
+    .kp,
+    .kr,
+    .kt,
+    .ow {
+        color: #c084fc;
+    }
+
+    .nf,
+    .fm {
+        color: #60a5fa;
+    }
+
+    .nc,
+    .nn,
+    .nt {
+        color: #f8fafc;
+    }
+
+    .na,
+    .nb,
+    .bp,
+    .nv,
+    .vc,
+    .vg,
+    .vi {
+        color: #fda4af;
+    }
+
+    .s,
+    .sa,
+    .sb,
+    .sc,
+    .dl,
+    .sd,
+    .s2,
+    .se,
+    .sh,
+    .si,
+    .sx,
+    .sr,
+    .s1,
+    .ss {
+        color: #86efac;
+    }
+
+    .m,
+    .mb,
+    .mf,
+    .mh,
+    .mi,
+    .il,
+    .mo {
+        color: #fbbf24;
+    }
+
+    .o,
+    .p {
+        color: #cbd5e1;
+    }
+
+    .w {
+        color: inherit;
+    }
+}
+
 .section-heading {
     font-size: 36px;
     font-weight: 700;

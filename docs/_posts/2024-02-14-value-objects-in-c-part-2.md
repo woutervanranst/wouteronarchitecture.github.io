@@ -19,7 +19,7 @@ Property setters in C# play a crucial role in defining how you can interact with
 
 The `set` accessor allows properties to be changed at any point in an object's lifetime. It's commonly used in classes where mutability is a requirement.
 
-```
+```csharp
 public class Person
 {
     public string Name { get; set; }
@@ -32,7 +32,7 @@ person.Name = "Bob"; // Property can be changed after initialization
 
 However, records also support this but is generally considered an **anti-pattern**.
 
-```
+```csharp
 public record Person
 {
     public string Name { get; set; }
@@ -46,7 +46,7 @@ mutablePerson.Name = "Bob"; // The Name property can be changed after initializa
 
 The `init` accessor, introduced in C# 9.0, is designed for scenarios where you want to allow property values to be set at the time of object creation but remain immutable afterward.
 
-```
+```csharp
 public [class|record] Person
 {
     public string Name { get; init; }
@@ -61,7 +61,7 @@ var immutablePerson = new Person { Name = "Alice" };
 
 Defining a property with only a `get` accessor makes it read-only. This is useful for both computed properties and ensuring that a property remains unchanged after the object's construction.
 
-```
+```csharp
 public [class|record] Person
 {
     public string Name { get; }
@@ -81,7 +81,7 @@ var readOnlyPerson = new PersonWithReadOnlyProperty("Alice");
 
 The `required` keyword ensures that certain properties must be initialized during object creation, enhancing compile-time checks. It's applicable to both classes and records.
 
-```
+```csharp
 public [class|record] Person
 {
     public required string Name { get; init; }
