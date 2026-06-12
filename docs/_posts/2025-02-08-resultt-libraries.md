@@ -214,9 +214,9 @@ Looking at community adoption, OneOf is the winner.
 
 If you have a crystal ball and can predict your future use cases, this is your decision tree:
 
-|  | **Not aligned with future **C#** type union** | **Aligned with future **C#** type union** |
+|  | Not aligned with future C# type union | Aligned with future C# type union |
 | --- | --- | --- |
-| **Use Case = Result Pattern only** | FluentResult | OneOf |
-| **Use Case = Functional Programming** | CSharpFunctionExtension | LanguageExt |
+| **Use Case = Result pattern only** | FluentResults | OneOf |
+| **Use Case = Functional programming** | CSharpFunctionalExtensions | LanguageExt |
 
-FluentResult is likely the solution for your immediate need, and LanguageExt is probably overkill if you are reading this (and I assume you are new to FP). In combination with the #1 spot on the community adoption, **OneOf** probably strikes the best balance.
+FluentResults is likely the solution for your immediate need, and LanguageExt is probably overkill if you are reading this (and I assume you are new to FP). In combination with the #1 spot on community adoption, **OneOf** probably strikes the best balance.

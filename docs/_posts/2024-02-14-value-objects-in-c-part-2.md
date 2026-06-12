@@ -7,10 +7,11 @@ permalink: /value-objects-in-c-part-2/
 
 ## 2. Choosing the property modifiers
 
-Property setters in C# play a crucial role in defining how you can interact with class and record members. The `set`, `init`, and `get`\-only accessors offer different levels of mutability and initialization control, crucial for both mutable and immutable object design. There are a couple of options out there, which one to choose?
+Property setters in C# play a crucial role in defining how you can interact with class and record members. The `set`, `init`, and `get`-only accessors offer different levels of mutability and initialization control, crucial for both mutable and immutable object design. There are a couple of options out there, which one should you choose?
 
-| `public string Name { get; }` | `public required` `string Name { get; }` |
+| Optional | Required |
 | --- | --- |
+| `public string Name { get; }` | `public required string Name { get; }` |
 | `public string Name { get; set; }` | `public required string Name { get; set; }` |
 | `public string Name { get; init; }` | `public required string Name { get; init; }` |
 
@@ -33,15 +34,11 @@ However, records also support this but is generally considered an **anti-pattern
 
 ```
 public record Person
-
 {
-
     public string Name { get; set; }
-
 }
 
 var mutablePerson = new MutablePerson { Name = "Alice" };
-
 mutablePerson.Name = "Bob"; // The Name property can be changed after initialization
 ```
 
@@ -100,8 +97,8 @@ var personWithoutName = new Person(); // Compile-time error
 
 ### Conclusion
 
-[![](https://mermaid.ink/img/pako:eNpNUMFSgzAQ_ZXMnmknQAHhoFNL60kvOs4oeFhJaDMTkhqS0drpv5tS6pBL8va9fW83R2g041BAK_V3s0NjyUtZK-LPsnp0Fj8lJ9habohQwgqU4het0OruY1SR2Yy88d5ft-S-2nJLem6n5JMeuFX1itJ5s74XW8UZ0YY0KBsn0XokFLE7ThqtemtcY7W5JqymCeU5YUqM7ush-TziSJZDeTOGGv7lhOHs6rm-sBewmQY8VEvG_vVeDgF03HQomP-l47mjBj9px2so_JPxFp20NdTq5KXorH4-qAYKvwUPwO2ZX68UuDXYQdGi7H11j-pd6-4q8hCKI_xAEcfzdJHRJI2iKEzzJAzgAEWWzRNKk5AmUR7niyg-BfA79NN5Ht5EKaV5ltA4TaPw9AcO3YtN?type=png)](https://mermaid.live/edit#pako:eNpNUMFSgzAQ_ZXMnmknQAHhoFNL60kvOs4oeFhJaDMTkhqS0drpv5tS6pBL8va9fW83R2g041BAK_V3s0NjyUtZK-LPsnp0Fj8lJ9habohQwgqU4het0OruY1SR2Yy88d5ft-S-2nJLem6n5JMeuFX1itJ5s74XW8UZ0YY0KBsn0XokFLE7ThqtemtcY7W5JqymCeU5YUqM7ush-TziSJZDeTOGGv7lhOHs6rm-sBewmQY8VEvG_vVeDgF03HQomP-l47mjBj9px2so_JPxFp20NdTq5KXorH4-qAYKvwUPwO2ZX68UuDXYQdGi7H11j-pd6-4q8hCKI_xAEcfzdJHRJI2iKEzzJAzgAEWWzRNKk5AmUR7niyg-BfA79NN5Ht5EKaV5ltA4TaPw9AcO3YtN)
+[Decision diagram on Mermaid Live](https://mermaid.live/edit#pako:eNpNUMFSgzAQ_ZXMnmknQAHhoFNL60kvOs4oeFhJaDMTkhqS0drpv5tS6pBL8va9fW83R2g041BAK_V3s0NjyUtZK-LPsnp0Fj8lJ9habohQwgqU4het0OruY1SR2Yy88d5ft-S-2nJLem6n5JMeuFX1itJ5s74XW8UZ0YY0KBsn0XokFLE7ThqtemtcY7W5JqymCeU5YUqM7ush-TziSJZDeTOGGv7lhOHs6rm-sBewmQY8VEvG_vVeDgF03HQomP-l47mjBj9px2so_JPxFp20NdTq5KXorH4-qAYKvwUPwO2ZX68UuDXYQdGi7H11j-pd6-4q8hCKI_xAEcfzdJHRJI2iKEzzJAzgAEWWzRNKk5AmUR7niyg-BfA79NN5Ht5EKaV5ltA4TaPw9AcO3YtN)
 
 -   **Mutable vs. Immutable**: Use `set` for mutable properties in classes. Opt for `init` in records (and classes when appropriate) for immutable properties.
 -   **Initialization Control**: `init` allows properties to be set at initialization time, perfect for immutable data patterns. `required` ensures all necessary properties are initialized.
--   **Read-Only Properties**: Use `get`\-only for properties that should not change after an object is constructed, suitable for computed properties or fixed values.
+-   **Read-Only Properties**: Use `get`-only for properties that should not change after an object is constructed, suitable for computed properties or fixed values.
