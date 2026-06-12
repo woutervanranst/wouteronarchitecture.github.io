@@ -1,7 +1,7 @@
 title: Wouter on Architecture
 description: Random musings mostly on (Cloud) Architecture, Azure and .NET
 url: https://woutervanranst.github.io
-baseurl: /wouteronarchitecture.github.io
+baseurl: ""
 theme: null
 permalink: pretty
 markdown: kramdown
