@@ -5,44 +5,33 @@ date: 2024-02-09 06:44:00
 permalink: /value-objects-in-c-part-1/
 ---
 
-<h2>Choosing between <code>class</code> and <code>record</code></h2>
+## Choosing between `class` and `record`
 
-<figure><img src="/wp-content/uploads/2024/02/image-1.png" alt=""/></figure>
+![](/wp-content/uploads/2024/02/image-1.png)
 
+### Mutability vs. Immutability
 
-<h3>Mutability vs. Immutability</h3>
+*Mutable* and *immutable* are terms used to describe whether the state of an object can be changed after it is created.
 
-<p><em>Mutable</em> and <em>immutable</em> are terms used to describe whether the state of an object can be changed after it is created.</p>
+-   **Classes** are typically mutable, meaning their properties or fields can be changed after an instance is created. This is useful for objects whose state is expected to change over time.
+-   **Records** are designed with immutability in mind. By default, records provide a simple syntax to define immutable properties. This encourages safer, thread-safe programming practices by ensuring an object's state cannot be modified once it's been created.
 
-<ul>
-<li><strong>Classes</strong> are typically mutable, meaning their properties or fields can be changed after an instance is created. This is useful for objects whose state is expected to change over time.</li>
+### Value Semantics vs. Reference Semantics
 
-<li><strong>Records</strong> are designed with immutability in mind. By default, records provide a simple syntax to define immutable properties. This encourages safer, thread-safe programming practices by ensuring an object's state cannot be modified once it's been created.</li>
-</ul>
+-   **Classes** use reference semantics, meaning that if you have two class instances and you modify one, the other is not affected unless they reference the same object.
+-   **Records** introduce value semantics for equality comparison. Two record instances are considered equal if their values are the same, not based on their memory addresses. This is particularly useful for data-carrying objects where the data identity is more relevant than the object identity.
 
-<h3>Value Semantics vs. Reference Semantics</h3>
+### Inheritance
 
-<ul>
-<li><strong>Classes</strong> use reference semantics, meaning that if you have two class instances and you modify one, the other is not affected unless they reference the same object.</li>
+-   **Classes** support inheritance, allowing you to create a derived class that inherits properties and methods from a base class. This is key for many object-oriented design patterns.
+-   **Records** also support inheritance, can derive from other record types, and you can override the equality semantics in derived records.
 
-<li><strong>Records</strong> introduce value semantics for equality comparison. Two record instances are considered equal if their values are the same, not based on their memory addresses. This is particularly useful for data-carrying objects where the data identity is more relevant than the object identity.</li>
-</ul>
+### Duplication
 
-<h3>Inheritance</h3>
+-   **Classes** have the concept of concept memberwise clone. It creates a shallow copy of an object. This means that for each field in the original object, a new object is created with a copy of the field's value. If the field is a value type, a direct copy of the value is performed. For reference types, however, the copy is of the reference itself, not the object it points to, leading to both the original and the cloned object referring to the same instances of those reference types. This is the default behavior aka. a **shallow copy**. By contrast, a **deep copy**, where new instances are created for all reference types within the object, custom implementation is required.
 
-<ul>
-<li><strong>Classes</strong> support inheritance, allowing you to create a derived class that inherits properties and methods from a base class. This is key for many object-oriented design patterns.</li>
-
-<li><strong>Records</strong> also support inheritance, can derive from other record types, and you can override the equality semantics in derived records.</li>
-</ul>
-
-<h3>Duplication</h3>
-
-<ul>
-<li><strong>Classes </strong>have the concept of concept memberwise clone. It creates a shallow copy of an object. This means that for each field in the original object, a new object is created with a copy of the field's value. If the field is a value type, a direct copy of the value is performed. For reference types, however, the copy is of the reference itself, not the object it points to, leading to both the original and the cloned object referring to the same instances of those reference types. This is the default behavior aka. a <strong>shallow copy</strong>. By contrast, a <strong>deep copy</strong>, where new instances are created for all reference types within the object, custom implementation is required.</li>
-</ul>
-
-<pre>public class Person
+```
+public class Person
 {
     public int Age;
     public string Name;
@@ -60,34 +49,29 @@ permalink: /value-objects-in-c-part-1/
        other.Name = String.Copy(Name);
        return other;
     }
-}</pre>
+}
+```
 
-<ul>
-<li><strong>Records</strong> introduce a syntax for non-destructive mutation through <code>with</code> expressions. This allows you to create a new record instance by copying an existing instance while changing some of the properties in the process. This capability is particularly powerful for creating modified copies of immutable objects without cumbersome copy-and-update code.</li>
-</ul>
+-   **Records** introduce a syntax for non-destructive mutation through `with` expressions. This allows you to create a new record instance by copying an existing instance while changing some of the properties in the process. This capability is particularly powerful for creating modified copies of immutable objects without cumbersome copy-and-update code.
 
-<pre>var originalRecord = new MyRecord { Property1 = "value1", Property2 = "value2" };
-var modifiedRecord = originalRecord with { Property2 = "new value" };</pre>
+```
+var originalRecord = new MyRecord { Property1 = "value1", Property2 = "value2" };
+var modifiedRecord = originalRecord with { Property2 = "new value" };
+```
 
-<h3>Performance Considerations</h3>
+### Performance Considerations
 
-<ul>
-<li><strong>Classes</strong> and <strong>Records</strong> have different performance characteristics, especially in scenarios involving heavy use of equality checks or copying.</li>
+-   **Classes** and **Records** have different performance characteristics, especially in scenarios involving heavy use of equality checks or copying.
+-   **Records**, with their built-in value-based equality and `with` expressions, introduce overhead not present with simple class references.
 
-<li><strong>Records</strong>, with their built-in value-based equality and <code>with</code> expressions, introduce overhead not present with simple class references.</li>
-</ul>
+### Serialization and Deserialization
 
-<h3>Serialization and Deserialization</h3>
+-   Both **Classes** and **Records** can be serialized and deserialized, but records offer a more straightforward approach due to their immutability and simple construction syntax, making them ideal for data transfer objects (DTOs) in web services or applications involving data exchange.
 
-<ul>
-<li>Both <strong>Classes</strong> and <strong>Records</strong> can be serialized and deserialized, but records offer a more straightforward approach due to their immutability and simple construction syntax, making them ideal for data transfer objects (DTOs) in web services or applications involving data exchange.</li>
-</ul>
+### Conclusion
 
-<h3>Conclusion</h3>
+[![](https://mermaid.ink/img/pako:eNp1ks2O0zAUhV_lyuumSpNJSrMYJJpCWxALQKChYeHaN41RYgfHmZlS9d25iRphjSDKIj_H53zn2hcmjESWsbI2T6Li1sGXvNBA15tDbrADVyGY408UDui_PiF0jjt8_eOmgiCAB9IFwT2sD2ujOyXRwrrmXedrPppRkh92HTzyukfAXz2vlTuDalpjHdduMs19083hm6prn-OI0HcoQWmo1KkKWrSlsQ3XguAEam6V6Savje_19gUgPClXwdcRZzPh7Jq2xgY11VRG-za3Du_-unxCYaz0sW-a7dBTmMHqmYAr_qiMBbqVrtAqN8JqRIlyIt36pLt_j3LrReyHCEkAunO2FwPsENBy59BqaLgTldInKC1NmurU53FsU9zej3v_n0p7L-_Dy-GZSQxHPuwH5bcWS7RI5ciAzViDtC9K0gG7DIYFo21ssGAZPUoseV-7ghX6SlLeO_P5rAXLqA3OWN9KOme54ifLG5aVvO7oa8v1d2OaSUSvLLuwZ5bF8Ty9W4ZJGkXRIl0lixk7s2y5nCdhmCzCJFrFq7sovs7Y73F9OF8tXkVpGK6WSRintOz6B2bK9d0?type=png)](https://mermaid.live/edit#pako:eNp1ks2O0zAUhV_lyuumSpNJSrMYJJpCWxALQKChYeHaN41RYgfHmZlS9d25iRphjSDKIj_H53zn2hcmjESWsbI2T6Li1sGXvNBA15tDbrADVyGY408UDui_PiF0jjt8_eOmgiCAB9IFwT2sD2ujOyXRwrrmXedrPppRkh92HTzyukfAXz2vlTuDalpjHdduMs19083hm6prn-OI0HcoQWmo1KkKWrSlsQ3XguAEam6V6Savje_19gUgPClXwdcRZzPh7Jq2xgY11VRG-za3Du_-unxCYaz0sW-a7dBTmMHqmYAr_qiMBbqVrtAqN8JqRIlyIt36pLt_j3LrReyHCEkAunO2FwPsENBy59BqaLgTldInKC1NmurU53FsU9zej3v_n0p7L-_Dy-GZSQxHPuwH5bcWS7RI5ciAzViDtC9K0gG7DIYFo21ssGAZPUoseV-7ghX6SlLeO_P5rAXLqA3OWN9KOme54ifLG5aVvO7oa8v1d2OaSUSvLLuwZ5bF8Ty9W4ZJGkXRIl0lixk7s2y5nCdhmCzCJFrFq7sovs7Y73F9OF8tXkVpGK6WSRintOz6B2bK9d0)
 
-<div><p><a href="https://mermaid.live/edit#pako:eNp1ks2O0zAUhV_lyuumSpNJSrMYJJpCWxALQKChYeHaN41RYgfHmZlS9d25iRphjSDKIj_H53zn2hcmjESWsbI2T6Li1sGXvNBA15tDbrADVyGY408UDui_PiF0jjt8_eOmgiCAB9IFwT2sD2ujOyXRwrrmXedrPppRkh92HTzyukfAXz2vlTuDalpjHdduMs19083hm6prn-OI0HcoQWmo1KkKWrSlsQ3XguAEam6V6Savje_19gUgPClXwdcRZzPh7Jq2xgY11VRG-za3Du_-unxCYaz0sW-a7dBTmMHqmYAr_qiMBbqVrtAqN8JqRIlyIt36pLt_j3LrReyHCEkAunO2FwPsENBy59BqaLgTldInKC1NmurU53FsU9zej3v_n0p7L-_Dy-GZSQxHPuwH5bcWS7RI5ciAzViDtC9K0gG7DIYFo21ssGAZPUoseV-7ghX6SlLeO_P5rAXLqA3OWN9KOme54ifLG5aVvO7oa8v1d2OaSUSvLLuwZ5bF8Ty9W4ZJGkXRIl0lixk7s2y5nCdhmCzCJFrFq7sovs7Y73F9OF8tXkVpGK6WSRintOz6B2bK9d0"><img src="https://mermaid.ink/img/pako:eNp1ks2O0zAUhV_lyuumSpNJSrMYJJpCWxALQKChYeHaN41RYgfHmZlS9d25iRphjSDKIj_H53zn2hcmjESWsbI2T6Li1sGXvNBA15tDbrADVyGY408UDui_PiF0jjt8_eOmgiCAB9IFwT2sD2ujOyXRwrrmXedrPppRkh92HTzyukfAXz2vlTuDalpjHdduMs19083hm6prn-OI0HcoQWmo1KkKWrSlsQ3XguAEam6V6Savje_19gUgPClXwdcRZzPh7Jq2xgY11VRG-za3Du_-unxCYaz0sW-a7dBTmMHqmYAr_qiMBbqVrtAqN8JqRIlyIt36pLt_j3LrReyHCEkAunO2FwPsENBy59BqaLgTldInKC1NmurU53FsU9zej3v_n0p7L-_Dy-GZSQxHPuwH5bcWS7RI5ciAzViDtC9K0gG7DIYFo21ssGAZPUoseV-7ghX6SlLeO_P5rAXLqA3OWN9KOme54ifLG5aVvO7oa8v1d2OaSUSvLLuwZ5bF8Ty9W4ZJGkXRIl0lixk7s2y5nCdhmCzCJFrFq7sovs7Y73F9OF8tXkVpGK6WSRintOz6B2bK9d0?type=png" alt=""></a></p>
-</div>
+**Use Classes** when you need objects with mutable state, complex behavior, or extensive use of object-oriented features like inheritance and polymorphism beyond simple data storage.
 
-<p><strong>Use Classes</strong> when you need objects with mutable state, complex behavior, or extensive use of object-oriented features like inheritance and polymorphism beyond simple data storage.</p>
-
-<p><strong>Use Records</strong> for data-centric models where immutability, simple value-based equality, and straightforward data manipulation (e.g., cloning with modifications) are desired. They're especially suitable for functional programming patterns, DTOs, and quickly comparing complex data structures by value.</p>
+**Use Records** for data-centric models where immutability, simple value-based equality, and straightforward data manipulation (e.g., cloning with modifications) are desired. They're especially suitable for functional programming patterns, DTOs, and quickly comparing complex data structures by value.

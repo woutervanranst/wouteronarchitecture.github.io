@@ -5,115 +5,81 @@ date: 2025-01-27 20:28:00
 permalink: /transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/
 ---
 
-<p>While working in a fairly large .NET microservice landscape I came across the following assumption-shattering situation, which led me down a nuget-versioning rabbit hole.</p>
+While working in a fairly large .NET microservice landscape I came across the following assumption-shattering situation, which led me down a nuget-versioning rabbit hole.
 
+## The Pledge
 
-<h2>The Pledge</h2>
+We operate in a microservices landscape, consider the following ones:
 
-<p>We operate in a microservices landscape, consider the following ones:</p>
+-   Our microservice (we'll call it the **Registry microservice**), a ports-and-adapters architecture.
+-   Another one (we'll call it the **Market microservice**), which our has a dependency on.
 
-<ul>
-<li>Our microservice (we'll call it the <strong>Registry microservice</strong>), a ports-and-adapters architecture.</li>
+As part of the governance:
 
-<li>Another one (we'll call it the <strong>Market microservice</strong>), which our has a dependency on.</li>
-</ul>
+-   All services communicate over REST with each other;
+-   Instead of every team having to implement a REST client on their own, every team that owns a microservice also publishes a 'client nuget' that other teams can directly import which abstracts away the REST stuff. For example:
+    -   we operate the Registry microservice and publish the `Registry.Client` nuget on the feed
+    -   the Market microservice team operates it and publishes the `Market.Client` nuget on the feed
+-   For most cross-cutting concerns there are standardized building blocks in the feed, eg. `Blocks.Authentication`, `Blocks.Exceptions`, ...
 
-<p>As part of the governance:</p>
+Personally I think this setup is brilliant and a lot better than everyone implementing their own REST clients; but this introduces some coupling, which is where the dragon is already lurking.
 
-<ul>
-<li>All services communicate over REST with each other;</li>
+To complete the context, we all rely on `Blocks.Exceptions` v1. The situation is as follows:
 
-<li>Instead of every team having to implement a REST client on their own, every team that owns a microservice also publishes a 'client nuget' that other teams can directly import which abstracts away the REST stuff. For example: 
-<ul>
-<li>we operate the Registry microservice and publish the <code>Registry.Client</code> nuget on the feed</li>
+![](/wp-content/uploads/2025/01/image-2-1024x564.png)
 
-<li>the Market microservice team operates it and publishes the <code>Market.Client</code> nuget on the feed</li>
-</ul>
-</li>
+## The Turn
 
-<li>For most cross-cutting concerns there are standardized building blocks in the feed, eg. <code>Blocks.Authentication</code>, <code>Blocks.Exceptions</code>, ...</li>
-</ul>
+The central team which owns the `Blocks.Exception` package decides to add an Exception type that is widely requested, the `AppNotFoundException`, signalling that a microservice dependency is down, and they bump their version to v1.1.
 
-<p>Personally I think this setup is brilliant and a lot better than everyone implementing their own REST clients; but this introduces some coupling, which is where the dragon is already lurking.</p>
+The Market Team is quick to adopt the new package, and they bump their nuget version as well to v3.3.
 
-<p>To complete the context, we all rely on <code>Blocks.Exceptions</code> v1. The situation is as follows:</p>
+The situation is now as follows, note the red text:
 
-<figure><img src="/wp-content/uploads/2025/01/image-2-1024x564.png" alt=""/></figure>
+![](/wp-content/uploads/2025/01/image-4-1024x564.png)
 
-<h2>The Turn</h2>
+## The Prestige
 
-<p>The central team which owns the <code>Blocks.Exception</code> package decides to add an Exception type that is widely requested, the <code>AppNotFoundException</code>, signalling that a microservice dependency is down, and they bump their version to v1.1.</p>
+Now pause and think (apart from the social queue of me asking the question): if we compile and deploy our artifact to production, what `Blocks.Exception` version is running in production?
 
-<p>The Market Team is quick to adopt the new package, and they bump their nuget version as well to v3.3.</p>
+![](/wp-content/uploads/2025/01/image-5.png)
 
-<p>The situation is now as follows, note the red text:</p>
+Is our Registry microservice code still using v1 while the Market adapter uses v1.1? This is what I thought as well.
 
-<figure><img src="/wp-content/uploads/2025/01/image-4-1024x564.png" alt=""/></figure>
+Check your `\bin\Release` folder. There is only one `Blocks.Exceptions.dll` and it's v1.1.
 
-<h2>The Prestige</h2>
+![](/wp-content/uploads/2025/01/image-8-1024x484.png)
 
-<p>Now pause and think (apart from the social queue of me asking the question): if we compile and deploy our artifact to production, what <code>Blocks.Exception</code> version is running in production?</p>
+*Independence Day - Alien ship not destroyed by the nuclear bomb*
 
-<figure><img src="/wp-content/uploads/2025/01/image-5.png" alt=""/></figure>
+> A downstream team can, benignly or maliciously (!), control which nuget version you are deploying.
 
-<p> Is our Registry microservice code still using v1 while the Market adapter uses v1.1? This is what I thought as well.</p>
+## Why is this happening?
 
-<p>Check your <code>\bin\Release</code> folder. There is only one <code>Blocks.Exceptions.dll</code> and it's v1.1.</p>
+If you can stomach it, read the relevant docs page: [NuGet Package Dependency Resolution | Microsoft Learn](https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution).
 
-<figure><img src="/wp-content/uploads/2025/01/image-8-1024x484.png" alt=""/><figcaption>Independence Day - Alien ship not destroyed by the nuclear bomb</figcaption></figure>
+NuGet’s dependency resolution rules dictates which package versions end up in production, even when teams don’t explicitly opt into upgrades. NuGet prioritizes backward-compatible "lowest applicable" versions across all dependencies. When the Market team updated their client to require `Blocks.Exceptions v1.1`, NuGet saw this as a compatible upgrade (thanks to semantic versioning’s promise of non-breaking minor versions) and auto-resolved it for the Registry service, overriding its direct `v1.0` reference. The result? A single `v1.1` DLL in the build output, forced by a transitive dependency. This behavior stems from .NET’s inability to load multiple versions of the same assembly at runtime, combined with NuGet’s assumption that minor version bumps are safe. While efficient for monolithic apps, this creates hidden coupling in microservices: a downstream team’s dependency update can unintentionally dictate what code *your* service runs, eroding autonomy and introducing deployment risks.
 
-<blockquote>
-<p>A downstream team can, benignly or maliciously (!), control which nuget version you are deploying.</p>
-</blockquote>
+In detail:
 
-<h2>Why is this happening?</h2>
+1.  **Direct vs. Transitive Dependencies**:
+    -   The Registry microservice directly references `Blocks.Exceptions v1.0` (e.g., `<PackageReference Include="Blocks.Exceptions" Version="1.0" />`).
+    -   The Market.Client (a direct dependency of the Registry) now requires `Blocks.Exceptions >= v1.1`.
+2.  **NuGet’s Resolution Logic**:
+    -   NuGet merges all version constraints across the dependency graph.
+    -   The Registry’s direct `v1.0` constraint implicitly means `>= v1.0` unless pinned to an exact version (e.g., `[1.0]`).
+    -   The Market.Client’s `>= v1.1` constraint requires a version **equal to or higher than 1.1**.
+3.  **"Lowest Applicable Version" in Action**:
+    -   NuGet selects the **lowest version that satisfies all constraints**.
+    -   `v1.1` is the lowest version that meets both `>= v1.0` (Registry) and `>= v1.1` (Market.Client).
+4.  **Why No Conflict?**:
+    -   If the Registry had pinned `Blocks.Exceptions` to an **exact version** (e.g., `[1.0]`), NuGet would raise an error due to incompatible constraints (`1.0` vs. `>=1.1`).
+    -   Since the Registry’s dependency was likely a minimum version (`1.0`), NuGet treats it as `>=1.0`, allowing `v1.1` to satisfy both requirements.
 
-<p>If you can stomach it, read the relevant docs page: <a href="https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution">NuGet Package Dependency Resolution | Microsoft Learn</a>.</p>
+## Conclusion
 
-<p>NuGet’s dependency resolution rules dictates which package versions end up in production, even when teams don’t explicitly opt into upgrades. NuGet prioritizes backward-compatible "lowest applicable" versions across all dependencies. When the Market team updated their client to require <code>Blocks.Exceptions v1.1</code>, NuGet saw this as a compatible upgrade (thanks to semantic versioning’s promise of non-breaking minor versions) and auto-resolved it for the Registry service, overriding its direct <code>v1.0</code> reference. The result? A single <code>v1.1</code> DLL in the build output, forced by a transitive dependency. This behavior stems from .NET’s inability to load multiple versions of the same assembly at runtime, combined with NuGet’s assumption that minor version bumps are safe. While efficient for monolithic apps, this creates hidden coupling in microservices: a downstream team’s dependency update can unintentionally dictate what code <em>your</em> service runs, eroding autonomy and introducing deployment risks.</p>
+While this was - to me - unexpected, this was a deliberate design decision of the nuget team, which - most of the time - works as expected.
 
-<p>In detail:</p>
+It is not without flaws, as Jon Skeet has already pointed out in a blog post ([Versioning limitations in .NET | Jon Skeet's coding blog](https://codeblog.jonskeet.uk/2019/06/30/versioning-limitations-in-net/)) and has recommended improvements ([Options for .NET’s versioning issues | Jon Skeet's coding blog](https://codeblog.jonskeet.uk/2019/10/25/options-for-nets-versioning-issues/)).
 
-<ol start="1">
-<li><strong>Direct vs. Transitive Dependencies</strong>:
-<ul>
-<li>The Registry microservice directly references <code>Blocks.Exceptions v1.0</code> (e.g., <code>&lt;PackageReference Include="Blocks.Exceptions" Version="1.0" /&gt;</code>).</li>
-
-<li>The Market.Client (a direct dependency of the Registry) now requires <code>Blocks.Exceptions &gt;= v1.1</code>.</li>
-</ul>
-</li>
-
-<li><strong>NuGet’s Resolution Logic</strong>:
-<ul>
-<li>NuGet merges all version constraints across the dependency graph.</li>
-
-<li>The Registry’s direct <code>v1.0</code> constraint implicitly means <code>&gt;= v1.0</code> unless pinned to an exact version (e.g., <code>[1.0]</code>).</li>
-
-<li>The Market.Client’s <code>&gt;= v1.1</code> constraint requires a version <strong>equal to or higher than 1.1</strong>.</li>
-</ul>
-</li>
-
-<li><strong>"Lowest Applicable Version" in Action</strong>:
-<ul>
-<li>NuGet selects the <strong>lowest version that satisfies all constraints</strong>.</li>
-
-<li><code>v1.1</code> is the lowest version that meets both <code>&gt;= v1.0</code> (Registry) and <code>&gt;= v1.1</code> (Market.Client).</li>
-</ul>
-</li>
-
-<li><strong>Why No Conflict?</strong>:
-<ul>
-<li>If the Registry had pinned <code>Blocks.Exceptions</code> to an <strong>exact version</strong> (e.g., <code>[1.0]</code>), NuGet would raise an error due to incompatible constraints (<code>1.0</code> vs. <code>&gt;=1.1</code>).</li>
-
-<li>Since the Registry’s dependency was likely a minimum version (<code>1.0</code>), NuGet treats it as <code>&gt;=1.0</code>, allowing <code>v1.1</code> to satisfy both requirements.</li>
-</ul>
-</li>
-</ol>
-
-<h2>Conclusion</h2>
-
-<p>While this was - to me - unexpected, this was a deliberate design decision of the nuget team, which - most of the time - works as expected.</p>
-
-<p>It is not without flaws, as Jon Skeet has already pointed out in a blog post (<a href="https://codeblog.jonskeet.uk/2019/06/30/versioning-limitations-in-net/">Versioning limitations in .NET | Jon Skeet's coding blog</a>) and has recommended improvements (<a href="https://codeblog.jonskeet.uk/2019/10/25/options-for-nets-versioning-issues/">Options for .NET’s versioning issues | Jon Skeet's coding blog</a>).</p>
-
-<p>For now, being aware of the intricacies is the best recommendation.</p>
+For now, being aware of the intricacies is the best recommendation.

@@ -5,20 +5,18 @@ date: 2025-03-21 09:22:18
 permalink: /validating-dependency-injection/
 ---
 
-<p>This is a snippet from Nick's <a href="https://www.youtube.com/watch?v=uJDrf5TwwAw">recent video</a></p>
+This is a snippet from Nick's [recent video](https://www.youtube.com/watch?v=uJDrf5TwwAw)
 
-<pre>var builder = WebApplication.CreateBuilder(args);
+```
+var builder = WebApplication.CreateBuilder(args);
 
 builder.Host.UseDefaultServiceProvider((context, options) =>
 {
     options.ValidateScopes = true;
     options.ValidateOnBuild = true;
-});</pre>
+});
+```
 
-<ul>
-<li><strong><code>UseDefaultServiceProvider</code></strong>: Configures the default DI (Dependency Injection) container.</li>
-
-<li><strong><code><a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validatescopes">ValidateScopes</a> = true</code></strong>: Ensures that scoped services are not resolved from the root provider (to avoid accidental singleton-like behavior).</li>
-
-<li><strong><code><a href="https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validateonbuild">ValidateOnBuild</a> = true</code></strong>: Forces validation of the service provider at application startup to catch misconfigurations early.</li>
-</ul>
+-   **`UseDefaultServiceProvider`**: Configures the default DI (Dependency Injection) container.
+-   **`[ValidateScopes](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validatescopes) = true`**: Ensures that scoped services are not resolved from the root provider (to avoid accidental singleton-like behavior).
+-   **`[ValidateOnBuild](https://learn.microsoft.com/en-us/dotnet/api/microsoft.extensions.dependencyinjection.serviceprovideroptions.validateonbuild) = true`**: Forces validation of the service provider at application startup to catch misconfigurations early.

@@ -5,16 +5,16 @@ date: 2024-09-04 07:03:00
 permalink: /optimal-usage-of-global-usings/
 ---
 
-<p>I have a solution with ~40 projects, built during many years with wild usings that I wanted to clean up. The <a href="https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives"><code>global usings</code> feature</a>, introduced in with C# 10.0 and .NET 6 (nov21) to simplify and reduce the repetition of commonly used namespaces throughout a project.</p>
+I have a solution with ~40 projects, built during many years with wild usings that I wanted to clean up. The [`global usings` feature](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives), introduced in with C# 10.0 and .NET 6 (nov21) to simplify and reduce the repetition of commonly used namespaces throughout a project.
 
-<p>The question I have is, how do I 'get' the most commonly used namespaces and how do I do that <em>at scale</em>.</p>
+The question I have is, how do I 'get' the most commonly used namespaces and how do I do that *at scale*.
 
+## Getting an idea of what is 'used'
 
-<h2>Getting an idea of what is 'used'</h2>
+This (LINQPad script) gives you an idea of the most commonly used ones, *across your solution*.
 
-<p>This (LINQPad script) gives you an idea of the most commonly used ones, <em>across your solution</em>.</p>
-
-<pre>var solutionPath = @"path-to-solution";
+```
+var solutionPath = @"path-to-solution";
 var files = Directory.EnumerateFiles(solutionPath, "*.cs", SearchOption.AllDirectories);
 
 var usingStatements = files
@@ -25,27 +25,24 @@ var usingStatements = files
 	.Select(group => new { Using = group.Key, Count = group.Count() })
 	.OrderByDescending(x => x.Count);
 
-usingStatements.Dump();</pre>
+usingStatements.Dump();
+```
 
-<p>You will not be surprised with the results:</p>
+You will not be surprised with the results:
 
-<figure><img src="/wp-content/uploads/2024/09/image.png" alt=""/></figure>
+![](/wp-content/uploads/2024/09/image.png)
 
-<h2>Generating GlobalUsings.cs</h2>
+## Generating GlobalUsings.cs
 
-<p>How do I now add a GlobalUsings.cs file to every one of these 40 projects, with the relevant usings?</p>
+How do I now add a GlobalUsings.cs file to every one of these 40 projects, with the relevant usings?
 
-<ol>
-<li>I define a variable <code>commonUsings</code> which has the most reasonable candidates.</li>
+1.  I define a variable `commonUsings` which has the most reasonable candidates.
+2.  I scan every project directory and tally up the usings.
+3.  The intersection between #1 and #2 I write to a GlobalUsings.cs file
+4.  Done
 
-<li>I scan every project directory and tally up the usings.</li>
-
-<li>The intersection between #1 and #2 I write to a GlobalUsings.cs file</li>
-
-<li>Done</li>
-</ol>
-
-<pre>var solutionPath = @"path-to-solution";
+```
+var solutionPath = @"path-to-solution";
 var globalUsingsFileName = "GlobalUsings.cs";
 
 // Define the list of namespaces to intersect with (System, System.Linq)
@@ -95,8 +92,9 @@ foreach (var projectDirectory in projectDirectories)
 		Console.WriteLine($"GlobalUsings.cs file created/updated for project {Path.GetFileName(projectDirectory)} with the following global usings:");
 		intersectingUsings.ForEach(Console.WriteLine);
 	}
-}</pre>
+}
+```
 
-<p>Enjoy!</p>
+Enjoy!
 
-<figure><img src="/wp-content/uploads/2024/09/image-1.png" alt=""/></figure>
+![](/wp-content/uploads/2024/09/image-1.png)

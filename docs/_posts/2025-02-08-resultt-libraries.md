@@ -5,113 +5,108 @@ date: 2025-02-08 14:20:57
 permalink: /resultt-libraries/
 ---
 
-<p>C# is coming 'soon' with <strong>Type Unions</strong> (see <a href="https://github.com/dotnet/csharplang/blob/main/proposals/TypeUnions.md">the official proposal</a> and <a href="https://www.youtube.com/watch?v=aksjZkCbIWA&amp;ab_channel=NickChapsas">Nick's video on this</a>), which I think is great. However it's not there yet and if you need it now it's important t consider which library will require the least refactoring when this feature becomes part of the official language specification.</p>
+C# is coming 'soon' with **Type Unions** (see [the official proposal](https://github.com/dotnet/csharplang/blob/main/proposals/TypeUnions.md) and [Nick's video on this](https://www.youtube.com/watch?v=aksjZkCbIWA&ab_channel=NickChapsas)), which I think is great. However it's not there yet and if you need it now it's important t consider which library will require the least refactoring when this feature becomes part of the official language specification.
 
-<p>This post explores some of the most popular libraries in .NET for implementing this pattern and helps you decide which one fits your project's needs.</p>
+This post explores some of the most popular libraries in .NET for implementing this pattern and helps you decide which one fits your project's needs.
 
+You can find all the code snippets in this repository: [woutervanranst/ResultLibraries](https://github.com/woutervanranst/ResultLibraries)
 
-<p>You can find all the code snippets in this repository: <a href="https://github.com/woutervanranst/ResultLibraries">woutervanranst/ResultLibraries</a></p>
+## Target Syntax
 
-<h2>Target Syntax</h2>
+As an example use case, imagine a method that returns either a Success or an Error (a typical use case in MediatR) - and we [don't want to rely on throwing an Exception for flow control](https://andrewlock.net/working-with-the-result-pattern-part-1-replacing-exceptions-as-control-flow/#using-exceptions-for-flow-control).
 
-<p>As an example use case, imagine a method that returns either a Success or an Error (a typical use case in MediatR) - and we <a href="https://andrewlock.net/working-with-the-result-pattern-part-1-replacing-exceptions-as-control-flow/#using-exceptions-for-flow-control">don't want to rely on throwing an Exception for flow control</a>.</p>
+This would be the (hypothetical) C# code once type unions are implemented in the language
 
-<p>This would be the (hypothetical) C# code once type unions are implemented in the language</p>
-
-<pre>public record Success(string Message);
+```
+public record Success(string Message);
 public record Error(string Message);
 
 // Future C# (hypothetical)
 union Result { Success; Error; }
 Result result = ...
-string message = result switch { Success s => s.Message, Error e => e.Message };</pre>
+string message = result switch { Success s => s.Message, Error e => e.Message };
+```
 
-<h2><strong>1. FluentResults</strong> (<a href="https://github.com/altmann/FluentResults">GitHub</a>)</h2>
+## 1. FluentResults ([GitHub](https://github.com/altmann/FluentResults))
 
-<p><strong>Refactoring Effort</strong>: ⭐⭐⭐ Medium</p>
+**Refactoring Effort**: ⭐⭐⭐ Medium
 
-<p>FluentResults is not really a type union, rather a library for the <a href="https://andrewlock.net/working-with-the-result-pattern-part-4-is-the-result-pattern-worth-it/">Result pattern</a>, ideal for CQRS workflows. Depending on your use case, this may be 'good enough'. However, it will require a significant refactor down the line.</p>
+FluentResults is not really a type union, rather a library for the [Result pattern](https://andrewlock.net/working-with-the-result-pattern-part-4-is-the-result-pattern-worth-it/), ideal for CQRS workflows. Depending on your use case, this may be 'good enough'. However, it will require a significant refactor down the line.
 
-<h4><strong>Syntax</strong></h4>
+#### Syntax
 
-<pre>using FluentResults;
+```
+using FluentResults;
 
-Result&lt;string> result = Result.Ok("Hello World"); // Has a built-in Result type
-Result&lt;string> failureResult = Result.Fail("Something went wrong");
+Result<string> result = Result.Ok("Hello World"); // Has a built-in Result type
+Result<string> failureResult = Result.Fail("Something went wrong");
 
 var message = result.IsSuccess
     ? $"Success: {result.Value}"
     : $"Error: {string.Join(", ", result.Errors)}";
 
-Console.WriteLine(message);</pre>
+Console.WriteLine(message);
+```
 
-<h4><strong>Pros</strong></h4>
+#### Pros
 
-<ul>
-<li><strong>Specialized for Result Handling</strong>: Offers <code>Result&lt;T&gt;</code>, <code>Result</code>, and <code>ResultBase</code> with rich error metadata and supports error chaining, nested errors, and success/error message aggregation.</li>
+-   **Specialized for Result Handling**: Offers `Result<T>`, `Result`, and `ResultBase` with rich error metadata and supports error chaining, nested errors, and success/error message aggregation.
+-   Minimal boilerplate (built-in Result type) and easy adoption in existing codebases.
 
-<li>Minimal boilerplate (built-in Result type) and easy adoption in existing codebases.</li>
-</ul>
+#### Cons
 
-<h4><strong>Cons</strong></h4>
+-   Not really a type union, so will require an more extensive refactor.
+-   Not for other type unions (eg. BillingAmount = kWh | m3)
 
-<ul>
-<li>Not really a type union, so will require an more extensive refactor.</li>
+---
 
-<li>Not for other type unions (eg. BillingAmount = kWh | m3) </li>
-</ul>
+## 2. CSharpFunctionalExtensions ([GitHub](https://github.com/vkhorikov/CSharpFunctionalExtensions))
 
-<hr />
+**Refactoring Effort**: ⭐⭐⭐ Medium
 
-<h2>2<strong>. CSharpFunctionalExtensions</strong> (<a href="https://github.com/vkhorikov/CSharpFunctionalExtensions">GitHub</a>)</h2>
+#### Overview
 
-<p><strong>Refactoring Effort</strong>: ⭐⭐⭐ Medium</p>
+Like FluentResults (not really a type union) also provides a `Maybe<T>` construct (~~ explicit nullability for reference types) and some other functional-programming-inspired constructs.
 
-<h4><strong>Overview</strong></h4>
+#### Syntax
 
-<p>Like FluentResults (not really a type union) also provides a <code>Maybe&lt;T></code> construct (~~ explicit nullability for reference types) and some other functional-programming-inspired constructs.</p>
+```
+using CSharpFunctionalExtensions;
 
-<h4><strong>Syntax</strong></h4>
-
-<pre>using CSharpFunctionalExtensions;
-
-Result&lt;string> result = Result.Success("Hello World"); // Has a built-in Result type
-Result&lt;string> failureResult = Result.Failure&lt;string>("Something went wrong");
+Result<string> result = Result.Success("Hello World"); // Has a built-in Result type
+Result<string> failureResult = Result.Failure<string>("Something went wrong");
 
 string message = result.IsSuccess
     ? $"Success: {result.Value}"
     : $"Error: {result.Error}";
 
-Console.WriteLine(message);</pre>
+Console.WriteLine(message);
+```
 
-<h4><strong>Pros</strong></h4>
+#### Pros
 
-<ul>
-<li>Simple API for basic success/failure.</li>
-</ul>
+-   Simple API for basic success/failure.
 
-<h4><strong>Cons</strong></h4>
+#### Cons
 
-<ul>
-<li>Not really a type union, so will require an more extensive refactor.</li>
+-   Not really a type union, so will require an more extensive refactor.
+-   Not for other type unions (eg. BillingAmount = kWh | m3)
 
-<li>Not for other type unions (eg. BillingAmount = kWh | m3)</li>
-</ul>
+---
 
-<hr />
+## 3. OneOf ([GitHub](https://github.com/mcintyre321/OneOf))
 
-<h2><strong>3. OneOf</strong> (<a href="https://github.com/mcintyre321/OneOf">GitHub</a>)</h2>
+**Refactoring Effort**: ⭐ Low
 
-<p><strong>Refactoring Effort</strong>: ⭐ Low</p>
+Truly models discriminated unions using generics (`OneOf<T1, T2>`), aligning directly with C#’s proposed native union syntax.
 
-<p>Truly models discriminated unions using generics (<code>OneOf&lt;T1, T2></code>), aligning directly with C#’s proposed native union syntax.</p>
+#### Syntax
 
-<h4><strong>Syntax</strong></h4>
+```
+using OneOf;
 
-<pre>using OneOf;
-
-OneOf&lt;Success, Error> result = OneOf&lt;Success, Error>.FromT0(new Success("Hello World"));
-OneOf&lt;Success, Error> failureResult = OneOf&lt;Success, Error>.FromT1(new Error("Something went wrong"));
+OneOf<Success, Error> result = OneOf<Success, Error>.FromT0(new Success("Hello World"));
+OneOf<Success, Error> failureResult = OneOf<Success, Error>.FromT1(new Error("Something went wrong"));
 
 string message = result.Match(
     success => $"Success: {success.Message}",
@@ -120,30 +115,29 @@ string message = result.Match(
 Console.WriteLine(message);
 
 public record Success(string Message);
-public record Error(string Message);</pre>
+public record Error(string Message);
+```
 
-<h4><strong>Pros</strong></h4>
+#### Pros
 
-<ul>
-<li>Minimal code changes required.</li>
+-   Minimal code changes required.
+-   Enforces exhaustive case handling via `Switch()`/`Match()`.
 
-<li>Enforces exhaustive case handling via <code>Switch()</code>/<code>Match()</code>.</li>
-</ul>
+---
 
-<hr />
+## 4. LanguageExt ([GitHub](https://github.com/louthy/language-ext))
 
-<h2>4<strong>. LanguageExt</strong> (<a href="https://github.com/louthy/language-ext">GitHub</a>)</h2>
+**Refactoring Effort**: ⭐ Low
 
-<p><strong>Refactoring Effort</strong>: ⭐ Low</p>
+Like OneOf (truly models discriminated unions) but also provides more functional-programming-inspired constructs (`Option`, `Try`, ...).
 
-<p>Like OneOf (truly models discriminated unions) but also provides more functional-programming-inspired constructs (<code>Option</code>, <code>Try</code>, ...).</p>
+#### Syntax
 
-<h4><strong>Syntax</strong></h4>
+```
+using LanguageExt;
 
-<pre>using LanguageExt;
-
-Either&lt;Success, Error> result = new Success("Hello World");
-Either&lt;Success, Error> failureResult = new Error("Something went wrong");
+Either<Success, Error> result = new Success("Hello World");
+Either<Success, Error> failureResult = new Error("Something went wrong");
 
 string message = result.Match(
     Left: msg => $"Success: {msg}",
@@ -152,75 +146,77 @@ string message = result.Match(
 Console.WriteLine(message);
 
 public record Success(string Message);
-public record Error(string Message);</pre>
+public record Error(string Message);
+```
 
-<h4><strong>Pros</strong></h4>
+#### Pros
 
-<ul>
-<li>Minimal code changes required.</li>
+-   Minimal code changes required.
+-   Enforces exhaustive case handling via `Switch()`/`Match()`.
+-   Upramp to other functional programming concepts such as `Option` and `Try`.
 
-<li>Enforces exhaustive case handling via <code>Switch()</code>/<code>Match()</code>.</li>
+#### Cons
 
-<li>Upramp to other functional programming concepts such as <code>Option</code> and <code>Try</code>.</li>
-</ul>
+-   Likely overkill if you *only* want discriminated unions.
+-   Steep learning curve if you're not familiar with functional programming.
 
-<h4><strong>Cons</strong></h4>
+---
 
-<ul>
-<li>Likely overkill if you<em> only</em> want discriminated unions.</li>
+## 5. Custom Result Types
 
-<li>Steep learning curve if you're not familiar with functional programming.</li>
-</ul>
+**Refactoring Effort**: ⭐⭐⭐⭐ High
 
-<hr />
+#### Overview
 
-<h2><strong>5. Custom Result Types</strong></h2>
+You may opt to roll your own `Result<T>` record. This gives you maximum flexibility, but you are reinventing the wheel here and risk a significant refactor down the line.
 
-<p><strong>Refactoring Effort</strong>: ⭐⭐⭐⭐ High</p>
+#### Syntax
 
-<h4><strong>Overview</strong></h4>
+```
+public record Result<T>(bool IsSuccess, T? Data, string? Error);
 
-<p>You may opt to roll your own <code>Result&lt;T></code> record. This gives you maximum flexibility, but you are reinventing the wheel here and risk a significant refactor down the line.</p>
+public class Command : IRequest<Result<string>> { }
 
-<h4><strong>Syntax</strong></h4>
-
-<pre>public record Result&lt;T>(bool IsSuccess, T? Data, string? Error);
-
-public class Command : IRequest&lt;Result&lt;string>> { }
-
-public class Handler : IRequestHandler&lt;Command, Result&lt;string>>
+public class Handler : IRequestHandler<Command, Result<string>>
 {
-    public Task&lt;Result&lt;string>> Handle(Command command, CancellationToken token)
-        => Task.FromResult(new Result&lt;string>(true, "Done"));
-}</pre>
+    public Task<Result<string>> Handle(Command command, CancellationToken token)
+        => Task.FromResult(new Result<string>(true, "Done"));
+}
+```
 
-<h4><strong>Pros</strong></h4>
+#### Pros
 
-<ul>
-<li>Highly customizable.</li>
-</ul>
+-   Highly customizable.
 
-<h4><strong>Cons</strong></h4>
+#### Cons
 
-<ul>
-<li>No built-in union features or pattern matching.</li>
-</ul>
+-   No built-in union features or pattern matching.
 
-<hr />
+---
 
-<h2>Community Adoption</h2>
+## Community Adoption
 
-<p>Looking at community adoption, OneOf is the winner.</p>
+Looking at community adoption, OneOf is the winner.
 
-<figure><img src="/wp-content/uploads/2025/02/image-1-1024x557.png" alt=""/><figcaption><a href="https://nugettrends.com/packages?months=72&amp;ids=OneOf&amp;ids=SuccincT&amp;ids=LanguageExt.Core&amp;ids=FluentResults&amp;ids=CSharpFunctionalExtensions">NuGet Trends</a>.</figcaption></figure>
+![](/wp-content/uploads/2025/02/image-1-1024x557.png)
 
-<h2>Summary</h2>
+*[NuGet Trends](https://nugettrends.com/packages?months=72&ids=OneOf&ids=SuccincT&ids=LanguageExt.Core&ids=FluentResults&ids=CSharpFunctionalExtensions).*
 
-<figure><table><thead><tr><th>Library</th><th>Learning Curve</th><th>Refactoring Effort</th><th>Key Strengths</th><th>Community Adoption</th></tr></thead><tbody><tr><td><strong>FluentResults</strong></td><td>⭐⭐⭐⭐ Lowest</td><td>⭐⭐⭐</td><td>Simple Result&lt;T> Library</td><td>#4</td></tr><tr><td><strong>CSharpFunctionalExtensions</strong></td><td>⭐⭐⭐</td><td>⭐⭐⭐</td><td>Simple Result&lt;T> Library</td><td>#3</td></tr><tr><td><strong>OneOf</strong></td><td>⭐⭐</td><td>⭐ Lowest</td><td>Future proof Result&lt;T></td><td>#1</td></tr><tr><td><strong>LanguageExt</strong></td><td>⭐ Highest</td><td>⭐ Lowest</td><td>Best for functional programming</td><td>#2</td></tr><tr><td><strong>Custom Result Type</strong></td><td></td><td>⭐⭐⭐⭐ Highest</td><td>YMMV ;)</td><td>N/A</td></tr></tbody></table></figure>
+## Summary
 
-<p>If you have a crystal ball and can predict your future use cases, this is your decision tree:</p>
+| Library | Learning Curve | Refactoring Effort | Key Strengths | Community Adoption |
+| --- | --- | --- | --- | --- |
+| **FluentResults** | ⭐⭐⭐⭐ Lowest | ⭐⭐⭐ | Simple Result<T> Library | #4 |
+| **CSharpFunctionalExtensions** | ⭐⭐⭐ | ⭐⭐⭐ | Simple Result<T> Library | #3 |
+| **OneOf** | ⭐⭐ | ⭐ Lowest | Future proof Result<T> | #1 |
+| **LanguageExt** | ⭐ Highest | ⭐ Lowest | Best for functional programming | #2 |
+| **Custom Result Type** |  | ⭐⭐⭐⭐ Highest | YMMV ;) | N/A |
 
-<figure><table><tbody><tr><td></td><td><strong>Not aligned with future <strong>C# </strong>type union</strong></td><td><strong style="font-weight: bold;">Aligned with future <strong>C# </strong>type union</strong></td></tr><tr><td><strong>Use Case = Result Pattern only</strong></td><td>FluentResult</td><td>OneOf</td></tr><tr><td><strong>Use Case = Functional Programming</strong></td><td>CSharpFunctionExtension</td><td>LanguageExt</td></tr></tbody></table></figure>
+If you have a crystal ball and can predict your future use cases, this is your decision tree:
 
-<p>FluentResult is likely the solution for your immediate need, and LanguageExt is probably overkill if you are reading this (and I assume you are new to FP). In combination with the #1 spot on the community adoption, <strong>OneOf </strong>probably strikes the best balance.</p>
+|  | **Not aligned with future **C#** type union** | **Aligned with future **C#** type union** |
+| --- | --- | --- |
+| **Use Case = Result Pattern only** | FluentResult | OneOf |
+| **Use Case = Functional Programming** | CSharpFunctionExtension | LanguageExt |
 
+FluentResult is likely the solution for your immediate need, and LanguageExt is probably overkill if you are reading this (and I assume you are new to FP). In combination with the #1 spot on the community adoption, **OneOf** probably strikes the best balance.

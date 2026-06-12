@@ -5,33 +5,32 @@ date: 2024-09-06 07:08:00
 permalink: /smart-cleanup-of-unused-references/
 ---
 
-<p>Say you have a 'large project' (think: clean architecture) with 40+ projects that has gradually evolved over time, has been refactored etc. There may be unused references lying around.</p>
+Say you have a 'large project' (think: clean architecture) with 40+ projects that has gradually evolved over time, has been refactored etc. There may be unused references lying around.
 
+## How do we get unused references?
 
-<h2>How do we get unused references?</h2>
+There are many ways this happens accidentally, for example:
 
-<p>There are many ways this happens accidentally, for example:</p>
+In the beginning, there was a Test project, which references Moq (a popular mocking library):
 
-<p>In the beginning, there was a Test project, which references Moq (a popular mocking library):</p>
+![](/wp-content/uploads/2024/09/image-3.png)
 
-<figure><img src="/wp-content/uploads/2024/09/image-3.png" alt=""/></figure>
+Say we decide to split the projects up. The 2nd Test project also requires a dependency on Moq, but also uses a base class in Test. We now have this situation:
 
-<p>Say we decide to split the projects up. The 2nd Test project also requires a dependency on Moq, but also uses a base class in Test. We now have this situation:</p>
+![](/wp-content/uploads/2024/09/image-4.png)
 
-<figure><img src="/wp-content/uploads/2024/09/image-4.png" alt=""/></figure>
+Now, say that we move all mocks to OtherTests but we forget to remove the Moq nuget from Test. It s still referenced, but no longer used:
 
-<p>Now, say that we move all mocks to OtherTests but we forget to remove the Moq nuget from Test. It s still referenced, but no longer used:</p>
+![](/wp-content/uploads/2024/09/image-5.png)
 
-<figure><img src="/wp-content/uploads/2024/09/image-5.png" alt=""/></figure>
+## Remove unused references - The naive Way
 
-<h2>Remove unused references - The naive Way</h2>
+Visual Studio has a feature [to Remove Unused References](https://learn.microsoft.com/en-us/visualstudio/ide/reference/remove-unused-references?view=vs-2022):
 
-<p>Visual Studio has a feature <a href="https://learn.microsoft.com/en-us/visualstudio/ide/reference/remove-unused-references?view=vs-2022">to Remove Unused References</a>:</p>
+![](/wp-content/uploads/2024/09/image-2.png)
 
-<figure><img src="/wp-content/uploads/2024/09/image-2.png" alt=""/></figure>
+Since transitive dependencies are a thing, the order in which you do this is important.
 
-<p>Since transitive dependencies are a thing, the order in which you do this is important.</p>
+## Remove unused references - The easy way
 
-<h2>Remove unused references - The easy way</h2>
-
-<p>From <a href="https://guiferreira.me/archive/2022/finding-dotnet-transitive-dependencies-and-tidying-up-your-project/">Finding .NET Transitive Dependencies and Tidying Up Your Project</a>, use Snitch: <a href="https://github.com/spectresystems/snitch">spectresystems/snitch: A tool that help you find duplicate transitive package references.</a></p>
+From [Finding .NET Transitive Dependencies and Tidying Up Your Project](https://guiferreira.me/archive/2022/finding-dotnet-transitive-dependencies-and-tidying-up-your-project/), use Snitch: [spectresystems/snitch: A tool that help you find duplicate transitive package references.](https://github.com/spectresystems/snitch)

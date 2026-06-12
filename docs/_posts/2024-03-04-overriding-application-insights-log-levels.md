@@ -5,48 +5,58 @@ date: 2024-03-04 07:02:00
 permalink: /overriding-application-insights-log-levels/
 ---
 
+(This post is still draft as I work out a minimal example)
 
-<p>(This post is still draft as I work out a minimal example)</p>
+## Isolated Functions (.NET 8)
 
-<h2>Isolated Functions (.NET 8)</h2>
+From this docs page: [https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup](https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup)
 
-<p>From this docs page: <a href="https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup">https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=windows#configure-startup</a></p>
-
-<pre><code>var host = new HostBuilder()
+```
+var host = new HostBuilder()
     .ConfigureFunctionsWorkerDefaults()
-    .<mark style="background-color:#ffeb00" class="has-inline-color">ConfigureServices</mark>(services =&gt; {
+    .ConfigureServices(services => {
         services.AddApplicationInsightsTelemetryWorkerService();
         services.ConfigureFunctionsApplicationInsights();
     })
-    .ConfigureLogging(logging =&gt;
+    .ConfigureLogging(logging =>
     {
-        logging.Services.Configure&lt;LoggerFilterOptions&gt;(options =&gt;
+        logging.Services.Configure<LoggerFilterOptions>(options =>
         {
-            <mark style="background-color:#ffeb00" class="has-inline-color">LoggerFilterRule defaultRule = options.Rules.FirstOrDefault(rule =&gt; rule.ProviderName
+            LoggerFilterRule defaultRule = options.Rules.FirstOrDefault(rule => rule.ProviderName
                 == "Microsoft.Extensions.Logging.ApplicationInsights.ApplicationInsightsLoggerProvider");
             if (defaultRule is not null)
             {
                 options.Rules.Remove(defaultRule);
-            }</mark>
+            }
         });
     })
     .Build();
 
-host.Run();</code></pre>
+host.Run();
+```
 
-<p>Note the removal of the <code>defaultRule</code> <strong><em>after</em> </strong><code>ConfigureServices</code>.</p>
+Note the removal of the `defaultRule` ***after*** `ConfigureServices`.
 
-<p>Then, in your config.json (or whatever configuration provider you are referring), you can override the log level:</p>
+Then, in your config.json (or whatever configuration provider you are referring), you can override the log level:
 
-<pre><code>    "Logging": {<br>        "LogLevel": {<br>            "Default": "Warning",<br>            "Your.Namespace": "Information"<br>        },<br>        "ApplicationInsights": {<br>            "LogLevel": {<br>                "Default": "Warning",<br>                "Your.Namespace": "Information"<br>            }<br>        }<br>    }</code></pre>
+```
+    "Logging": {
+        "LogLevel": {
+            "Default": "Warning",
+            "Your.Namespace": "Information"
+        },
+        "ApplicationInsights": {
+            "LogLevel": {
+                "Default": "Warning",
+                "Your.Namespace": "Information"
+            }
+        }
+    }
+```
 
-<h2>ASP.NET Core Web API Background Service</h2>
+## ASP.NET Core Web API Background Service
 
-<p>Follow these sections: </p>
+Follow these sections:
 
-<ul>
-<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/worker-service#ilogger-logs">https://learn.microsoft.com/en-us/azure/azure-monitor/app/worker-service#ilogger-logs</a></li>
-
-<li><a href="https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core?tabs=netcorenew#how-do-i-customize-ilogger-logs-collection">https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core?tabs=netcorenew#how-do-i-customize-ilogger-logs-collection</a></li>
-</ul>
-
+-   [https://learn.microsoft.com/en-us/azure/azure-monitor/app/worker-service#ilogger-logs](https://learn.microsoft.com/en-us/azure/azure-monitor/app/worker-service#ilogger-logs)
+-   [https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core?tabs=netcorenew#how-do-i-customize-ilogger-logs-collection](https://learn.microsoft.com/en-us/azure/azure-monitor/app/asp-net-core?tabs=netcorenew#how-do-i-customize-ilogger-logs-collection)

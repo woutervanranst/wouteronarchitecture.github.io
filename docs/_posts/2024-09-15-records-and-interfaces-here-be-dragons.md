@@ -5,65 +5,76 @@ date: 2024-09-15 07:22:00
 permalink: /records-and-interfaces-here-be-dragons/
 ---
 
-<p>When it comes to C# types—<strong>classes</strong>, <strong>structs</strong>, and <strong>records</strong>—understanding the difference between value and reference equality is crucial. Each type behaves differently in terms of equality checks, inheritance, and how they manage their internal state. However, things can get tricky when you introduce <strong>interfaces</strong> into the mix, particularly when dealing with records.</p>
+When it comes to C# types—**classes**, **structs**, and **records**—understanding the difference between value and reference equality is crucial. Each type behaves differently in terms of equality checks, inheritance, and how they manage their internal state. However, things can get tricky when you introduce **interfaces** into the mix, particularly when dealing with records.
 
+C# introduced **records** in C# 9.0 to address common scenarios where developers needed to create immutable data types efficiently and with less boilerplate code. The primary purpose of records is to represent **data models** or **DTOs (Data Transfer Objects)** that are focused on holding data rather than behavior, making it easier to create concise, immutable, and value-based objects.
 
-<p>C# introduced <strong>records</strong> in C# 9.0 to address common scenarios where developers needed to create immutable data types efficiently and with less boilerplate code. The primary purpose of records is to represent <strong>data models</strong> or <strong>DTOs (Data Transfer Objects)</strong> that are focused on holding data rather than behavior, making it easier to create concise, immutable, and value-based objects.</p>
+In this blog post, we'll explore how equality works with records and interfaces, and uncover the nuances (and potential pitfalls) of combining these two features in C#. Let’s first start by comparing the basic C# types.
 
-<p>In this blog post, we'll explore how equality works with records and interfaces, and uncover the nuances (and potential pitfalls) of combining these two features in C#. Let’s first start by comparing the basic C# types.</p>
+---
 
-<hr />
+### Classes, Structs, and Records: A Comparison
 
-<h3>Classes, Structs, and Records: A Comparison</h3>
+Below is a comparison of **classes**, **structs**, and **records** in terms of value/reference equality, inheritance support, and typical use cases.
 
-<p>Below is a comparison of <strong>classes</strong>, <strong>structs</strong>, and <strong>records</strong> in terms of value/reference equality, inheritance support, and typical use cases.</p>
+| Feature | **Class** | **Struct** | **Record** |
+| --- | --- | --- | --- |
+| **Type** | Reference Type | Value Type | Reference Type |
+| **Equality** | Reference equality | Value equality | Value equality (based on properties) |
+| **Inheritance Support** | Yes | No | Yes |
+| **Memory Location** | Heap | Stack (or inline in the heap for large structs) | Heap |
+| **Default `==` Operator** | Reference comparison | Field-by-field comparison | Value-based comparison |
 
-<figure><table><thead><tr><th>Feature</th><th><strong>Class</strong></th><th><strong>Struct</strong></th><th><strong>Record</strong></th></tr></thead><tbody><tr><td><strong>Type</strong></td><td>Reference Type</td><td>Value Type</td><td>Reference Type</td></tr><tr><td><strong>Equality</strong></td><td>Reference equality</td><td>Value equality</td><td>Value equality (based on properties)</td></tr><tr><td><strong>Inheritance Support</strong></td><td>Yes</td><td>No</td><td>Yes</td></tr><tr><td><strong>Memory Location</strong></td><td>Heap</td><td>Stack (or inline in the heap for large structs)</td><td>Heap</td></tr><tr><td><strong>Default <code>==</code> Operator</strong></td><td>Reference comparison</td><td>Field-by-field comparison</td><td>Value-based comparison</td></tr></tbody></table></figure>
+## Records and Equality
 
-<h2>Records and Equality</h2>
+Let's begin with a simple `Foo` type that has a single string property, `Bar`.
 
-<p>Let's begin with a simple <code>Foo</code> type that has a single string property, <code>Bar</code>.</p>
-
-<pre><code><code>record Foo(string Bar);</code>
+```
+record Foo(string Bar);
 var foo1 = new Foo("bar");
 var foo2 = new Foo("bar");
 
 (foo1 == foo2).Should().BeTrue();    // True, since records use value comparison by default
 foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is overridden to compare values in records
-(foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as the hash codes are based on the values of the properties</code></pre>
+(foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as the hash codes are based on the values of the properties
+```
 
-<h2>Records with an Interface and Equality</h2>
+## Records with an Interface and Equality
 
-<p>Now consider this change</p>
+Now consider this change
 
-<pre><code><strong>interface IFoo
+```
+interface IFoo
 {
     string Bar { get; }
-}</strong>
+}
 
-record Foo(string Bar) : <strong>IFoo</strong>;
+record Foo(string Bar) : IFoo;
 
 IFoo foo1 = new Foo("bar");
-IFoo foo2 = new Foo("bar");</code></pre>
+IFoo foo2 = new Foo("bar");
+```
 
-<p>Now stop and think, which of the assertions will fail?</p>
+Now stop and think, which of the assertions will fail?
 
-<p>The first one!</p>
+The first one!
 
-<pre><code>(foo1 == foo2).Should().<strong>BeFalse</strong>(); // <strong>FALSE!!, because now we are comparing interface types, which defaults to reference equality</strong>
+```
+(foo1 == foo2).Should().BeFalse(); // FALSE!!, because now we are comparing interface types, which defaults to reference equality
 foo1.Equals(foo2).Should().BeTrue(); // True, because Equals is still overridden in the record and compares values
 (foo1.GetHashCode() == foo2.GetHashCode()).Should().BeTrue(); // True, as hash codes are based on the underlying record's properties
-</code></pre>
+```
 
-<p>When <code>foo1</code> and <code>foo2</code> are cast to the <code>IFoo</code> interface, <code>==</code> now checks <strong>reference equality</strong>, not value equality. This is a key point: <strong>when using records through interfaces, <code>==</code> no longer performs value comparison</strong>.</p>
+When `foo1` and `foo2` are cast to the `IFoo` interface, `==` now checks **reference equality**, not value equality. This is a key point: **when using records through interfaces, `==` no longer performs value comparison**.
 
-<p>This bit me when I refactored a record type to make it <code>internal</code> and exposed it through a <code>public interface</code> - this suddenly broke my unit tests :/. I struggled to understand why, until I stumbled upon <a href="https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records">https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records</a>.</p>
+This bit me when I refactored a record type to make it `internal` and exposed it through a `public interface` - this suddenly broke my unit tests :/. I struggled to understand why, until I stumbled upon [https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records](https://stackoverflow.com/questions/73962920/equality-of-interface-types-implemented-by-records).
 
-<h2>Classes with an Interface and Equality</h2>
+## Classes with an Interface and Equality
 
-<p>For good measure - a refresher, if now we make Foo a <code>class</code>:</p>
+For good measure - a refresher, if now we make Foo a `class`:
 
-<pre><code><strong>class </strong>Foo(string Bar) : IFoo
+```
+class Foo(string Bar) : IFoo
 {
     public string Bar { get; init; } = Bar;
 }
@@ -72,25 +83,23 @@ IFoo foo1 = new Foo("bar");
 IFoo foo2 = new Foo("bar");
 
 (foo1 == foo2).Should().BeFalse(); // False, like above, since we're still doing reference comparison
-    
-foo1.Equals(foo2).Should().<strong>BeFalse</strong>(); // By default, the Equals method on interfaces also checks reference equality, so this will return false even though the underlying values (Bar) are the same
 
-(foo1.GetHashCode() == foo2.GetHashCode()).Should().<strong>BeFalse</strong>(); // HashCode is based on the object reference when using interfaces, so the hash codes will be different </code></pre>
+foo1.Equals(foo2).Should().BeFalse(); // By default, the Equals method on interfaces also checks reference equality, so this will return false even though the underlying values (Bar) are the same
 
-<h3>Conclusion</h3>
+(foo1.GetHashCode() == foo2.GetHashCode()).Should().BeFalse(); // HashCode is based on the object reference when using interfaces, so the hash codes will be different
+```
 
-<p>Combining <strong>records</strong> with <strong>interfaces</strong> introduces a subtle, but important, behavior change. While records are designed to provide value equality, casting them to an interface causes equality to fall back to <strong>reference equality</strong> when using the <code>==</code> operator.</p>
+### Conclusion
 
-<ul>
-<li><strong>Records use value-based equality</strong>, comparing properties by default.</li>
+Combining **records** with **interfaces** introduces a subtle, but important, behavior change. While records are designed to provide value equality, casting them to an interface causes equality to fall back to **reference equality** when using the `==` operator.
 
-<li><strong>Classes and structs</strong> behave differently: classes use reference equality by default, while structs use value equality.</li>
+-   **Records use value-based equality**, comparing properties by default.
+-   **Classes and structs** behave differently: classes use reference equality by default, while structs use value equality.
+-   **When casting records to interfaces**, the `==` operator behaves like it does for regular reference types, meaning it checks **reference equality**, not value equality.
+-   **To avoid confusion**, you should rely on `Equals` when working with records through interfaces, or avoid casting records to interfaces when performing equality checks.
 
-<li><strong>When casting records to interfaces</strong>, the <code>==</code> operator behaves like it does for regular reference types, meaning it checks <strong>reference equality</strong>, not value equality.</li>
-
-<li><strong>To avoid confusion</strong>, you should rely on <code>Equals</code> when working with records through interfaces, or avoid casting records to interfaces when performing equality checks.</li>
-</ul>
-
-<figure><table><thead><tr><th><strong>Scenario</strong></th><th><strong><code>==</code></strong></th><th><strong><code>Equals</code></strong></th><th><strong><code>GetHashCode()</code></strong></th></tr></thead><tbody><tr><td><strong>Record</strong></td><td><code>True</code> (value equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Record with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>True</code> (value equality)</td><td><code>True</code> (value-based)</td></tr><tr><td><strong>Class with Interface (IFoo)</strong></td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference equality)</td><td><code>False</code> (reference-based)</td></tr></tbody></table></figure>
-
-<h3></h3>
+| **Scenario** | **`==`** | **`Equals`** | **`GetHashCode()`** |
+| --- | --- | --- | --- |
+| **Record** | `True` (value equality) | `True` (value equality) | `True` (value-based) |
+| **Record with Interface (IFoo)** | `False` (reference equality) | `True` (value equality) | `True` (value-based) |
+| **Class with Interface (IFoo)** | `False` (reference equality) | `False` (reference equality) | `False` (reference-based) |

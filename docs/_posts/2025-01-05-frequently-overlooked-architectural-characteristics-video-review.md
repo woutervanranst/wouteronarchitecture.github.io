@@ -5,48 +5,34 @@ date: 2025-01-05 07:29:56
 permalink: /frequently-overlooked-architectural-characteristics-video-review/
 ---
 
-<p>This video is well worth the watch, as it summarizes what quality attributes are frequently overlooked.</p>
+This video is well worth the watch, as it summarizes what quality attributes are frequently overlooked.
 
+[https://www.youtube.com/watch?v=Ojh8VoKsxqY](https://www.youtube.com/watch?v=Ojh8VoKsxqY)
 
-<p><a href="https://www.youtube.com/watch?v=Ojh8VoKsxqY">https://www.youtube.com/watch?v=Ojh8VoKsxqY</a></p>
+### 1. Feasibility
 
-<h3>1. <strong>Feasibility</strong></h3>
+Feasibility refers to whether a proposed architectural solution is practical given time, budget, and team constraints. It’s not just about whether something *can* be built, but whether it *should* be built given the available resources and team expertise.
 
-<p>Feasibility refers to whether a proposed architectural solution is practical given time, budget, and team constraints. It’s not just about whether something <em>can</em> be built, but whether it <em>should</em> be built given the available resources and team expertise.</p>
+-   **Why It’s Overlooked:** Architects often focus on the ideal technical solution without considering real-world limitations.
+-   **Why It’s Important:** Ignoring feasibility can lead to over-engineered solutions, missed deadlines, and frustrated teams.
 
-<ul>
-<li><strong>Why It’s Overlooked:</strong> Architects often focus on the ideal technical solution without considering real-world limitations.</li>
+### 2. Observability
 
-<li><strong>Why It’s Important:</strong> Ignoring feasibility can lead to over-engineered solutions, missed deadlines, and frustrated teams.</li>
-</ul>
+Observability is about how well we can understand and measure the behavior of a system through logs, metrics, and traces. It enables teams to monitor system health, detect issues, and improve performance.
 
-<h3>2. <strong>Observability</strong></h3>
+-   **Why It’s Overlooked:** It’s often treated as an afterthought, bolted on at the end of development.
+-   **Why It’s Important:** Without observability, it’s difficult to know if changes are improving or degrading the system.
 
-<p>Observability is about how well we can understand and measure the behavior of a system through logs, metrics, and traces. It enables teams to monitor system health, detect issues, and improve performance.</p>
+### 3. Agility
 
-<ul>
-<li><strong>Why It’s Overlooked:</strong> It’s often treated as an afterthought, bolted on at the end of development.</li>
+Agility focuses on a system's ability to adapt to changes quickly. This includes characteristics like maintainability, testability, deployability, and evolvability.
 
-<li><strong>Why It’s Important:</strong> Without observability, it’s difficult to know if changes are improving or degrading the system.</li>
-</ul>
+-   **Why It’s Overlooked:** Many architects prioritize stability and scalability over flexibility.
+-   **Why It’s Important:** Modern businesses require rapid delivery of new features and updates, and agility directly supports time-to-market goals.
 
-<h3>3. <strong>Agility</strong></h3>
+### 4. Modularity
 
-<p>Agility focuses on a system's ability to adapt to changes quickly. This includes characteristics like maintainability, testability, deployability, and evolvability.</p>
+Modularity refers to designing systems as smaller, independent components or modules. While often associated with microservices, modularity can also exist in monolithic architectures (e.g., modular monoliths or microkernel patterns).
 
-<ul>
-<li><strong>Why It’s Overlooked:</strong> Many architects prioritize stability and scalability over flexibility.</li>
-
-<li><strong>Why It’s Important:</strong> Modern businesses require rapid delivery of new features and updates, and agility directly supports time-to-market goals.</li>
-</ul>
-
-<h3>4. <strong>Modularity</strong></h3>
-
-<p>Modularity refers to designing systems as smaller, independent components or modules. While often associated with microservices, modularity can also exist in monolithic architectures (e.g., modular monoliths or microkernel patterns).</p>
-
-<ul>
-<li><strong>Why It’s Overlooked:</strong> Architects sometimes view modularity as exclusive to distributed architectures.</li>
-
-<li><strong>Why It’s Important:</strong> Modularity improves scalability, maintainability, and flexibility, regardless of architecture style.</li>
-
-</ul>
+-   **Why It’s Overlooked:** Architects sometimes view modularity as exclusive to distributed architectures.
+-   **Why It’s Important:** Modularity improves scalability, maintainability, and flexibility, regardless of architecture style.

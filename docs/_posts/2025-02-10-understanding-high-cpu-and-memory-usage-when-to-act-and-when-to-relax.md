@@ -5,101 +5,69 @@ date: 2025-02-10 09:16:57
 permalink: /understanding-high-cpu-and-memory-usage-when-to-act-and-when-to-relax/
 ---
 
-<p>Modern applications, especially cloud applications running on right-sized infrastructure, rely heavily on efficient resource management, <strong>but "efficiency" doesn’t always mean "low usage." </strong>High CPU or memory consumption can be either a red flag or a sign of optimal performance, depending on the context. In this post, we’ll explore when to celebrate high resource usage—and when to panic—with a focus on .NET applications.</p>
+Modern applications, especially cloud applications running on right-sized infrastructure, rely heavily on efficient resource management, **but "efficiency" doesn’t always mean "low usage."** High CPU or memory consumption can be either a red flag or a sign of optimal performance, depending on the context. In this post, we’ll explore when to celebrate high resource usage—and when to panic—with a focus on .NET applications.
 
+## Memory: Is High RAM Usage Good or Bad?
 
-<h2>Memory: Is High RAM Usage Good or Bad?</h2>
+Operating systems (OS) treat RAM as a precious resource and strive to use it aggressively. Unused RAM is often allocated to disk caching, prefetching, or buffering I/O operations to accelerate performance. The rule here is: **"Free RAM is wasted RAM."**
 
-<p>Operating systems (OS) treat RAM as a precious resource and strive to use it aggressively. Unused RAM is often allocated to disk caching, prefetching, or buffering I/O operations to accelerate performance. The rule here is: <strong>"Free RAM is wasted RAM."</strong></p>
+Additionally, the .NET runtime further optimizes memory through its [garbage collector](https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals) (GC), which automatically reclaims unused objects. The GC divides memory into generations (Gen 0, 1, 2) and the Large Object Heap (LOH) to prioritize short-lived objects. By default, the OS spreads memory across processes, using paging/swapping only when physical RAM is exhausted.
 
-<p>Additionally, the .NET runtime further optimizes memory through its <a href="https://learn.microsoft.com/en-us/dotnet/standard/garbage-collection/fundamentals">garbage collector</a> (GC), which automatically reclaims unused objects. The GC divides memory into generations (Gen 0, 1, 2) and the Large Object Heap (LOH) to prioritize short-lived objects. By default, the OS spreads memory across processes, using paging/swapping only when physical RAM is exhausted.</p>
+**When High Memory Usage Is Good**
 
-<p><strong>When High Memory Usage Is Good</strong></p>
+-   **Memory-Intensive Workloads**: Applications like databases (SQL Server, Redis) or in-memory analytics tools (e.g., Spark) *expect* high RAM usage to cache data or process large datasets.
+-   **Caching Systems**: ASP.NET Core’s in-memory cache or distributed caches (Redis) intentionally consume RAM to avoid slow disk/database lookups.
+-   **Performance-Critical Apps**: Games or rendering engines preload assets into RAM to minimize lag.
 
-<ul>
-<li><strong>Memory-Intensive Workloads</strong>: Applications like databases (SQL Server, Redis) or in-memory analytics tools (e.g., Spark) <em>expect</em> high RAM usage to cache data or process large datasets.</li>
+**When High Memory Usage Is Bad**
 
-<li><strong>Caching Systems</strong>: ASP.NET Core’s in-memory cache or distributed caches (Redis) intentionally consume RAM to avoid slow disk/database lookups.</li>
+-   **Memory Leaks**: Unbounded growth (e.g., event handlers not dereferenced, static collections) causes RAM usage to climb until the app crashes.
+-   **Excessive GC Pressure**: Frequent Gen 2/LOH collections degrade performance due to inefficient object allocation patterns.
+-   **Swapping/Paging**: If the OS starts moving data to disk (pagefile.sys), latency spikes—especially bad for low-latency apps like trading systems.
 
-<li><strong>Performance-Critical Apps</strong>: Games or rendering engines preload assets into RAM to minimize lag.</li>
-</ul>
+**When to Act**
 
-<p><strong>When High Memory Usage Is Bad</strong></p>
+-   Memory grows continuously without plateauing.
+-   The app triggers `OutOfMemoryException`.
+-   Disk I/O spikes due to swapping (use Performance Monitor or `vmstat`).
+-   GC pauses (`% Time in GC` metric) impact responsiveness.
 
-<ul>
-<li><strong>Memory Leaks</strong>: Unbounded growth (e.g., event handlers not dereferenced, static collections) causes RAM usage to climb until the app crashes.</li>
+---
 
-<li><strong>Excessive GC Pressure</strong>: Frequent Gen 2/LOH collections degrade performance due to inefficient object allocation patterns.</li>
+## CPU: When High Utilization Is a Feature, Not a Bug
 
-<li><strong>Swapping/Paging</strong>: If the OS starts moving data to disk (pagefile.sys), latency spikes—especially bad for low-latency apps like trading systems.</li>
-</ul>
+OS schedulers balance CPU time across cores and processes. Modern CPUs use techniques like hyper-threading to keep pipelines busy. Additionally, the .NET runtime uses the ThreadPool and async/await optimize thread usage. The rule here is: "High CPU becomes a problem when it **doesn’t align with the application’s purpose** or **harms user experience**".
 
-<p><strong>When to Act</strong></p>
+**When High CPU Usage Is Bad**
 
-<ul>
-<li>Memory grows continuously without plateauing.</li>
+-   **UI Freezes**: Desktop/WPF apps with a saturated main thread (e.g., blocking loops) render the interface unresponsive.
+-   **Unresponsive Web Apps**: APIs or web servers with high CPU but low throughput suggest inefficiencies like accidental synchronous calls (e.g., `.Result`).
+-   **Thread Contention**: Excessive usage of `lock`, `while (true) { ... }` without yieldling burn CPU cycles without progress.
+-   **Algorithmic Inefficiency**: Unoptimized code (e.g., nested loops, regex overuse) wastes resources.
+-   **Unexplained Spikes**: Sudden 100% CPU at low traffic hints at infinite loops or deadlocks.
 
-<li>The app triggers <code>OutOfMemoryException</code>.</li>
+**When High CPU Usage Is Expected**
 
-<li>Disk I/O spikes due to swapping (use Performance Monitor or <code>vmstat</code>).</li>
+-   **Compute-Bound Workloads**: Batch processing, media encoding, or ML training *should* max out CPU—it’s why you’re paying for those cores!
+-   **Scalable Web Services**: APIs under load leverage ThreadPool threads and async I/O to handle concurrent requests efficiently.
+-   **Parallel Workloads**: `Parallel.For` or `PLINQ` split tasks across cores—high CPU here means you’re leveraging hardware effectively.
 
-<li>GC pauses (<code>% Time in GC</code> metric) impact responsiveness.</li>
-</ul>
+**When to Act**
 
-<hr />
+-   End users report unresponsiveness (e.g., UI hangs).
+-   CPU saturation without corresponding throughput (e.g., threads stuck in deadlock loops).
+-   `async` methods are accidentally synchronous (blocking calls like `.Result` or `.Wait()`).
 
-<h2>CPU: When High Utilization Is a Feature, Not a Bug</h2>
+---
 
-<p>OS schedulers balance CPU time across cores and processes. Modern CPUs use techniques like hyper-threading to keep pipelines busy. Additionally, the .NET runtime uses the ThreadPool and async/await optimize thread usage. The rule here is: "High CPU becomes a problem when it <strong>doesn’t align with the application’s purpose</strong> or <strong>harms user experience</strong>".</p>
+### Conclusion: Context Is King
 
-<p><strong>When High CPU Usage Is Bad</strong></p>
+High resource usage isn’t inherently bad—it depends on the app’s purpose. A caching service using 90% RAM is ideal, but a text editor doing the same is a disaster. Similarly, a video transcoder should max out the CPU, while an idle background service should not.
 
-<ul>
-<li><strong>UI Freezes</strong>: Desktop/WPF apps with a saturated main thread (e.g., blocking loops) render the interface unresponsive.</li>
+**Key Tools for Diagnosis**
 
-<li><strong>Unresponsive Web Apps</strong>: APIs or web servers with high CPU but low throughput suggest inefficiencies like accidental synchronous calls (e.g., <code>.Result</code>).</li>
+-   **.NET Metrics**: Use `dotnet-counters` or Application Insights for GC, thread pool, and exception stats.
+-   **Profilers**: JetBrains dotMemory (memory) and dotTrace (CPU) identify leaks or hotspots.
+-   **OS Tools**: PerfMon (Windows), `top`/`htop` (Linux), and `volatile` (macOS) monitor system-wide CPU/RAM.
 
-<li><strong>Thread Contention</strong>: Excessive usage of <code>lock</code>, <code>while (true) { ... }</code> without yieldling burn CPU cycles without progress.</li>
-
-<li><strong>Algorithmic Inefficiency</strong>: Unoptimized code (e.g., nested loops, regex overuse) wastes resources.</li>
-
-<li><strong>Unexplained Spikes</strong>: Sudden 100% CPU at low traffic hints at infinite loops or deadlocks.</li>
-</ul>
-
-<p><strong>When High CPU Usage Is Expected</strong></p>
-
-<ul>
-<li><strong>Compute-Bound Workloads</strong>: Batch processing, media encoding, or ML training <em>should</em> max out CPU—it’s why you’re paying for those cores!</li>
-
-<li><strong>Scalable Web Services</strong>: APIs under load leverage ThreadPool threads and async I/O to handle concurrent requests efficiently.</li>
-
-<li><strong>Parallel Workloads</strong>: <code>Parallel.For</code> or <code>PLINQ</code> split tasks across cores—high CPU here means you’re leveraging hardware effectively.</li>
-</ul>
-
-<p><strong>When to Act</strong></p>
-
-<ul>
-<li>End users report unresponsiveness (e.g., UI hangs).</li>
-
-<li>CPU saturation without corresponding throughput (e.g., threads stuck in deadlock loops).</li>
-
-<li><code>async</code> methods are accidentally synchronous (blocking calls like <code>.Result</code> or <code>.Wait()</code>).</li>
-</ul>
-
-<hr />
-
-<h3>Conclusion: Context Is King</h3>
-
-<p>High resource usage isn’t inherently bad—it depends on the app’s purpose. A caching service using 90% RAM is ideal, but a text editor doing the same is a disaster. Similarly, a video transcoder should max out the CPU, while an idle background service should not.</p>
-
-<p><strong>Key Tools for Diagnosis</strong></p>
-
-<ul>
-<li><strong>.NET Metrics</strong>: Use <code>dotnet-counters</code> or Application Insights for GC, thread pool, and exception stats.</li>
-
-<li><strong>Profilers</strong>: JetBrains dotMemory (memory) and dotTrace (CPU) identify leaks or hotspots.</li>
-
-<li><strong>OS Tools</strong>: PerfMon (Windows), <code>top</code>/<code>htop</code> (Linux), and <code>volatile</code> (macOS) monitor system-wide CPU/RAM.</li>
-</ul>
-
-<p>By understanding how the OS and .NET runtime manage resources, you can focus on genuine issues—not just big numbers.</p>
+By understanding how the OS and .NET runtime manage resources, you can focus on genuine issues—not just big numbers.
