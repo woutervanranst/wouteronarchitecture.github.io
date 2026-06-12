@@ -15,6 +15,6 @@ paginate_path: "/posts/page:num/"
 name: Wouter van Ranst
 author: Wouter van Ranst
 author_bio: Writing about architecture, distributed systems, Azure, and .NET.
-cover: /assets/images/brand-cover.svg
+cover: /assets/images/site-header.png
 github_username: woutervanranst
 linkedin_username: woutervanranst
