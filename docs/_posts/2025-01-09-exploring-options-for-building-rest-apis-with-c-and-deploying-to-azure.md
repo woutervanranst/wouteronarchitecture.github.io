@@ -1,0 +1,151 @@
+---
+layout: post
+title: 'Exploring options for building REST APIs with C# and deploying to Azure'
+date: 2025-01-09 07:32:41
+permalink: /exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure/
+---
+
+<blockquote class="wp-block-quote">
+<p>Somebody asked me, what is the difference between a C# REST API running as a Web App on an App Service as a container and a C# REST API running as a HTTP Function on an App Service or a Consumption Plan?</p>
+</blockquote>
+
+<p>There are lots of aspects in this question, so let's unpack this a bit first.</p>
+
+<p>First, let's talk about the various ways we can build REST APIs in .NET.<br>Then, we'll talk about how you can deploy these, either as code or as a container.<br>Last, we'll explore - if you end up with a container - which Azure service best fits your needs.</p>
+
+<!--more-->
+
+<h2 class="wp-block-heading" id="building-a-rest-api-with-net">Building a REST API with .NET</h2>
+
+<p>Various options exist to build a REST API in .NET. From the structured and robust <strong>Controller-based APIs</strong> to the lean and efficient <strong>Minimal APIs</strong>, .NET provides solutions that fit every scale and complexity. For developers embracing serverless computing, <strong>HTTP Triggers in Azure Functions</strong> offer a lightweight, event-driven approach, while <strong>ASP.NET Core Integration in Azure Functions</strong> combines the best of serverless scalability with the power of ASP.NET Core's middleware and dependency injection. Each approach is optimized for specific use cases, enabling you to design APIs that are performant, maintainable, and scalable.</p>
+
+<figure class="wp-block-table alignwide"><table class="has-fixed-layout"><thead><tr><th><strong>Aspect</strong></th><th><strong>Controller-Based API</strong></th><th><strong>Minimal API</strong></th><th><strong>Function with HTTP Trigger</strong></th><th><strong>Function with HTTP Trigger and ASP.NET Core Integration</strong></th></tr></thead><tbody><tr><td><strong>Environment</strong></td><td>ASP.NET Core Web Server (Kestrel)</td><td>ASP.NET Core Web Server (Kestrel)</td><td>Azure Functions Runtime</td><td>Azure Functions Runtime + ASP.NET Core</td></tr><tr><td><strong>Startup</strong></td><td>Runs with <code>dotnet run</code></td><td>Runs with <code>dotnet run</code></td><td>Runs with Azure Functions Core Tools</td><td>Runs with Azure Functions Core Tools</td></tr><tr><td><strong>Routing</strong></td><td>Centralized, attribute-driven (<code>[Route]</code>, <code>[HttpGet]</code>, <code>[HttpPost]</code>)</td><td>Centralized, handler-based via <code>Map</code> methods</td><td>Function-level routing via triggers</td><td>Function-level routing via triggers</td></tr><tr><td><strong>Application Lifecycle</strong></td><td><code><a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/webapplication">WebApplication.CreateBuilder()</a></code></td><td><code><a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/webapplicatio">WebApplication.CreateBuilder()</a></code></td><td><code><a href="https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=hostbuilder%2Cwindows#start-up-and-configuration">FunctionsApplication.CreateBuilder();</a></code></td><td><code><a href="https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=hostbuilder%2Cwindows#configure-startup">FunctionsApplication.CreateBuilder();</a></code></td></tr><tr><td><strong>State Management</strong></td><td>Application-wide state possible</td><td>Application-wide state possible</td><td>Stateless (external storage required)</td><td>Application-wide state possible</td></tr><tr><td><strong>Use Case</strong></td><td>Best for complex or large APIs</td><td>Best for lightweight, fast APIs</td><td>Lightweight, single-purpose endpoints</td><td>Serverless apps with full ASP.NET Core features</td></tr></tbody></table></figure>
+
+<p>Link to the samples: <a href="https://github.com/woutervanranst/CSharpRestApis">https://github.com/woutervanranst/CSharpRestApis</a></p>
+
+<h3 class="wp-block-heading" id="controller-based-api-web-app"><strong>Controller-Based API (Web App)</strong></h3>
+
+<p><a href="https://learn.microsoft.com/en-us/aspnet/core/web-api">Microsoft Docs</a></p>
+
+<pre class="wp-block-syntaxhighlighter-code alignwide">var builder = WebApplication.CreateBuilder(args);
+builder.Services.AddControllers();
+
+var app = builder.Build();
+app.UseAuthorization();
+app.MapControllers();
+app.Run();
+
+[ApiController]
+[Route("[controller]")]
+public class HelloController : ControllerBase
+{
+    [HttpGet]
+    public IActionResult Get()
+    {
+        return Ok("Hello world");
+    }
+}</pre>
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+<h3 class="wp-block-heading" id="minimal-api-web-app"><strong>Minimal API (Web App)</strong></h3>
+
+<p><a href="https://learn.microsoft.com/en-us/aspnet/core/fundamentals/minimal-apis/overview">Microsoft Docs</a></p>
+
+<pre class="wp-block-syntaxhighlighter-code alignwide">var builder = WebApplication.CreateBuilder(args);
+
+var app = builder.Build();
+app.MapGet("/", () => "Hello World!");
+
+app.Run();</pre>
+
+<hr class="wp-block-separator has-alpha-channel-opacity"/>
+
+<h3 class="wp-block-heading" id="http-trigger-azure-function"><strong>HTTP Trigger (Azure Function)</strong></h3>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-bindings-http-webhook-trigger">Microsoft Docs</a></p>
+
+<pre class="wp-block-syntaxhighlighter-code alignwide">var builder = FunctionsApplication.CreateBuilder(args);
+builder.Build().Run();
+
+public class HttpTriggerFunction
+{
+    [Function("HttpExample")]
+    public HttpResponseData Run([HttpTrigger(AuthorizationLevel.Anonymous, "get", "post", Route = null)] HttpRequestData req,
+        FunctionContext executionContext)
+    {
+        var response = req.CreateResponse(HttpStatusCode.OK);
+        response.WriteString("Hello world");
+
+        return response;
+    }
+}</pre>
+
+<h3 class="wp-block-heading" id="asp-net-core-integration-azure-function"><strong>ASP.NET Core Integration (Azure Function)</strong></h3>
+
+<p><a href="https://learn.microsoft.com/en-us/azure/azure-functions/dotnet-isolated-process-guide?tabs=hostbuilder%2Cwindows#aspnet-core-integration">Microsoft Docs</a></p>
+
+<pre class="wp-block-syntaxhighlighter-code alignwide">var builder = FunctionsApplication.CreateBuilder(args);
+builder.ConfigureFunctionsWebApplication();
+builder.Build().Run();
+
+public class Function
+{
+    [Function("HttpFunction")]
+    public IActionResult Run([HttpTrigger(AuthorizationLevel.Anonymous, "get")] HttpRequest req)
+    {
+        return new OkObjectResult("Hello world");
+    }
+}</pre>
+
+<h2 class="wp-block-heading" id="deploy-to-azure-as-code-or-deploy-as-container">Deploy to Azure as Code or deploy as Container</h2>
+
+<p>Both on App Service and Functions you have the option to deploy your code directly or as a container:</p>
+
+<figure class="wp-block-image size-large"><img src="/wp-content/uploads/2025/01/image-3.png" alt="" class="wp-image-281"/><figcaption class="wp-element-caption">Options for Web App (App Service)</figcaption></figure>
+
+<figure class="wp-block-image size-large"><img src="/wp-content/uploads/2025/01/image-5.png" alt="" class="wp-image-297"/><figcaption class="wp-element-caption">Options for Azure Functions (Functions Premium or App Service)</figcaption></figure>
+
+<p>Code deployment is the 'starter' option; this is where you typically begin. As you enter more advanced scenarios, you'd typically go for a containerized deployment. It has advantages, but you'll need to create a <code>Dockerfile</code> that describes the dependencies for your application, and probably additional steps in your CI/CD pipeline.</p>
+
+<h3 class="wp-block-heading" id="advantages-of-code-deployment"><strong>Advantages of Code Deployment</strong></h3>
+
+<ul class="wp-block-list">
+<li>Simpler &amp; cost effective setup, no need to manage Docker images.</li>
+
+<li>OS &amp; Platform updates are done for you.</li>
+
+<li>Native integration with Azure's managed runtime environments.</li>
+
+<li>Best for smaller, straightforward applications with minimal custom requirements.</li>
+</ul>
+
+<h3 class="wp-block-heading" id="advantages-of-container-deployment"><strong>Advantages of Container Deployment</strong></h3>
+
+<ul class="wp-block-list">
+<li><strong>Environment Consistency</strong>: Containers ensure that the application runs consistently regardless of where it's deployed (local development, staging, production). All dependencies, runtime versions, and configurations are packaged together in the container, reducing "it works on my machine" issues.</li>
+
+<li><strong>Portability</strong>: Containers allow you to move your application easily between cloud providers or from on-premises to Azure without significant changes. The same container image can run on Azure Kubernetes Service (AKS), Azure App Service, or even another container runtime environment.</li>
+
+<li><strong>Custom Runtime and Dependencies</strong>: Containers allow you to use custom runtimes or versions of frameworks and libraries that may not be natively supported by Azure App Service or Azure Functions. You can include specific operating system dependencies, libraries, and tools that are not available in the default Azure environment.</li>
+
+<li><strong>Version Control</strong>: Container images are versioned and stored in container registries (e.g., Azure Container Registry), allowing you to manage rollbacks and updates more effectively.</li>
+
+<li><strong>Isolation</strong>: Containers provide isolated environments for each application or microservice, preventing conflicts between different applications deployed on the same platform.</li>
+
+<li><strong>Integration with CI/CD Pipelines</strong>: Containers integrate seamlessly with CI/CD pipelines, enabling automated builds, tests, and deployments through tools like Azure DevOps, GitHub Actions, or Jenkins. Container-based CI/CD pipelines ensure consistent environments from development to production.</li>
+
+<li><strong>Future Flexibility</strong>: If you plan to migrate to container orchestration solutions like AKS or another cloud, container deployments make this transition smoother.</li>
+</ul>
+
+<p>In conclusion, use the <strong>code deployment</strong> for small-to-medium applications that need straightforward hosting. Use <strong>containerized deployment</strong> when you already have a container or require portability, flexibility, and when your application requires advanced orchestration (e.g., AKS, ACA, or hybrid cloud setups).</p>
+
+<h2 class="wp-block-heading" id="container-hosting-options">Container hosting options</h2>
+
+<p>So, eventually you'll end up with an application in one or more containers. Before you proceed, do you need orchestration with that (scaling, different microservices that work together) or not?</p>
+
+<figure class="wp-block-table alignwide"><table class="has-fixed-layout"><thead><tr><th>Orchestration?</th><th><strong>Service</strong></th><th><strong>Best For</strong></th><th><strong>Advantages</strong></th><th><strong>Limitations</strong></th><th>Hosting options</th></tr></thead><tbody><tr><td><strong>Without Orchestration</strong></td><td><strong>Azure Functions</strong></td><td>Event-driven, bursty, or sporadic traffic REST APIs</td><td>Auto-scaling (to zero), cost-efficient, serverless</td><td>Stateless, limited to event-driven workloads</td><td><a href="https://learn.microsoft.com/en-us/azure/azure-functions/functions-scale">Serverless &amp; Dedicated</a></td></tr><tr><td></td><td><strong>Azure App Service</strong></td><td>Predictable traffic, fully managed web apps/APIs</td><td>Built-in CI/CD, SSL, logging, simplified scaling</td><td>Limited customization, tied to HTTP(S) workloads</td><td><a href="https://learn.microsoft.com/en-us/azure/app-service/overview-hosting-plans">Dedicated</a></td></tr><tr><td></td><td><strong>Azure Container Instances (ACI)</strong></td><td>Short-lived, simple containerized workloads</td><td>Fast deployment, pay-as-you-go pricing</td><td>No auto-scaling, limited scalability</td><td>Per container</td></tr><tr><td><strong>With Orchestration</strong></td><td><strong>Azure Container Apps (ACA)</strong></td><td>Moderate complexity, microservices, event-driven workloads</td><td>Auto-scaling, Dapr support, simpler orchestration</td><td>Less granular control compared to AKS</td><td><a href="https://learn.microsoft.com/en-us/azure/container-apps/plans">Serverless &amp; Dedicated</a></td></tr><tr><td></td><td><strong>Azure Kubernetes Service (AKS)</strong></td><td>Complex, large-scale, or multi-container orchestrations</td><td>Full Kubernetes flexibility, advanced customizations</td><td>High operational complexity, requires Kubernetes expertise</td><td>Dedicated (VMs)</td></tr></tbody></table></figure>
+
+<p>Typically, the <strong>serverless</strong> options provide low(er) cost and operational overhead but with limitations in performance and customization. The <strong>dedicated</strong> options provide a high(er) control and performance but require more management and incurs fixed costs.</p>
+
+<p></p>

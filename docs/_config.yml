@@ -1,3 +1,8 @@
-theme: jekyll-theme-minimal
-title: Octocat's homepage
-description: Bookmark this to keep an eye on my project updates!
+title: Wouter on Architecture
+description: Random musings mostly on (Cloud) Architecture, Azure and .NET
+url: https://wouteronarchitecture.github.io
+baseurl: ""
+theme: null
+permalink: pretty
+markdown: kramdown
+excerpt_separator: "<!--more-->"
