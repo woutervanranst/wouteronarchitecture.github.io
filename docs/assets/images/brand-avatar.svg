@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 320" role="img" aria-labelledby="title desc">
+  <title id="title">Wouter on Architecture avatar</title>
+  <desc id="desc">Circular monogram avatar with the letter W.</desc>
+  <defs>
+    <linearGradient id="avatarGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0f172a" />
+      <stop offset="100%" stop-color="#2563eb" />
+    </linearGradient>
+  </defs>
+  <rect width="320" height="320" rx="160" fill="url(#avatarGradient)" />
+  <circle cx="160" cy="160" r="126" fill="none" stroke="#93c5fd" stroke-width="8" opacity="0.55" />
+  <path d="M73 92h34l29 109 24-74h29l25 74 28-109h35l-43 137h-35l-25-72-25 72h-35z" fill="#f8fafc" />
+</svg>
