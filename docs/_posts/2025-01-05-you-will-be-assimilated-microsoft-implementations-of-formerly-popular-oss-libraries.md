@@ -7,7 +7,9 @@ permalink: /you-will-be-assimilated-microsoft-implementations-of-formerly-popula
 
 The below is a summary of all the libraries Nick mentions in his video.
 
-[https://www.youtube.com/watch?v=PiT-441KR3s](https://www.youtube.com/watch?v=PiT-441KR3s)
+<div class="embed-responsive embed-responsive-16by9 mb-4">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/PiT-441KR3s" title="You will be assimilated" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 | **Purpose** | **Open-Source Package** | **Microsoft Alternative** |
 | --- | --- | --- |

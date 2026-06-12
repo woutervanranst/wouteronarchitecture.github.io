@@ -7,7 +7,9 @@ permalink: /frequently-overlooked-architectural-characteristics-video-review/
 
 This video is well worth the watch, as it summarizes what quality attributes are frequently overlooked.
 
-[https://www.youtube.com/watch?v=Ojh8VoKsxqY](https://www.youtube.com/watch?v=Ojh8VoKsxqY)
+<div class="embed-responsive embed-responsive-16by9 mb-4">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/Ojh8VoKsxqY" title="Frequently Overlooked Architectural Characteristics" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
 
 ### 1. Feasibility
 
