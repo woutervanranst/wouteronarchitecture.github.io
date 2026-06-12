@@ -5,7 +5,7 @@ layout: default
 <!-- Page Header -->
 {% assign header_background = page.background | default: site.cover %}
 {% if header_background %}
-<header class="masthead masthead-page" style="--masthead-image: url('{{ header_background | relative_url }}')">
+<header class="masthead masthead-page" style="background-image: url('{{ header_background | relative_url }}')">
   {% else %}
   <header class="masthead masthead-page">
     {% endif %}

@@ -5,19 +5,7 @@ header.masthead {
     background-color: $gray-900;
     background-attachment: scroll;
     position: relative;
-    overflow: hidden;
-
-    &::before {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-color: $gray-900;
-        background-image: var(--masthead-image);
-        background-repeat: no-repeat;
-        background-position: center;
-        background-size: cover;
-        z-index: 0;
-    }
+    background-size: cover;
 
     .overlay {
         position: absolute;
@@ -26,13 +14,7 @@ header.masthead {
         height: 100%;
         width: 100%;
         background-color: $gray-900;
-        opacity: 0.5;
-        z-index: 1;
-    }
-
-    .container {
-        position: relative;
-        z-index: 2;
+        opacity: 0.3;
     }
 
     .page-heading,
@@ -112,28 +94,25 @@ header.masthead {
     }
 }
 
-header.masthead.masthead-home::before,
-header.masthead.masthead-page::before {
-    background-size: contain;
-    background-position: center 65%;
-    filter: invert(1);
-}
-
 header.masthead.masthead-home {
-    min-height: 420px;
+    min-height: 360px;
+    background-size: contain;
+    background-position: center top;
 
     .page-heading,
     .site-heading {
-        padding: 170px 0 110px;
+        padding: 150px 0 70px;
 
         @media only screen and (min-width: 768px) {
-            padding: 180px 0 120px;
+            padding: 150px 0 70px;
         }
     }
 }
 
 header.masthead.masthead-page {
     min-height: 340px;
+    background-size: contain;
+    background-position: center top;
 
     .page-heading {
         padding: 150px 0 95px;
