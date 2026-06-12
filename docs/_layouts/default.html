@@ -66,7 +66,10 @@
         <nav><a href="{{ '/' | relative_url }}">Home</a></nav>
       </header>
       <main>
-        {{ content }}
+        {% assign href_prefix = 'href="' | append: site.baseurl | append: '/' %}
+        {% assign src_prefix = 'src="' | append: site.baseurl | append: '/' %}
+        {% capture rendered_content %}{{ content }}{% endcapture %}
+        {{ rendered_content | replace: 'href="/', href_prefix | replace: 'src="/', src_prefix }}
       </main>
     </div>
   </body>
