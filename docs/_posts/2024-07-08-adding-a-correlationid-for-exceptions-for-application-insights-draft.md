@@ -21,7 +21,7 @@ When searching for the right approach, I came across a couple of options to solv
 
 [ASP.NET Core Middleware](https://learn.microsoft.com/en-us/aspnet/core/fundamentals/middleware/?view=aspnetcore-8.0) are components that are put into an application 'pipeline' to handle requests and responses. Each component in the pipeline processes requests, can pass them to the next component, and can handle responses. They're executed in the order they are added to the pipeline.
 
-![](/wp-content/uploads/2024/07/image.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image.png)
 
 ### Filters
 
@@ -29,7 +29,7 @@ When searching for the right approach, I came across a couple of options to solv
 
 Exception filters catch exceptions thrown in MVC controllers, providing a mechanism to handle these exceptions within the context of the controller actions.
 
-![](/wp-content/uploads/2024/07/image-1.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image-1.png)
 
 #### Default Exception Handler
 
@@ -55,11 +55,11 @@ Since our application already uses middleware, we'll be going for that one.
 
 Obviously there are a lot of Ids flying around in your context; the clue is to get the *right* one. I want the one that is front and center in Application Insights.
 
-![](/wp-content/uploads/2024/07/image-9.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image-9.png)
 
 Through trial and error, I found that the `TraceId` of the current `System.Diagnostics.Activity` is the one that appears as `OperationId` in Application Insights:
 
-![](/wp-content/uploads/2024/07/image-8.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image-8.png)
 
 Indeed, from the [docs](https://learn.microsoft.com/en-us/dotnet/core/diagnostics/distributed-tracing-concepts):
 
@@ -69,7 +69,7 @@ Indeed, from the [docs](https://learn.microsoft.com/en-us/dotnet/core/diagnostic
 
 [This blog](https://tsuyoshiushio.medium.com/correlation-with-activity-with-application-insights-3-w3c-tracecontext-d9fb143c0ce2) post does a better (visual) job of explaining/visualizing the distributed tracing concept:
 
-![](/wp-content/uploads/2024/07/137bb-1u_a4krik7pr3vahdnsf__a.webp)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/137bb-1u_a4krik7pr3vahdnsf__a.webp)
 
 *Source: [Tsuyoshi Ushio](https://tsuyoshiushio.medium.com/?source=post_page-----d9fb143c0ce2--------------------------------)'s blog*
 
@@ -126,6 +126,6 @@ Register the middleware:
 app.UseMiddleware<ExceptionHandlingMiddleware>();
 ```
 
-![](/wp-content/uploads/2024/07/image-11.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image-11.png)
 
-![](/wp-content/uploads/2024/07/image-10.png)
+![](/assets/posts/adding-a-correlationid-for-exceptions-for-application-insights-draft/image-10.png)

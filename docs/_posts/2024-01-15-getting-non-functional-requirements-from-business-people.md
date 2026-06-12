@@ -9,7 +9,7 @@ As an architect in the world of software development, I’ve often encountered b
 
 In this blog post, I’ll share a couple of conversations starters for each of the [ISO 25010](https://iso25000.com/index.php/en/iso-25000-standards/iso-25010) quality attributes (also known as non-functional requirements), which will eventually drive a lot of the software architecture and associated cost.
 
-![](/wp-content/uploads/2024/01/82821-0bsn6oghg1-rizt4x.png)
+![](/assets/posts/getting-non-functional-requirements-from-business-people/82821-0bsn6oghg1-rizt4x.png)
 
 #### Functional Suitability
 

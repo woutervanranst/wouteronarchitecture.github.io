@@ -7,7 +7,7 @@ permalink: /value-objects-in-c-part-1/
 
 ## Choosing between `class` and `record`
 
-![](/wp-content/uploads/2024/02/image-1.png)
+![](/assets/posts/value-objects-in-c-part-1/image-1.png)
 
 ### Mutability vs. Immutability
 

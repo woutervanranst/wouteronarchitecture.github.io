@@ -13,21 +13,21 @@ There are many ways this happens accidentally, for example:
 
 In the beginning, there was a Test project, which references Moq (a popular mocking library):
 
-![](/wp-content/uploads/2024/09/image-3.png)
+![](/assets/posts/smart-cleanup-of-unused-references/image-3.png)
 
 Say we decide to split the projects up. The 2nd Test project also requires a dependency on Moq, but also uses a base class in Test. We now have this situation:
 
-![](/wp-content/uploads/2024/09/image-4.png)
+![](/assets/posts/smart-cleanup-of-unused-references/image-4.png)
 
 Now, say that we move all mocks to OtherTests but we forget to remove the Moq nuget from Test. It s still referenced, but no longer used:
 
-![](/wp-content/uploads/2024/09/image-5.png)
+![](/assets/posts/smart-cleanup-of-unused-references/image-5.png)
 
 ## Remove unused references - The naive Way
 
 Visual Studio has a feature [to Remove Unused References](https://learn.microsoft.com/en-us/visualstudio/ide/reference/remove-unused-references?view=vs-2022):
 
-![](/wp-content/uploads/2024/09/image-2.png)
+![](/assets/posts/smart-cleanup-of-unused-references/image-2.png)
 
 Since transitive dependencies are a thing, the order in which you do this is important.
 

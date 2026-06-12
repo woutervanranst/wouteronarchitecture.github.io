@@ -7,7 +7,7 @@ permalink: /choosing-a-cosmosdb-consistency-level/
 
 For an elaborate explanation, see the official [docs](https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels), which contain this image, but without further explanation it is a bit enigmatic.
 
-![](/wp-content/uploads/2024/02/image.png)
+![](/assets/posts/choosing-a-cosmosdb-consistency-level/image.png)
 
 In this blog post we explore how you should pick the correct middle ground.
 

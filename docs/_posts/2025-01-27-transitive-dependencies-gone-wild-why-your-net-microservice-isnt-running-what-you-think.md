@@ -26,7 +26,7 @@ Personally I think this setup is brilliant and a lot better than everyone implem
 
 To complete the context, we all rely on `Blocks.Exceptions` v1. The situation is as follows:
 
-![](/wp-content/uploads/2025/01/image-2-1024x564.png)
+![](/assets/posts/transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/image-2-1024x564.png)
 
 ## The Turn
 
@@ -36,19 +36,19 @@ The Market Team is quick to adopt the new package, and they bump their nuget ver
 
 The situation is now as follows, note the red text:
 
-![](/wp-content/uploads/2025/01/image-4-1024x564.png)
+![](/assets/posts/transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/image-4-1024x564.png)
 
 ## The Prestige
 
 Now pause and think (apart from the social queue of me asking the question): if we compile and deploy our artifact to production, what `Blocks.Exception` version is running in production?
 
-![](/wp-content/uploads/2025/01/image-5.png)
+![](/assets/posts/transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/image-5.png)
 
 Is our Registry microservice code still using v1 while the Market adapter uses v1.1? This is what I thought as well.
 
 Check your `\bin\Release` folder. There is only one `Blocks.Exceptions.dll` and it's v1.1.
 
-![](/wp-content/uploads/2025/01/image-8-1024x484.png)
+![](/assets/posts/transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/image-8-1024x484.png)
 
 *Independence Day - Alien ship not destroyed by the nuclear bomb*
 

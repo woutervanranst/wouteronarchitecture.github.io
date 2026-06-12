@@ -9,7 +9,7 @@ The [Sentix Index](https://nl.investing.com/economic-calendar/sentix-investor-co
 
 I recently looked at it a bit longer term, and intuitively had a feel for the ups and downs, but did want to quiz ChatGPT about it. I'd say it was mostly spot on.
 
-![](/wp-content/uploads/2024/01/image.png)
+![](/assets/posts/sentix-long-term-investor-trends/image.png)
 
 1.  **Global Financial Crisis (2008-2009)**: Around 2009, the aftermath of the global financial crisis likely had a significant impact on investor sentiment. This period was marked by a high degree of economic uncertainty and instability, which would have been reflected in lower Sentix Index values, indicating pessimism among investors.
 2.  **European Sovereign Debt Crisis (2010-2012)**: During this period, the Eurozone faced a major sovereign debt crisis, particularly affecting countries like Greece, Ireland, Portugal, Spain, and Italy. This crisis would have contributed to negative investor sentiment, as reflected in the Sentix Index, due to concerns about the stability of the Eurozone and the potential for economic contagion.

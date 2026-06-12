@@ -21,11 +21,11 @@ Enjoy the read.
 
 Let’s begin with something we’re all familiar with: a classic layered architecture. A user interacts with the application’s domain layer through the UI component, which in turn accesses a database via a Data Abstraction Layer (DAL).
 
-![](/wp-content/uploads/2016/05/1.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/1.png)
 
 However, such an architecture conveys a misleading image: **the database as the foundation of the software architecture**—reminiscent of the days when software design began with an entity-relationship model. Moreover, dependencies exist from the domain layer's business code to the technical code in the DAL, as shown by the relationships between the classes involved (simplified in the diagram, with just one class per layer).
 
-![](/wp-content/uploads/2016/05/2.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/2.png)
 
 This dependency often forces us to adapt our business code even when only the technical infrastructure changes—a frequent scenario in long-lived software systems. Conversely, implementing such business improvements becomes much simpler if no external dependencies—on technical infrastructure or otherwise—exist.
 
@@ -33,15 +33,15 @@ This dependency often forces us to adapt our business code even when only the te
 
 So, what does the clever software crafter who wants to decouple the domain and DAL do? They extract an interface (a good idea anyway, for testing and mocking purposes):
 
-![](/wp-content/uploads/2016/05/3.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/3.png)
 
-While the business code in the domain layer no longer depends on the technical implementation in the DAL class, nothing changes yet at the level of component dependencies. The Dependency Inversion Principle (DIP) offers a solution here (beautifully explained by Robert C. Martin in his blog post *[A Little Architecture](/wp-content/uploads/2016/05/8.png)*, presented as a fictional debate):
+While the business code in the domain layer no longer depends on the technical implementation in the DAL class, nothing changes yet at the level of component dependencies. The Dependency Inversion Principle (DIP) offers a solution here (beautifully explained by Robert C. Martin in his blog post [*A Little Architecture*](https://blog.cleancoder.com/uncle-bob/2016/01/04/ALittleArchitecture.html), presented as a fictional debate):
 
-![](/wp-content/uploads/2016/05/4.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/4.png)
 
 The crucial step in dependency inversion is to ensure the interface becomes part of the domain model—e.g., by naming methods in a business, rather than technical, manner. The resulting component dependencies look like this:
 
-![](/wp-content/uploads/2016/05/5.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/5.png)
 
 ---
 
@@ -49,11 +49,11 @@ The crucial step in dependency inversion is to ensure the interface becomes part
 
 Most software systems have more than just a user interface and a database (as a persistence medium). Often, there are APIs to expose the software’s functionality to other systems (e.g., via a REST gateway), logging to files or other storage, email notifications for certain events, and more. By organizing the code needed for these purposes—where necessary, incorporating the DIP—around the domain layer, the resulting architecture might look like this:
 
-![](/wp-content/uploads/2016/05/6.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/6.png)
 
 In the mid-1990s, Alistair Cockburn began visualizing this kind of architecture with a [hexagon](http://alistair.cockburn.us/Hexagonal+architecture):
 
-![](/wp-content/uploads/2016/05/7.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/7.png)
 
 As the six sides seemed more or less arbitrary, the name was changed in 2005 to Ports and Adapters. In this nomenclature, the interfaces within the application core (domain) represent the "ports," while their implementations in the outer hexagon act as adapters between the application core and users, databases, log files, external systems, etc.
 
@@ -63,7 +63,7 @@ As the six sides seemed more or less arbitrary, the name was changed in 2005 to 
 
 If we abandon the hexagonal representation and instead make a finer distinction between "internal" and "external," we arrive at the [Onion Architecture](http://jeffreypalermo.com/blog/the-onion-architecture-part-1/) proposed by Jeffrey Palermo in 2008:
 
-![](/wp-content/uploads/2016/05/8.png)
+![](/assets/posts/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/8.png)
 
 At its **core lies a domain model** that describes the application's business components without dependencies. Surrounding it is the **domain services** ring, containing business logic that spans multiple elements of the domain model. This layer depends solely on the domain model and represents the entirety of the business logic. **Application services**, which implement application-specific logic (e.g., access control), utilize this business logic. **Infrastructure, user interfaces, APIs**, and tests reside in an outer layer.
 

@@ -115,11 +115,11 @@ public class Function
 
 Both on App Service and Functions you have the option to deploy your code directly or as a container:
 
-![](/wp-content/uploads/2025/01/image-3.png)
+![](/assets/posts/exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure/image-3.png)
 
 *Options for Web App (App Service)*
 
-![](/wp-content/uploads/2025/01/image-5.png)
+![](/assets/posts/exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure/image-5.png)
 
 *Options for Azure Functions (Functions Premium or App Service)*
 

@@ -198,7 +198,7 @@ public class Handler : IRequestHandler<Command, Result<string>>
 
 Looking at community adoption, OneOf is the winner.
 
-![](/wp-content/uploads/2025/02/image-1-1024x557.png)
+![](/assets/posts/resultt-libraries/image-1-1024x557.png)
 
 *[NuGet Trends](https://nugettrends.com/packages?months=72&ids=OneOf&ids=SuccincT&ids=LanguageExt.Core&ids=FluentResults&ids=CSharpFunctionalExtensions).*
 

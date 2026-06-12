@@ -30,7 +30,7 @@ usingStatements.Dump();
 
 You will not be surprised with the results:
 
-![](/wp-content/uploads/2024/09/image.png)
+![](/assets/posts/optimal-usage-of-global-usings/image.png)
 
 ## Generating GlobalUsings.cs
 
@@ -97,4 +97,4 @@ foreach (var projectDirectory in projectDirectories)
 
 Enjoy!
 
-![](/wp-content/uploads/2024/09/image-1.png)
+![](/assets/posts/optimal-usage-of-global-usings/image-1.png)
