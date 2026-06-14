@@ -3,10 +3,21 @@
 
 .post-content img {
   display: block;
-  max-width: 100%;
+  max-width: min(100%, 42rem);
+  width: auto;
+  max-height: min(70vh, 40rem);
   height: auto;
   margin-left: auto;
   margin-right: auto;
+}
+
+header.masthead.masthead-home {
+  background-color: #000;
+}
+
+header.masthead.masthead-home .overlay {
+  background-color: #000;
+  opacity: 0.65;
 }
 
 .post-content p:has(> img:only-child) + p:has(> em:only-child) {
