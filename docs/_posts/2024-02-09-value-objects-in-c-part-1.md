@@ -4,6 +4,7 @@ title: 'Value Objects in C# - Part 1'
 date: 2024-02-09 06:44:00
 permalink: /value-objects-in-c-part-1/
 subtitle: 'Choosing between `class` and `record` for value objects means trading off mutability, equality semantics, inheritance, and copying behavior.'
+mermaid: true
 ---
 
 ## Choosing between `class` and `record`
@@ -71,7 +72,20 @@ var modifiedRecord = originalRecord with { Property2 = "new value" };
 
 ### Conclusion
 
-[Decision diagram on Mermaid Live](https://mermaid.live/edit#pako:eNp1ks2O0zAUhV_lyuumSpNJSrMYJJpCWxALQKChYeHaN41RYgfHmZlS9d25iRphjSDKIj_H53zn2hcmjESWsbI2T6Li1sGXvNBA15tDbrADVyGY408UDui_PiF0jjt8_eOmgiCAB9IFwT2sD2ujOyXRwrrmXedrPppRkh92HTzyukfAXz2vlTuDalpjHdduMs19083hm6prn-OI0HcoQWmo1KkKWrSlsQ3XguAEam6V6Savje_19gUgPClXwdcRZzPh7Jq2xgY11VRG-za3Du_-unxCYaz0sW-a7dBTmMHqmYAr_qiMBbqVrtAqN8JqRIlyIt36pLt_j3LrReyHCEkAunO2FwPsENBy59BqaLgTldInKC1NmurU53FsU9zej3v_n0p7L-_Dy-GZSQxHPuwH5bcWS7RI5ciAzViDtC9K0gG7DIYFo21ssGAZPUoseV-7ghX6SlLeO_P5rAXLqA3OWN9KOme54ifLG5aVvO7oa8v1d2OaSUSvLLuwZ5bF8Ty9W4ZJGkXRIl0lixk7s2y5nCdhmCzCJFrFq7sovs7Y73F9OF8tXkVpGK6WSRintOz6B2bK9d0)
+```mermaid
+flowchart TD
+    B[Does the object change state?]
+    B -- Yes --> C[Consider Class]
+    B -- No --> D[Is value equality important?]
+    D -- Yes --> E[Will the object be used in high-performance scenarios?]
+    E -- Yes --> F[Consider Class with Value Equality Implementation]
+    E -- No --> G[Consider Record]
+    D -- No --> H[Is complex behavior or inheritance needed?]
+    H -- Yes --> I[Consider Class]
+    H -- No --> J[Is deconstruction or pattern matching frequently used?]
+    J -- Yes --> K[Consider Record]
+    J -- No --> L[Consider Class or Record based on preference]
+```
 
 **Use Classes** when you need objects with mutable state, complex behavior, or extensive use of object-oriented features like inheritance and polymorphism beyond simple data storage.
 

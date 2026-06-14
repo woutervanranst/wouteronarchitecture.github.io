@@ -4,6 +4,7 @@ title: 'Value Objects in C# - Part 2'
 date: 2024-02-14 07:00:00
 permalink: /value-objects-in-c-part-2/
 subtitle: 'A practical guide to choosing between `set`, `init`, `get`, and `required` when designing C# value objects.'
+mermaid: true
 ---
 
 ## 2. Choosing the property modifiers
@@ -98,7 +99,17 @@ var personWithoutName = new Person(); // Compile-time error
 
 ### Conclusion
 
-[Decision diagram on Mermaid Live](https://mermaid.live/edit#pako:eNpNUMFSgzAQ_ZXMnmknQAHhoFNL60kvOs4oeFhJaDMTkhqS0drpv5tS6pBL8va9fW83R2g041BAK_V3s0NjyUtZK-LPsnp0Fj8lJ9habohQwgqU4het0OruY1SR2Yy88d5ft-S-2nJLem6n5JMeuFX1itJ5s74XW8UZ0YY0KBsn0XokFLE7ThqtemtcY7W5JqymCeU5YUqM7ush-TziSJZDeTOGGv7lhOHs6rm-sBewmQY8VEvG_vVeDgF03HQomP-l47mjBj9px2so_JPxFp20NdTq5KXorH4-qAYKvwUPwO2ZX68UuDXYQdGi7H11j-pd6-4q8hCKI_xAEcfzdJHRJI2iKEzzJAzgAEWWzRNKk5AmUR7niyg-BfA79NN5Ht5EKaV5ltA4TaPw9AcO3YtN)
+```mermaid
+flowchart TD
+    A[Mutable after initialization?]
+    A -- Yes --> B[get set]
+    A -- No --> C[Value assigned or calculated in the constructor?]
+    C -- Yes --> D[get]
+    C -- No --> E[get init]
+    D --> F[Value required?]
+    E --> F
+    F -- Yes --> G[Add required]
+```
 
 -   **Mutable vs. Immutable**: Use `set` for mutable properties in classes. Opt for `init` in records (and classes when appropriate) for immutable properties.
 -   **Initialization Control**: `init` allows properties to be set at initialization time, perfect for immutable data patterns. `required` ensures all necessary properties are initialized.

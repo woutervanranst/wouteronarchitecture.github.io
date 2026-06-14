@@ -4,6 +4,7 @@ title: 'Choosing a CosmosDB Consistency Level'
 date: 2024-02-09 06:58:00
 permalink: /choosing-a-cosmosdb-consistency-level/
 subtitle: 'A practical guide to finding the right middle ground between freshness, ordering, latency, and availability in Cosmos DB.'
+mermaid: true
 ---
 
 For an elaborate explanation, see the official [docs](https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels), which contain this image, but without further explanation it is a bit enigmatic.
@@ -12,7 +13,22 @@ For an elaborate explanation, see the official [docs](https://learn.microsoft.co
 
 In this blog post we explore how you should pick the correct middle ground.
 
-[Decision diagram on Mermaid Live](https://mermaid.live/edit#pako:eNqtk8Fv2jAUxv8Vyz3skqAASUl8WKVSoLTaNIldtmUHg1_AmmNHtlOSIf73vdCspVNvIye_p9_3PX8vyYFujADKaKHMfrPj1pOvd7km-Nz-yOmn2nnClSK1A-uIAyB1JbgHR2RZgpB4VO1NTn-SMCTfsB2GH8kUlStvjd6SqdFOOg960yLUG3fsZ3NCZ4jOZQOCCFC8JcaSQkEj1wpuXgSzTvBMdZo5am5NrQXWK88VaHDuH7j3OPEL5JfuFOGDI2avCQbVW7zsk3RyLZX0LcapjPVc-9exi_NM910mnCONfjfU4izU8s3m-n3xqgJuidSYUYB9HbM8H_OA0hd7T75YKGTzFu2HPCI5e0Ko5urdGznf4gKmpJBKsav1uggcvpNfwK6iaJom474M91L4HRtVTeCh8SFXcquZgsKf28wvY3N_GZuHy9g8_o9NrmlAS7AllwL_n0NnnFO_gxJyyvAooOC18jnN9RFRXnuzavWGMm9rCOjzd3En-dbykrKCK4fdiuvvxpR_ISwpO9CGsuEoG8RJEg-zNEqT5DpOA9p27XQQR9l1OppEk0mcjsbHgP4-OUSDNIni4WQ8TLIky8ZRfPwDKOJBYw)
+```mermaid
+flowchart TD
+    B["Must all users see updates immediately?"] -- Yes --> C["Strong Consistency"]
+    B -- No --> E["Fixed delay or flexible?"]
+    E -- Fixed --> F["Bounded Staleness"]
+    E -- Flexible --> G["Is user's own changes visibility important?"]
+    G -- Yes --> H["Session Consistency"]
+    G -- No --> I["Must all updates appear in order?"]
+    I -- Yes --> J["Consistent Prefix"]
+    I -- No --> K["Eventual Consistency"]
+    style C fill:#bbf,stroke:#00C853,stroke-width:2px,text-align:left
+    style F fill:#bbf,stroke:#00C853,stroke-width:2px,text-align:left
+    style H fill:#bbf,stroke:#00C853,stroke-width:2px,text-align:left
+    style J fill:#bbf,stroke:#00C853,stroke-width:2px,text-align:left
+    style K fill:#bbf,stroke:#00C853,stroke-width:2px,text-align:left
+```
 
 **Immediate Consistency vs. Flexibility in Data Updates**
 
