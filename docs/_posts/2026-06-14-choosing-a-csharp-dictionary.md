@@ -7,15 +7,15 @@ subtitle: 'A crisp decision flow for Dictionary, FrozenDictionary, ImmutableDict
 mermaid: true
 ---
 
-I recently ran into `FrozenDictionary<TKey,TValue>` and first read it as "a colder `ReadOnlyDictionary`".
+I recently ran into `FrozenDictionary<TKey,TValue>` and first read it as "a colder `ReadOnlyDictionary`". That's not it though.
 
-That is wrong enough to be useful.
+The useful mental model is what each type is optimized for. `ImmutableDictionary<TKey,TValue>` is optimized for building changed dictionaries efficiently. `FrozenDictionary<TKey,TValue>` is optimized for fast reads after the dictionary is built.
 
-The distinction that helped me is this: some types control who can mutate, some control whether mutation is possible, and some optimize for a specific access pattern.
+That makes the choice more about workload than mutability vocabulary:
 
 -   `Dictionary<TKey,TValue>` is the normal mutable map. Start here.
 -   `IReadOnlyDictionary<TKey,TValue>` is an API shape. It says callers can read, not write.
--   `ReadOnlyDictionary<TKey,TValue>` is an adapter around an existing dictionary. It blocks writes through the adapter.
+-   `ReadOnlyDictionary<TKey,TValue>` is an adapter around an existing dictionary. Callers will not be able to write.
 -   `ImmutableDictionary<TKey,TValue>` is for code that keeps creating changed versions of a dictionary.
 -   `FrozenDictionary<TKey,TValue>` is for data you finish building and then read a lot.
 -   `ConcurrentDictionary<TKey,TValue>` is for shared writes from multiple threads.
