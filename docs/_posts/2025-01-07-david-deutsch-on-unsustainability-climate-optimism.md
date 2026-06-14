@@ -3,6 +3,7 @@ layout: post
 title: 'David Deutsch on (un)sustainability & climate optimism'
 date: 2025-01-07 07:30:00
 permalink: /david-deutsch-on-unsustainability-climate-optimism/
+subtitle: 'David Deutsch argues that societies collapse not because they run out of resources, but because they stop creating the knowledge needed to solve new problems.'
 ---
 
 ![](https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1311705051i/10483171.jpg)

@@ -3,6 +3,7 @@ layout: post
 title: 'Validating Dependency Injection'
 date: 2025-03-21 09:22:18
 permalink: /validating-dependency-injection/
+subtitle: 'Two small DI container settings that catch scoped-lifetime mistakes and registration errors at startup instead of in production.'
 ---
 
 This is a snippet from Nick's [recent video](https://www.youtube.com/watch?v=uJDrf5TwwAw)

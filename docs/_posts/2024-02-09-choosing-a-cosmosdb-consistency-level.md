@@ -3,6 +3,7 @@ layout: post
 title: 'Choosing a CosmosDB Consistency Level'
 date: 2024-02-09 06:58:00
 permalink: /choosing-a-cosmosdb-consistency-level/
+subtitle: 'A practical guide to finding the right middle ground between freshness, ordering, latency, and availability in Cosmos DB.'
 ---
 
 For an elaborate explanation, see the official [docs](https://learn.microsoft.com/en-us/azure/cosmos-db/consistency-levels), which contain this image, but without further explanation it is a bit enigmatic.

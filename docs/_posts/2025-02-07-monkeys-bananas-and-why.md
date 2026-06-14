@@ -3,6 +3,7 @@ layout: post
 title: 'Monkeys, bananas and WHY'
 date: 2025-02-07 08:29:00
 permalink: /monkeys-bananas-and-why/
+subtitle: 'A short anecdote about how teams keep repeating practices long after everyone has forgotten why they started.'
 ---
 
 Once in a while, it happens when I come across a situation where people do things without truly understanding why they do what they do. To lighten the mood after a series of 'Spanish inquisition' why questions, I like to tell this anecdote.

@@ -3,6 +3,7 @@ layout: post
 title: 'Getting Non-Functional Requirements from Business People'
 date: 2024-01-15 06:30:00
 permalink: /getting-non-functional-requirements-from-business-people/
+subtitle: 'A set of conversation starters to help business stakeholders express the quality attributes that will drive architecture and cost.'
 ---
 
 As an architect in the world of software development, I’ve often encountered business stakeholders who, despite their expertise in their respective domains, find themselves out of depth when discussing the nitty-gritty of software requirements. The challenge isn’t their lack of understanding; it’s about bridging the gap between their business needs and the technical solutions we can provide.

@@ -3,6 +3,7 @@ layout: post
 title: 'Understanding High CPU and Memory Usage: When to Act and When to Relax'
 date: 2025-02-10 09:16:57
 permalink: /understanding-high-cpu-and-memory-usage-when-to-act-and-when-to-relax/
+subtitle: 'High CPU or memory usage is not automatically bad; in well-sized cloud systems, it can be either a warning sign or proof you’re using resources well.'
 ---
 
 Modern applications, especially cloud applications running on right-sized infrastructure, rely heavily on efficient resource management, **but "efficiency" doesn’t always mean "low usage."** High CPU or memory consumption can be either a red flag or a sign of optimal performance, depending on the context. In this post, we’ll explore when to celebrate high resource usage—and when to panic—with a focus on .NET applications.

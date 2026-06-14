@@ -3,6 +3,7 @@ layout: post
 title: 'Adding a CorrelationId for Exceptions for Application Insights (DRAFT)'
 date: 2024-07-08 07:02:00
 permalink: /adding-a-correlationid-for-exceptions-for-application-insights-draft/
+subtitle: 'How to return the right correlation ID from an ASP.NET Core API exception and line it up with Application Insights `OperationId`.'
 ---
 
 Admittedly, this title could be shorter, but it s also a bit of a niche topic.

@@ -3,6 +3,7 @@ layout: post
 title: 'From Layers to Rings – Hexagonal Architectures Explained (by Silas Graffy)'
 date: 2025-01-12 18:03:07
 permalink: /from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/
+subtitle: 'Why layered architectures tend to decay, and how hexagonal, onion, and clean architecture keep business logic at the center.'
 ---
 
 This article is a proper English translation of [Von Schichten zu Ringen – Hexagonale Architekturen erklärt by Silas Graffy](https://www.maibornwolff.de/know-how/von-schichten-zu-ringen-hexagonale-architekturen-erklaert/). I found it to be one of the best explanations and motivations for the architecture style, but the 'Chrome Autotranslation' was severely lacking.

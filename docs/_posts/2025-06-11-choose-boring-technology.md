@@ -3,7 +3,7 @@ layout: post
 title: 'Choose Boring Technology'
 date: 2025-06-11 08:17:50
 permalink: /choose-boring-technology/
-subtitle: 'Test'
+subtitle: '"Boring" technology is not a lack of ambition, but a deliberate way to spend your innovation tokens where they matter most.'
 ---
 
 Like wine, (some) technology gets better with age. The blog [Choose Boring Technology](https://boringtechnology.club/) advocates to make technology choices as boring as possible, unless you deliberately choose or have room for the unknown. “Boring” is not a lack of ambition—it’s the deliberate, wise pursuit of excellence. Choose your “innovation tokens” wisely, and your future self will thank you.

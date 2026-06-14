@@ -3,6 +3,7 @@ layout: post
 title: 'Eagerly consuming a collection of completing Tasks'
 date: 2024-09-05 07:13:00
 permalink: /eagerly-consuming-a-collection-of-completing-tasks/
+subtitle: 'How to process a collection of `Task`s in the order they complete instead of the order they were added.'
 ---
 
 Imagine you start a bunch of files (say, uploading or downloading files big and small) and after the first one completes, you want to do something else -- how do you `await` that first task?

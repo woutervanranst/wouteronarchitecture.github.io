@@ -3,6 +3,7 @@ layout: post
 title: 'Transitive Dependencies Gone Wild: Why Your .NET Microservice Isn’t Running What You Think'
 date: 2025-01-27 20:28:00
 permalink: /transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/
+subtitle: 'In .NET, a downstream team’s NuGet upgrade can silently decide which version your microservice actually runs in production.'
 ---
 
 While working in a fairly large .NET microservice landscape I came across the following assumption-shattering situation, which led me down a nuget-versioning rabbit hole.

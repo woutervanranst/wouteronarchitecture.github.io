@@ -3,6 +3,7 @@ layout: post
 title: 'You will be assimilated: Microsoft implementations of formerly popular OSS libraries'
 date: 2025-01-05 07:23:02
 permalink: /you-will-be-assimilated-microsoft-implementations-of-formerly-popular-oss-libraries/
+subtitle: 'A quick summary of popular .NET OSS libraries that now have, or soon may have, first-party Microsoft alternatives.'
 ---
 
 The below is a summary of all the libraries Nick mentions in his video.

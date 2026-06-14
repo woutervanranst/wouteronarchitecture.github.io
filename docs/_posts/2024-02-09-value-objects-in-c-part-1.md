@@ -3,6 +3,7 @@ layout: post
 title: 'Value Objects in C# - Part 1'
 date: 2024-02-09 06:44:00
 permalink: /value-objects-in-c-part-1/
+subtitle: 'Choosing between `class` and `record` for value objects means trading off mutability, equality semantics, inheritance, and copying behavior.'
 ---
 
 ## Choosing between `class` and `record`

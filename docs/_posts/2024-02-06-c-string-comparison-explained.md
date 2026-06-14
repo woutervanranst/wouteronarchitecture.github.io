@@ -3,6 +3,7 @@ layout: post
 title: 'C# String Comparison Explained'
 date: 2024-02-06 06:34:00
 permalink: /c-string-comparison-explained/
+subtitle: 'A practical guide to choosing the right C# string comparison mode for culture-sensitive, case-insensitive, and internal comparisons.'
 ---
 
 When doing string comparisons, I always defaulted to `StringComparison.InvariantCultureIgnoreCase` without giving it much further thought.

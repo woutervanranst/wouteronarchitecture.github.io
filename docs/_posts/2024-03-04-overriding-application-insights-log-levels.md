@@ -3,6 +3,7 @@ layout: post
 title: 'Overriding Application Insights log levels'
 date: 2024-03-04 07:02:00
 permalink: /overriding-application-insights-log-levels/
+subtitle: 'How to remove Application Insights’ default logging filter so your configured log levels actually take effect.'
 ---
 
 (This post is still draft as I work out a minimal example)

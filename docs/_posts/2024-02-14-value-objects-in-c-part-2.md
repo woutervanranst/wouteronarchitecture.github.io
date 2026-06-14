@@ -3,6 +3,7 @@ layout: post
 title: 'Value Objects in C# - Part 2'
 date: 2024-02-14 07:00:00
 permalink: /value-objects-in-c-part-2/
+subtitle: 'A practical guide to choosing between `set`, `init`, `get`, and `required` when designing C# value objects.'
 ---
 
 ## 2. Choosing the property modifiers

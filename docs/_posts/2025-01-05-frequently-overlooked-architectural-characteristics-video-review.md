@@ -3,6 +3,7 @@ layout: post
 title: 'Frequently Overlooked Architectural Characteristics (Video Review)'
 date: 2025-01-05 07:29:56
 permalink: /frequently-overlooked-architectural-characteristics-video-review/
+subtitle: 'A concise review of the quality attributes architects most often miss, from feasibility and observability to agility and modularity.'
 ---
 
 This video is well worth the watch, as it summarizes what quality attributes are frequently overlooked.

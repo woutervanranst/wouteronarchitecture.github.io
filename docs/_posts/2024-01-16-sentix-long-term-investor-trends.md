@@ -3,6 +3,7 @@ layout: post
 title: 'Sentix Long Term Investor Trends'
 date: 2024-01-16 06:32:00
 permalink: /sentix-long-term-investor-trends/
+subtitle: 'A longer-term look at the Sentix Index and the major crises and recoveries that shaped investor sentiment.'
 ---
 
 The [Sentix Index](https://nl.investing.com/economic-calendar/sentix-investor-confidence-268) is a well-known economic indicator used primarily in the Eurozone. It measures investor sentiment and is based on surveys conducted with investors and analysts. The index provides insights into the economic outlook of the Eurozone and can influence financial markets, as it reflects participants' views on economic conditions, both current and future.

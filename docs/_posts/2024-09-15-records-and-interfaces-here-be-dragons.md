@@ -3,6 +3,7 @@ layout: post
 title: 'Records and Interfaces: Here Be Dragons'
 date: 2024-09-15 07:22:00
 permalink: /records-and-interfaces-here-be-dragons/
+subtitle: 'Records give you value-based equality in C#, but that story changes in subtle ways once interfaces enter the picture.'
 ---
 
 When it comes to C# types—**classes**, **structs**, and **records**—understanding the difference between value and reference equality is crucial. Each type behaves differently in terms of equality checks, inheritance, and how they manage their internal state. However, things can get tricky when you introduce **interfaces** into the mix, particularly when dealing with records.

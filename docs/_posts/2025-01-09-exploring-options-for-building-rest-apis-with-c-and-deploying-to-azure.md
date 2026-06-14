@@ -3,6 +3,7 @@ layout: post
 title: 'Exploring options for building REST APIs with C# and deploying to Azure'
 date: 2025-01-09 07:32:41
 permalink: /exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure/
+subtitle: 'A practical comparison of the main ways to build REST APIs in .NET and the Azure hosting options that fit them best.'
 ---
 
 > Somebody asked me, what is the difference between a C# REST API running as a Web App on an App Service as a container and a C# REST API running as a HTTP Function on an App Service or a Consumption Plan?

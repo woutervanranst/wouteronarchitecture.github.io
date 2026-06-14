@@ -3,6 +3,7 @@ layout: post
 title: 'Optimal usage of Global Usings'
 date: 2024-09-04 07:03:00
 permalink: /optimal-usage-of-global-usings/
+subtitle: 'How to identify your most common namespaces and generate sensible `GlobalUsings.cs` files across a large .NET solution.'
 ---
 
 I have a solution with ~40 projects, built during many years with wild usings that I wanted to clean up. The [`global usings` feature](https://learn.microsoft.com/en-us/dotnet/csharp/whats-new/csharp-10#global-using-directives), introduced in with C# 10.0 and .NET 6 (nov21) to simplify and reduce the repetition of commonly used namespaces throughout a project.

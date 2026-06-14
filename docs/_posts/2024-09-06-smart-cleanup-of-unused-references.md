@@ -3,6 +3,7 @@ layout: post
 title: 'Smart cleanup of unused references'
 date: 2024-09-06 07:08:00
 permalink: /smart-cleanup-of-unused-references/
+subtitle: 'In large, long-lived .NET solutions, unused references accumulate quietly, and removing them safely means understanding transitive dependencies.'
 ---
 
 Say you have a 'large project' (think: clean architecture) with 40+ projects that has gradually evolved over time, has been refactored etc. There may be unused references lying around.

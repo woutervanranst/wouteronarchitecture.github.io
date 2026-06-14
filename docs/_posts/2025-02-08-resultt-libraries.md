@@ -3,6 +3,7 @@ layout: post
 title: 'Future-proofing Result<T> Libraries'
 date: 2025-02-08 14:20:57
 permalink: /resultt-libraries/
+subtitle: 'A practical look at today’s .NET `Result<T>` libraries through the lens of future C# type unions and eventual refactoring cost.'
 ---
 
 C# is coming 'soon' with **Type Unions** (see [the official proposal](https://github.com/dotnet/csharplang/blob/main/proposals/TypeUnions.md) and [Nick's video on this](https://www.youtube.com/watch?v=aksjZkCbIWA&ab_channel=NickChapsas)), which I think is great. However it's not there yet and if you need it now it's important t consider which library will require the least refactoring when this feature becomes part of the official language specification.
