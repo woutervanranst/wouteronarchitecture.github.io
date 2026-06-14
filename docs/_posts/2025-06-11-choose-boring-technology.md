@@ -24,7 +24,7 @@ Much like Maslow’s hierarchy of needs, engineering organizations have a pyrami
 
 The lesson? **Every non-essential technology choice is a tax on your attention.** And when you’re taxed enough, you’re no longer shipping value—you’re just firefighting.
 
-![](https://boringtechnology.club/slides/slides.054.jpeg)
+![](/assets/posts/choose-boring-technology/image-1.jpeg)
 
 ## The Unknown Unknowns: When Novelty Bites Back
 
@@ -50,6 +50,6 @@ In a field obsessed with reinvention, “boring” is a badge of honor. It signa
 
 > Production Is Hard
 
-![](https://boringtechnology.club/slides/slides.057.jpeg)
+![](/assets/posts/choose-boring-technology/image-2.jpeg)
 
 In McKinley’s words, **“Shipping things consistently is the path to developer happiness.”** The next time you feel the itch to adopt the latest and greatest, ask yourself: is this where my team’s attention belongs?
