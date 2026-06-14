@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 'Choosing a C# Dictionary'
-date: 2026-06-14 15:55:00
+date: 2026-06-14 09:00:00
 permalink: /choosing-a-csharp-dictionary/
 subtitle: 'A crisp decision flow for Dictionary, FrozenDictionary, ImmutableDictionary, ConcurrentDictionary, ReadOnlyDictionary, and friends.'
 mermaid: true
