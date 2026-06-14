@@ -9,12 +9,11 @@ mermaid: true
 
 I recently ran into `FrozenDictionary<TKey,TValue>` and first read it as "a colder `ReadOnlyDictionary`". That's not it though.
 
-The useful mental model is what each type is optimized for. `ImmutableDictionary<TKey,TValue>` is optimized for building changed dictionaries efficiently. `FrozenDictionary<TKey,TValue>` is optimized for fast reads after the dictionary is built.
+The useful mental model is what each type is optimized for. `ImmutableDictionary<TKey,TValue>` is optimized for building changed (mutable) dictionaries efficiently. `FrozenDictionary<TKey,TValue>` is optimized for fast reads after the dictionary is built. Confusing, right?
 
 That makes the choice more about workload than mutability vocabulary:
 
 -   `Dictionary<TKey,TValue>` is the normal mutable map. Start here.
--   `IReadOnlyDictionary<TKey,TValue>` is an API shape. It says callers can read, not write.
 -   `ReadOnlyDictionary<TKey,TValue>` is an adapter around an existing dictionary. Callers will not be able to write.
 -   `ImmutableDictionary<TKey,TValue>` is for code that keeps creating changed versions of a dictionary.
 -   `FrozenDictionary<TKey,TValue>` is for data you finish building and then read a lot.
@@ -56,8 +55,6 @@ flowchart TD
 | Duplicate logical keys | Not a dictionary | Use grouping, `Lookup<TKey,TValue>`, or `Dictionary<TKey,List<TValue>>`. |
 
 ## The terms that tripped me up
-
-`ReadOnlyDictionary<TKey,TValue>` is not an interface. `IReadOnlyDictionary<TKey,TValue>` is.
 
 `ReadOnlyDictionary<TKey,TValue>` is a wrapper class. You pass it an existing dictionary. The wrapper does not expose `Add`, `Remove`, or a settable indexer, but it still points at the dictionary you gave it.
 
