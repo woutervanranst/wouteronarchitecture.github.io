@@ -56,7 +56,7 @@ flowchart TD
 
 ## The terms that tripped me up
 
-`ReadOnlyDictionary<TKey,TValue>` is a wrapper class. You pass it an existing dictionary. The wrapper does not expose `Add`, `Remove`, or a settable indexer, but it still points at the dictionary you gave it.
+`ReadOnlyDictionary<TKey,TValue>` is a wrapper class. You pass it an existing dictionary. The wrapper does not expose `Add`, `Remove`, or a settable indexer, but it reads from the dictionary you gave it.
 
 ```csharp
 var source = new Dictionary<string, int>
@@ -72,7 +72,13 @@ source["LU"] = 352;
 Console.WriteLine(readOnly["LU"]); // 352
 ```
 
-That is the wrapper bit. The "other dictionary" is the `source` object. If `source` changes, the read-only view sees the change.
+That is the observable evidence: mutate `source`, then read through `readOnly`, and the new value is there. `ReferenceEquals(source, readOnly)` would be false because the wrapper is a separate object. The point is that `ReadOnlyDictionary` does not take a defensive copy of the source dictionary.
+
+You can see the same thing through `Count`:
+
+```csharp
+Console.WriteLine(readOnly.Count); // 3
+```
 
 So `ReadOnlyDictionary` does not mean "nobody can ever change this data". It means "you cannot change it through this object".
 
