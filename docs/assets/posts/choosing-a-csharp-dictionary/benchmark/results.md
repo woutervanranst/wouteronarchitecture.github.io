@@ -28,6 +28,16 @@ Each benchmark builds a dictionary-like collection with 10,000 string keys.
 | BuildFrozenDictionary | 10000 | 692.6 us | 5.71 | 1102.85 KB |
 | BuildImmutableDictionary | 10000 | 1625.9 us | 13.41 | 625.26 KB |
 
+## Producing a changed version
+
+Each benchmark starts with 10,000 entries and produces a new dictionary-like collection with one extra key. The old collection remains usable.
+
+| Method | Count | Mean | Ratio | Allocated | Alloc Ratio |
+| --- | ---: | ---: | ---: | ---: | ---: |
+| ImmutableDictionary_Add | 10000 | 202.3 ns | 0.004 | 872 B | 0.003 |
+| Dictionary_CopyAndAdd | 10000 | 55.774 us | 1.005 | 283094 B | 1.000 |
+| FrozenDictionary_RebuildAndAdd | 10000 | 661.273 us | 11.918 | 1129400 B | 3.989 |
+
 ## Merge
 
 Each benchmark merges four 2,500-entry dictionaries into one 10,000-entry `Dictionary<string, int>`.

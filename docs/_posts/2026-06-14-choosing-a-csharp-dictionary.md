@@ -125,6 +125,22 @@ Construction tells the other half of the story:
 
 In this run, building a `FrozenDictionary` was about 5.7 times slower than building a `Dictionary`. Fine for a map that lives for a while. Wasteful for a throwaway map.
 
+`ImmutableDictionary` is even slower to build from scratch here because it is building the machinery for future snapshots: a persistent structure that can share nodes between versions. `FrozenDictionary` also spends extra construction work, but it spends it on one final lookup table. Neither is trying to beat `Dictionary` at first construction.
+
+### Mutations
+
+Produce a new dictionary-like collection with one extra key:
+
+```text
+| Method                         | Count | Mean       | Ratio  | Allocated | Alloc Ratio |
+|------------------------------- |------ |-----------:|-------:|----------:|------------:|
+| ImmutableDictionary_Add        | 10000 |   202.3 ns |  0.004 |     872 B |       0.003 |
+| Dictionary_CopyAndAdd          | 10000 | 55.774 us  |  1.005 |  283094 B |       1.000 |
+| FrozenDictionary_RebuildAndAdd | 10000 | 661.273 us | 11.918 | 1129400 B |       3.989 |
+```
+
+That is the metric where `ImmutableDictionary` wins: producing another version is cheap. It does not copy 10,000 entries to add one key. It creates a new root and a small number of changed nodes. Most of the old structure is shared.
+
 ### Merging dictionaries
 
 If you want to merge a Dictionary, there are several strategies - I refer to [How to Merge Dictionaries in C#? - Code Maze](https://code-maze.com/csharp-how-to-merge-dictionaries/) who does an excellent write-up.

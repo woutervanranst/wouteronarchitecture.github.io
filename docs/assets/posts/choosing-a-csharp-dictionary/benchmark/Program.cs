@@ -183,6 +183,60 @@ public class ConstructionBenchmarks
 [RankColumn]
 [Orderer(SummaryOrderPolicy.FastestToSlowest)]
 [HideColumns("Job", "Error", "StdDev", "Median", "RatioSD")]
+public class VersioningBenchmarks
+{
+    private Dictionary<string, int> _dictionary = null!;
+    private ImmutableDictionary<string, int> _immutableDictionary = null!;
+    private FrozenDictionary<string, int> _frozenDictionary = null!;
+    private string _newKey = string.Empty;
+
+    [Params(10_000)]
+    public int Count { get; set; }
+
+    [GlobalSetup]
+    public void Setup()
+    {
+        var items = Enumerable
+            .Range(0, Count)
+            .Select(i => KeyValuePair.Create($"OrderStatus:{i:D5}", i))
+            .ToArray();
+
+        _dictionary = new Dictionary<string, int>(items, StringComparer.Ordinal);
+        _immutableDictionary = items.ToImmutableDictionary(x => x.Key, x => x.Value, StringComparer.Ordinal);
+        _frozenDictionary = items.ToFrozenDictionary(x => x.Key, x => x.Value, StringComparer.Ordinal);
+        _newKey = $"OrderStatus:{Count:D5}";
+    }
+
+    [Benchmark(Baseline = true)]
+    public Dictionary<string, int> Dictionary_CopyAndAdd()
+    {
+        var copy = new Dictionary<string, int>(_dictionary, StringComparer.Ordinal)
+        {
+            [_newKey] = Count
+        };
+
+        return copy;
+    }
+
+    [Benchmark]
+    public ImmutableDictionary<string, int> ImmutableDictionary_Add() => _immutableDictionary.Add(_newKey, Count);
+
+    [Benchmark]
+    public FrozenDictionary<string, int> FrozenDictionary_RebuildAndAdd()
+    {
+        var copy = new Dictionary<string, int>(_frozenDictionary, StringComparer.Ordinal)
+        {
+            [_newKey] = Count
+        };
+
+        return copy.ToFrozenDictionary(StringComparer.Ordinal);
+    }
+}
+
+[MemoryDiagnoser]
+[RankColumn]
+[Orderer(SummaryOrderPolicy.FastestToSlowest)]
+[HideColumns("Job", "Error", "StdDev", "Median", "RatioSD")]
 public class MergeBenchmarks
 {
     private Dictionary<string, int>[] _dictionaries = [];
