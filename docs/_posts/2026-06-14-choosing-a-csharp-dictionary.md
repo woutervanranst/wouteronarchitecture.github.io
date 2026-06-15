@@ -19,8 +19,8 @@ This gives you the following tradeoffs:
 
 | Type | Strength | Cost / risk | Use when |
 | ---- | -------- | ------------|----------|
-| `ReadOnlyDictionary<TKey,TValue>` | Very cheap wrapper; no copy required | Not truly immutable; backing dictionary can still change | You want to expose a dictionary as read-only and you control the backing dictionary |
-| `ImmutableDictionary<TKey,TValue>` | True immutable snapshots; safe sharing; efficient “modified copies” | Slower and more allocation-heavy than `Dictionary` for normal mutation/read-heavy workloads | You need persistent versions, functional updates, or concurrency-safe snapshots |
+| `ReadOnlyDictionary<TKey,TValue>` | Cheap wrapper; no copy required | Not truly immutable; backing dictionary can still change | You want to expose a dictionary as read-only and you control the backing dictionary |
+| `ImmutableDictionary<TKey,TValue>` | Immutable snapshots; safe sharing; efficient “modified copies” | Slower and more allocation-heavy than `Dictionary` for normal mutation/read-heavy workloads | You need persistent versions, functional updates, or concurrency-safe snapshots |
 | `FrozenDictionary&lt;TKey,TValue&gt;` | Very fast lookup/enumeration after construction | Expensive to build; cannot update; intended for trusted stable keys | You build once, then read many times, often for app lifetime |
 
 ## ReadOnlyDictionary
@@ -103,7 +103,7 @@ Runtime=.NET 10.0.5, Arm64 RyuJIT AdvSIMD
 | Dictionary_TryGetValue           | 10000 |  68.90 us |  1.00 |         - |
 | ReadOnlyDictionary_TryGetValue   | 10000 |  71.48 us |  1.04 |         - |
 | ImmutableDictionary_TryGetValue  | 10000 | 665.74 us |  9.70 |         - |
-| FrozenDictionary_TryGetValue     | 10000 |  45.38 us |  0.66 |         - |
+| FrozenDictionary_TryGetValue     | 10000 |  45.38 us |  0.66 |         - | <-- cheaper vs Dictionary
 | ConcurrentDictionary_TryGetValue | 10000 |  60.81 us |  0.89 |         - |
 ```
 
@@ -119,7 +119,7 @@ Construction tells the other half of the story:
 | BuildDictionary                  | 10000 |  121.3 us |  1.00 |  276.43 KB |
 | BuildReadOnlyDictionary          | 10000 |  139.3 us |  1.15 |  276.47 KB |
 | BuildImmutableDictionary         | 10000 | 1625.9 us | 13.41 |  625.26 KB |
-| BuildFrozenDictionary            | 10000 |  692.6 us |  5.71 | 1102.85 KB |
+| BuildFrozenDictionary            | 10000 |  692.6 us |  5.71 | 1102.85 KB | <-- more expensive vs Dictionary
 | BuildConcurrentDictionary        | 10000 |  679.8 us |  5.61 | 1022.32 KB |
 ```
 
