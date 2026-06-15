@@ -10,6 +10,10 @@ subtitle: 'A practical summary of modern .NET configuration: typed settings, sec
 
 This video is well worth the watch, as it summarizes what quality attributes are frequently overlooked.
 
+<div class="embed-responsive embed-responsive-16by9 mb-4">
+  <iframe class="embed-responsive-item" src="https://www.youtube.com/embed/qGnOnPMFDv0" title="Modern .NET Configuration Practices" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" referrerpolicy="strict-origin-when-cross-origin" allowfullscreen></iframe>
+</div>
+
 All talk materials are publicly available on GitHub. The slides themselves are written in Markdown.
 
 -   **Resource:** [GitHub Repository](https://github.com/codebytes/dotnet-configuration-in-depth)
