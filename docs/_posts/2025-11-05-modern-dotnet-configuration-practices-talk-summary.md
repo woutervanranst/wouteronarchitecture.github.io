@@ -6,8 +6,6 @@ permalink: /modern-net-configuration-practices/
 subtitle: 'A practical summary of modern .NET configuration: typed settings, secure secret handling, and deployment-friendly configuration for cloud and containerized apps.'
 ---
 
-![](/assets/posts/modern-dotnet-configuration-practices-talk-summary/image.png)
-
 This talk is well worth the watch if you want a clear overview of modern .NET configuration practices.
 
 <div class="embed-responsive embed-responsive-16by9 mb-4">
