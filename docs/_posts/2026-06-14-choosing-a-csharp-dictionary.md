@@ -17,11 +17,11 @@ I recently ran into `FrozenDictionary<TKey,TValue>`, which apparently [arrived i
 
 This gives you the following tradeoffs:
 
-| Type | Strength | Cost / risk | Use when |
+| Type | Strength | Cost | Use when |
 | ---- | -------- | ------------|----------|
-| `ReadOnlyDictionary<TKey,TValue>` | Cheap wrapper; no copy required | Not truly immutable; backing dictionary can still change | You want to expose a dictionary as read-only and you control the backing dictionary |
-| `ImmutableDictionary<TKey,TValue>` | Immutable snapshots; safe sharing; efficient “modified copies” | Slower and more allocation-heavy than `Dictionary` for normal mutation/read-heavy workloads | You need persistent versions, functional updates, or concurrency-safe snapshots |
-| `FrozenDictionary&lt;TKey,TValue&gt;` | Very fast lookup/enumeration after construction | Expensive to build; cannot update; intended for trusted stable keys | You build once, then read many times, often for app lifetime |
+| `ReadOnlyDictionary<TKey,TValue>` | Cheap wrapper | Not truly immutable; backing dictionary can still change | Expose a dictionary as read-only and you control the backing dictionary |
+| `ImmutableDictionary<TKey,TValue>` | Immutable snapshots; safe sharing; efficient “modified copies” | Slower and more allocation-heavy than `Dictionary` for normal mutation/read-heavy workloads | Persistent versions, functional updates, or concurrency-safe snapshots |
+| `FrozenDictionary&lt;TKey,TValue&gt;` | Very fast lookup/enumeration after construction | Expensive to build; cannot update; intended for trusted stable keys | Build once, then read many times, often for app lifetime |
 
 ## ReadOnlyDictionary
 
