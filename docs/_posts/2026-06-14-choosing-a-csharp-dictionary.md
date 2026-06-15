@@ -118,7 +118,7 @@ Construction tells the other half of the story:
 |--------------------------------- |------ |----------:|------:|-----------:|
 | BuildDictionary                  | 10000 |  121.3 us |  1.00 |  276.43 KB |
 | BuildReadOnlyDictionary          | 10000 |  139.3 us |  1.15 |  276.47 KB |
-| BuildImmutableDictionary         | 10000 | 1625.9 us | 13.41 |  625.26 KB |
+| BuildImmutableDictionary         | 10000 | 1625.9 us | 13.41 |  625.26 KB | <-- MUCH more expensive vs Dictionary
 | BuildFrozenDictionary            | 10000 |  692.6 us |  5.71 | 1102.85 KB | <-- more expensive vs Dictionary
 | BuildConcurrentDictionary        | 10000 |  679.8 us |  5.61 | 1022.32 KB |
 ```
