@@ -8,7 +8,7 @@ subtitle: 'Situational Leadership gives coaches a practical way to adapt 1-on-1s
 
 *Good coaching isn't about having all the answers - it's about asking the right questions at the right moment, in the right way. That's exactly what Situational Leadership teaches us.*
 
-### What Is Situational Leadership?
+## What Is Situational Leadership?
 
 In 1977, Paul Hersey and Ken Blanchard introduced a deceptively simple but powerful idea: there is no single best leadership style. Instead, effective leaders adapt their approach to match the **readiness level** - or "maturity" - of the person in front of them.
 
@@ -16,22 +16,22 @@ The model defines maturity not as age or seniority, but as a combination of thre
 
 The core insight is that leadership behaviour needs to be adjusted continuously, not set once at the start of a relationship.
 
-### The Four Styles
+## The Four Styles
 
 ![](/assets/posts/coaching-with-context-applying-situational-leadership-in-1-on-1s/image.png)
 
-The model is built around two axes: **directive behaviour** and **supportive behaviour**. These combine into four distinct styles, each suited to a different developmental level:
+The model is built around two axes: **directive behaviour** (task-focused, structured instruction) and **supportive behaviour** (relationship-focused, emotional engagement). These combine into four distinct styles, each suited to a different developmental level:
 
--   **S1 - Directing (Telling).** High directive, low supportive. The leader makes the decisions, sets clear expectations, monitors closely, and provides step-by-step guidance.
--   **S2 - Coaching (Selling).** High directive, high supportive. The leader still drives decisions and provides clear instructions, but now actively listens, explains the reasoning behind tasks, and invites questions.
--   **S3 - Supporting (Participating).** Low directive, high supportive. The leader steps back from task management but increases emotional support. Decisions are increasingly shared or handed over.
--   **S4 - Delegating.** Low directive, low supportive. The leader trusts the person to own both the work and the approach. Check-ins exist mainly to stay informed and to celebrate achievements.
+-   **S1 - Directing (Telling).** High directive, low supportive. The leader makes the decisions, sets clear expectations, monitors closely, and provides step-by-step guidance. This style is appropriate for someone who is new to the task, lacks confidence, or is struggling to start. It is not about being controlling - it is about giving the structure needed to succeed.
+-   **S2 - Coaching (Selling).** High directive, high supportive. The leader still drives decisions and provides clear instructions, but now actively listens, explains the reasoning behind tasks, and invites questions. The "selling" metaphor is apt: the coach needs to convince the coachee that they *can* do this. This suits someone who is motivated and eager but still developing the skills to work independently.
+-   **S3 - Supporting (Participating).** Low directive, high supportive. The leader steps back from task management but increases emotional support. Decisions are increasingly shared or handed over. This style fits someone who has the capability but is low in confidence - perhaps after a difficult project, a dip in motivation, or a period of high stress. The job here is not to instruct, but to restore belief.
+-   **S4 - Delegating.** Low directive, low supportive. The leader trusts the person to own both the work and the approach. Check-ins exist mainly to stay informed and to celebrate achievements. This is the mode for experienced, motivated professionals who thrive on autonomy.
 
-One nuance worth noting: **maturity is task-specific, not person-specific.** The same engineer might be an S4 in system design and an S1 when asked to lead a cross-functional project for the first time.
+One nuance worth noting: **maturity is task-specific, not person-specific.** The same engineer might be an S4 in system design and an S1 when asked to lead a cross-functional project for the first time. A good coach holds this in mind constantly.
 
-### Your First Meeting: Diagnosing Where Someone Is
+## Your First Meeting: Diagnosing Where Someone Is
 
-Before you can coach someone well, you need to understand them. Camille Fournier, in [*The Manager's Path*](https://www.amazon.com/Managers-Path-Leaders-Navigating-Growth/dp/1491973897), is direct about this: the first job when starting a new reporting relationship is to get to know the person quickly, so you can manage them well.
+Before you can coach someone well, you need to understand them. Camille Fournier, in [*The Manager's Path*](https://www.amazon.com/Managers-Path-Leaders-Navigating-Growth/dp/1491973897), is direct about this: the first job when starting a new reporting relationship is to get to know the person quickly, so you can manage them well. She suggests a set of trust-building questions designed to surface the information a coach actually needs.
 
 Adapted for a first coaching session, these might sound like:
 
@@ -41,19 +41,23 @@ Adapted for a first coaching session, these might sound like:
 -   *Do you have any clear career goals you'd like me to know about?*
 -   *How will I know if you're stuck, stressed, or frustrated?*
 
-These questions do two things at once. They build trust by showing genuine interest, and they give you the diagnostic signal you need to calibrate your style.
+These questions do two things at once. They build trust by showing genuine interest, and they give you the diagnostic signal you need to calibrate your style. Someone who says "I work best when I have clear expectations and regular check-ins" is probably in S1 or S2 territory. Someone who says "I just need to know what the goal is and then be left to figure out the path" is signalling S3 or S4.
 
 Fournier also recommends discussing **how you'll work together**: how often you'll meet, how the coachee should flag problems, and what they can expect from you. This is not just administrative - it sets the tone that the 1-on-1 is *their* time, not a reporting obligation.
 
-**Make this explicit.** After explaining the situational leadership framework, ask your coachee directly: *"Based on what I've described, where do you think you are right now - and how would you like me to coach you?"*
+**Make this explicit.** After explaining the situational leadership framework, ask your coachee directly: *"Based on what I've described, where do you think you are right now - and how would you like me to coach you?"* This conversation alone is enormously valuable. It positions the coachee as an active participant in the relationship, not a passive recipient of feedback. It also creates a shared language you can revisit as things evolve.
 
-### The 1-on-1 by Level: Structure and Questions
+## The 1-on-1 by Level: Structure and Questions
 
 Once you've done the diagnostic work, the situational framework gives you concrete guidance on how to structure your regular 1-on-1s - not just *what* to discuss, but *how* to engage.
 
-### S1 - Directing: The Structured Check-In
+Fournier describes several distinct styles of 1-on-1, including the to-do list meeting, the catch-up, the feedback meeting, and the progress report. The right blend depends heavily on where your coachee sits on the maturity spectrum.
 
-At this level, the coachee needs clarity above everything else. The 1-on-1 should feel more structured and coach-led, at least initially.
+## S1 - Directing: The Structured Check-In
+
+At this level, the coachee needs clarity above everything else. The 1-on-1 should feel more structured and coach-led, at least initially. Fournier notes that a very junior person who has just joined the team "might appreciate more time" - and the purpose of that time is orientation, not open-ended conversation.
+
+**Recommended structure:** Open with a brief human check-in. Then move into a structured review of current tasks: what's clear, what's not, and where the coachee is stuck. Close with explicit agreements about next steps and what "done" looks like.
 
 **Questions to ask:**
 
@@ -63,9 +67,15 @@ At this level, the coachee needs clarity above everything else. The 1-on-1 shoul
 -   *Is there anything about how this team or this role works that still feels unclear?*
 -   *What would help you feel more confident going into next week?*
 
-### S2 - Coaching: The Exploratory Dialogue
+The directive element here is not about micromanagement - it is about making the path visible. If something is misunderstood, say it again in a different way.
 
-At this level, the coachee has enthusiasm and growing capability, but still needs structure. The 1-on-1 shifts from instruction toward **guided discovery**.
+## S2 - Coaching: The Exploratory Dialogue
+
+At this level, the coachee has enthusiasm and growing capability, but still needs structure. The 1-on-1 shifts from instruction toward **guided discovery**. The coach still makes the important calls, but increasingly invites the coachee to think through the reasoning alongside them.
+
+This is Fournier's "feedback meeting" mode - where the manager uses the 1-on-1 to reinforce strengths, surface development areas, and help the coachee build a clearer picture of where they're going. She recommends holding these kinds of sessions at regular intervals, especially for early-career team members.
+
+**Recommended structure:** Start with what's going well - specific, recent, genuine. Spend the bulk of the meeting exploring one or two areas of growth in depth, using questions rather than pronouncements. End with a short forward-looking conversation about what the coachee wants to tackle next.
 
 **Questions to ask:**
 
@@ -75,9 +85,15 @@ At this level, the coachee has enthusiasm and growing capability, but still need
 -   *Where do you feel the gap most - is it skills, knowledge, or confidence?*
 -   *What can I do to help you get there faster?*
 
-### S3 - Supporting: The Human Conversation
+The S2 coach "sells" the coachee on their own potential. The 1-on-1 is the primary space to do that - not by flattering, but by asking questions that help the coachee see their own progress.
 
-At this level, task direction is largely unnecessary. The coachee knows how to do the work. What they need is a coach who shows up as an ally, not a manager.
+## S3 - Supporting: The Human Conversation
+
+At this level, task direction is largely unnecessary. The coachee knows how to do the work. What they need is a coach who shows up as an ally, not a manager. Fournier describes this as the "catch-up" style: driven by the coachee's agenda, with the coach primarily listening and supporting rather than directing.
+
+The risk at this level is that the 1-on-1 becomes a complaint session or a form of therapy. The goal is to give the coachee space to bring up what *they* feel is important - but to gently redirect energy from problems toward solutions.
+
+**Recommended structure:** Let the coachee lead the agenda. Ask at the start what they want to cover. After listening, reflect back what you've heard, ask one or two deeper questions, and then discuss options together. Don't over-direct - offer perspective when invited.
 
 **Questions to ask:**
 
@@ -87,9 +103,15 @@ At this level, task direction is largely unnecessary. The coachee knows how to d
 -   *Is there a decision you're stuck on that you want to think through together?*
 -   *What past wins can you draw on here? You've done hard things before.*
 
-### S4 - Delegating: The Strategic Touchpoint
+Fournier's note on senior employees is relevant here: as you become more senior, the amount of personal feedback you get is likely to decrease. The S3 coachee may not need much task feedback, but they do need someone who genuinely cares and creates space for honest conversation. That's what the 1-on-1 is for.
 
-At this level, the coachee is operating with full autonomy. The 1-on-1 shifts toward strategy, longer-term growth, and staying connected as humans.
+## S4 - Delegating: The Strategic Touchpoint
+
+At this level, the coachee is operating with full autonomy. The 1-on-1 is not about task management - it shifts toward strategy, longer-term growth, and staying connected as humans. Fournier points out that for senior people, the 1-on-1 increasingly becomes the coachee's responsibility to drive. The coach's role is to remain available, celebrate progress, and ensure the relationship doesn't atrophy simply because things are going well.
+
+**A caution worth making explicit:** don't spend all your attention on team members who are struggling while neglecting your strongest performers. Regular 1-on-1s with S4 coachees are still essential.
+
+**Recommended structure:** Shorter and more flexible. Let the coachee fully own the agenda. The coach asks big-picture, forward-looking questions and offers perspective from the organisational level that the coachee may not have direct visibility into.
 
 **Questions to ask:**
 
@@ -99,6 +121,10 @@ At this level, the coachee is operating with full autonomy. The 1-on-1 shifts to
 -   *Where do you want to stretch yourself next?*
 -   *Is there anything happening in the team or company I should know about from your vantage point?*
 
-### Closing Thought: The Map Is Not the Territory
+Fournier's advice rings true here: it doesn't have to just be a focus on the next skill or promotion. Show that you are invested in helping them now and in the future.
+
+## Closing Thought: The Map Is Not the Territory
 
 Situational leadership is a framework, not a formula. Real people don't sit neatly in quadrants, and the same person will move between levels across different tasks, projects, or life stages. The model's value is not in labelling people - it is in reminding coaches to stay curious, to keep asking *what does this person actually need right now?*, and to have the flexibility to shift their style in response.
+
+As Fournier writes in *The Manager's Path*, the best managers are the ones who actively help people grow, who help you navigate difficult situations, and who help you figure out what you need to learn. That kind of management doesn't follow a fixed script. It follows the person.
