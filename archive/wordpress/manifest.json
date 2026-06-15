@@ -1,0 +1,146 @@
+[
+  {
+    "file": "2024-01-15-getting-non-functional-requirements-from-business-people.md",
+    "wordpress_id": 46,
+    "source_url": "https://www.wouteronarchitecture.com/getting-non-functional-requirements-from-business-people/",
+    "archived_file": "2024-01-15-getting-non-functional-requirements-from-business-people.46.html"
+  },
+  {
+    "file": "2024-01-16-sentix-long-term-investor-trends.md",
+    "wordpress_id": 49,
+    "source_url": "https://www.wouteronarchitecture.com/sentix-long-term-investor-trends/",
+    "archived_file": "2024-01-16-sentix-long-term-investor-trends.49.html"
+  },
+  {
+    "file": "2024-02-06-c-string-comparison-explained.md",
+    "wordpress_id": 52,
+    "source_url": "https://www.wouteronarchitecture.com/c-string-comparison-explained/",
+    "archived_file": "2024-02-06-c-string-comparison-explained.52.html"
+  },
+  {
+    "file": "2024-02-09-choosing-a-cosmosdb-consistency-level.md",
+    "wordpress_id": 61,
+    "source_url": "https://www.wouteronarchitecture.com/choosing-a-cosmosdb-consistency-level/",
+    "archived_file": "2024-02-09-choosing-a-cosmosdb-consistency-level.61.html"
+  },
+  {
+    "file": "2024-02-09-value-objects-in-c-part-1.md",
+    "wordpress_id": 54,
+    "source_url": "https://www.wouteronarchitecture.com/value-objects-in-c-part-1/",
+    "archived_file": "2024-02-09-value-objects-in-c-part-1.54.html"
+  },
+  {
+    "file": "2024-02-14-value-objects-in-c-part-2.md",
+    "wordpress_id": 63,
+    "source_url": "https://www.wouteronarchitecture.com/value-objects-in-c-part-2/",
+    "archived_file": "2024-02-14-value-objects-in-c-part-2.63.html"
+  },
+  {
+    "file": "2024-03-04-overriding-application-insights-log-levels.md",
+    "wordpress_id": 65,
+    "source_url": "https://www.wouteronarchitecture.com/overriding-application-insights-log-levels/",
+    "archived_file": "2024-03-04-overriding-application-insights-log-levels.65.html"
+  },
+  {
+    "file": "2024-07-08-adding-a-correlationid-for-exceptions-for-application-insights-draft.md",
+    "wordpress_id": 66,
+    "source_url": "https://www.wouteronarchitecture.com/adding-a-correlationid-for-exceptions-for-application-insights-draft/",
+    "archived_file": "2024-07-08-adding-a-correlationid-for-exceptions-for-application-insights-draft.66.html"
+  },
+  {
+    "file": "2024-09-04-optimal-usage-of-global-usings.md",
+    "wordpress_id": 68,
+    "source_url": "https://www.wouteronarchitecture.com/optimal-usage-of-global-usings/",
+    "archived_file": "2024-09-04-optimal-usage-of-global-usings.68.html"
+  },
+  {
+    "file": "2024-09-05-eagerly-consuming-a-collection-of-completing-tasks.md",
+    "wordpress_id": 78,
+    "source_url": "https://www.wouteronarchitecture.com/eagerly-consuming-a-collection-of-completing-tasks/",
+    "archived_file": "2024-09-05-eagerly-consuming-a-collection-of-completing-tasks.78.html"
+  },
+  {
+    "file": "2024-09-06-smart-cleanup-of-unused-references.md",
+    "wordpress_id": 73,
+    "source_url": "https://www.wouteronarchitecture.com/smart-cleanup-of-unused-references/",
+    "archived_file": "2024-09-06-smart-cleanup-of-unused-references.73.html"
+  },
+  {
+    "file": "2024-09-15-records-and-interfaces-here-be-dragons.md",
+    "wordpress_id": 83,
+    "source_url": "https://wouteronarchitecture.com/records-and-interfaces-here-be-dragons/",
+    "archived_file": "2024-09-15-records-and-interfaces-here-be-dragons.83.html"
+  },
+  {
+    "file": "2025-01-05-frequently-overlooked-architectural-characteristics-video-review.md",
+    "wordpress_id": 90,
+    "source_url": "https://www.wouteronarchitecture.com/frequently-overlooked-architectural-characteristics-video-review/",
+    "archived_file": "2025-01-05-frequently-overlooked-architectural-characteristics-video-review.90.html"
+  },
+  {
+    "file": "2025-01-05-you-will-be-assimilated-microsoft-implementations-of-formerly-popular-oss-libraries.md",
+    "wordpress_id": 85,
+    "source_url": "https://www.wouteronarchitecture.com/you-will-be-assimilated-microsoft-implementations-of-formerly-popular-oss-libraries/",
+    "archived_file": "2025-01-05-you-will-be-assimilated-microsoft-implementations-of-formerly-popular-oss-libraries.85.html"
+  },
+  {
+    "file": "2025-01-07-david-deutsch-on-unsustainability-climate-optimism.md",
+    "wordpress_id": 91,
+    "source_url": "https://www.wouteronarchitecture.com/david-deutsch-on-unsustainability-climate-optimism/",
+    "archived_file": "2025-01-07-david-deutsch-on-unsustainability-climate-optimism.91.html"
+  },
+  {
+    "file": "2025-01-09-exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure.md",
+    "wordpress_id": 95,
+    "source_url": "https://www.wouteronarchitecture.com/exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure/",
+    "archived_file": "2025-01-09-exploring-options-for-building-rest-apis-with-c-and-deploying-to-azure.95.html"
+  },
+  {
+    "file": "2025-01-12-from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy.md",
+    "wordpress_id": 11,
+    "source_url": "https://www.wouteronarchitecture.com/from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy/",
+    "archived_file": "2025-01-12-from-layers-to-rings-hexagonal-architectures-explained-by-silas-graffy.11.html"
+  },
+  {
+    "file": "2025-01-17-implementing-centralized-package-management.md",
+    "wordpress_id": 96,
+    "source_url": "https://wouteronarchitecture.azurewebsites.net/implementing-centralized-package-management/",
+    "archived_file": "2025-01-17-implementing-centralized-package-management.96.html"
+  },
+  {
+    "file": "2025-01-27-transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think.md",
+    "wordpress_id": 100,
+    "source_url": "https://wouteronarchitecture.azurewebsites.net/transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think/",
+    "archived_file": "2025-01-27-transitive-dependencies-gone-wild-why-your-net-microservice-isnt-running-what-you-think.100.html"
+  },
+  {
+    "file": "2025-02-07-monkeys-bananas-and-why.md",
+    "wordpress_id": 116,
+    "source_url": "https://wouteronarchitecture.com/monkeys-bananas-and-why/",
+    "archived_file": "2025-02-07-monkeys-bananas-and-why.116.html"
+  },
+  {
+    "file": "2025-02-08-resultt-libraries.md",
+    "wordpress_id": 84,
+    "source_url": "https://wouteronarchitecture.azurewebsites.net/resultt-libraries/",
+    "archived_file": "2025-02-08-resultt-libraries.84.html"
+  },
+  {
+    "file": "2025-02-10-understanding-high-cpu-and-memory-usage-when-to-act-and-when-to-relax.md",
+    "wordpress_id": 133,
+    "source_url": "https://www.wouteronarchitecture.com/understanding-high-cpu-and-memory-usage-when-to-act-and-when-to-relax/",
+    "archived_file": "2025-02-10-understanding-high-cpu-and-memory-usage-when-to-act-and-when-to-relax.133.html"
+  },
+  {
+    "file": "2025-03-21-validating-dependency-injection.md",
+    "wordpress_id": 174,
+    "source_url": "https://www.wouteronarchitecture.com/validating-dependency-injection/",
+    "archived_file": "2025-03-21-validating-dependency-injection.174.html"
+  },
+  {
+    "file": "2025-06-11-choose-boring-technology.md",
+    "wordpress_id": 179,
+    "source_url": "https://www.wouteronarchitecture.com/choose-boring-technology/",
+    "archived_file": "2025-06-11-choose-boring-technology.179.html"
+  }
+]

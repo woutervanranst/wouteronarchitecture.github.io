@@ -1,0 +1,199 @@
+<!-- wp:paragraph -->
+<p>While working in a fairly large .NET microservice landscape I came across the following assumption-shattering situation, which led me down a nuget-versioning rabbit hole.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:more -->
+<!--more-->
+<!-- /wp:more -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The Pledge</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>We operate in a microservices landscape, consider the following ones:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>Our microservice (we'll call it the <strong>Registry microservice</strong>), a ports-and-adapters architecture.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Another one (we'll call it the <strong>Market microservice</strong>), which our has a dependency on.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>As part of the governance:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>All services communicate over REST with each other;</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Instead of every team having to implement a REST client on their own, every team that owns a microservice also publishes a 'client nuget' that other teams can directly import which abstracts away the REST stuff. For example: <!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>we operate the Registry microservice and publish the <code>Registry.Client</code> nuget on the feed</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>the Market microservice team operates it and publishes the <code>Market.Client</code> nuget on the feed</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>For most cross-cutting concerns there are standardized building blocks in the feed, eg. <code>Blocks.Authentication</code>, <code>Blocks.Exceptions</code>, ...</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list -->
+
+<!-- wp:paragraph -->
+<p>Personally I think this setup is brilliant and a lot better than everyone implementing their own REST clients; but this introduces some coupling, which is where the dragon is already lurking.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>To complete the context, we all rely on <code>Blocks.Exceptions</code> v1. The situation is as follows:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":103,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="/wp-content/uploads/2025/01/image-2-1024x564.png" alt="" class="wp-image-103"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The Turn</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>The central team which owns the <code>Blocks.Exception</code> package decides to add an Exception type that is widely requested, the <code>AppNotFoundException</code>, signalling that a microservice dependency is down, and they bump their version to v1.1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The Market Team is quick to adopt the new package, and they bump their nuget version as well to v3.3.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>The situation is now as follows, note the red text:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":105,"sizeSlug":"large","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-large"><img src="/wp-content/uploads/2025/01/image-4-1024x564.png" alt="" class="wp-image-105"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">The Prestige</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>Now pause and think (apart from the social queue of me asking the question): if we compile and deploy our artifact to production, what <code>Blocks.Exception</code> version is running in production?</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":107,"sizeSlug":"full","linkDestination":"none","align":"center"} -->
+<figure class="wp-block-image aligncenter size-full"><img src="/wp-content/uploads/2025/01/image-5.png" alt="" class="wp-image-107"/></figure>
+<!-- /wp:image -->
+
+<!-- wp:paragraph -->
+<p> Is our Registry microservice code still using v1 while the Market adapter uses v1.1? This is what I thought as well.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>Check your <code>\bin\Release</code> folder. There is only one <code>Blocks.Exceptions.dll</code> and it's v1.1.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:image {"id":110,"sizeSlug":"large","linkDestination":"none"} -->
+<figure class="wp-block-image size-large"><img src="/wp-content/uploads/2025/01/image-8-1024x484.png" alt="" class="wp-image-110"/><figcaption class="wp-element-caption">Independence Day - Alien ship not destroyed by the nuclear bomb</figcaption></figure>
+<!-- /wp:image -->
+
+<!-- wp:quote -->
+<blockquote class="wp-block-quote"><!-- wp:paragraph -->
+<p>A downstream team can, benignly or maliciously (!), control which nuget version you are deploying.</p>
+<!-- /wp:paragraph --></blockquote>
+<!-- /wp:quote -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Why is this happening?</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>If you can stomach it, read the relevant docs page: <a href="https://learn.microsoft.com/en-us/nuget/concepts/dependency-resolution">NuGet Package Dependency Resolution | Microsoft Learn</a>.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>NuGet’s dependency resolution rules dictates which package versions end up in production, even when teams don’t explicitly opt into upgrades. NuGet prioritizes backward-compatible "lowest applicable" versions across all dependencies. When the Market team updated their client to require&nbsp;<code>Blocks.Exceptions v1.1</code>, NuGet saw this as a compatible upgrade (thanks to semantic versioning’s promise of non-breaking minor versions) and auto-resolved it for the Registry service, overriding its direct&nbsp;<code>v1.0</code>&nbsp;reference. The result? A single&nbsp;<code>v1.1</code>&nbsp;DLL in the build output, forced by a transitive dependency. This behavior stems from .NET’s inability to load multiple versions of the same assembly at runtime, combined with NuGet’s assumption that minor version bumps are safe. While efficient for monolithic apps, this creates hidden coupling in microservices: a downstream team’s dependency update can unintentionally dictate what code&nbsp;<em>your</em>&nbsp;service runs, eroding autonomy and introducing deployment risks.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>In detail:</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:list {"ordered":true,"start":1} -->
+<ol start="1" class="wp-block-list"><!-- wp:list-item -->
+<li><strong>Direct vs. Transitive Dependencies</strong>:<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>The Registry microservice directly references&nbsp;<code>Blocks.Exceptions v1.0</code>&nbsp;(e.g.,&nbsp;<code>&lt;PackageReference Include="Blocks.Exceptions" Version="1.0" /&gt;</code>).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Market.Client (a direct dependency of the Registry) now requires&nbsp;<code>Blocks.Exceptions &gt;= v1.1</code>.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>NuGet’s Resolution Logic</strong>:<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>NuGet merges all version constraints across the dependency graph.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Registry’s direct&nbsp;<code>v1.0</code>&nbsp;constraint implicitly means&nbsp;<code>&gt;= v1.0</code>&nbsp;unless pinned to an exact version (e.g.,&nbsp;<code>[1.0]</code>).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>The Market.Client’s&nbsp;<code>&gt;= v1.1</code>&nbsp;constraint requires a version&nbsp;<strong>equal to or higher than 1.1</strong>.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>"Lowest Applicable Version" in Action</strong>:<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>NuGet selects the&nbsp;<strong>lowest version that satisfies all constraints</strong>.</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><code>v1.1</code>&nbsp;is the lowest version that meets both&nbsp;<code>&gt;= v1.0</code>&nbsp;(Registry) and&nbsp;<code>&gt;= v1.1</code>&nbsp;(Market.Client).</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li><strong>Why No Conflict?</strong>:<!-- wp:list -->
+<ul class="wp-block-list"><!-- wp:list-item -->
+<li>If the Registry had pinned&nbsp;<code>Blocks.Exceptions</code>&nbsp;to an&nbsp;<strong>exact version</strong>&nbsp;(e.g.,&nbsp;<code>[1.0]</code>), NuGet would raise an error due to incompatible constraints (<code>1.0</code>&nbsp;vs.&nbsp;<code>&gt;=1.1</code>).</li>
+<!-- /wp:list-item -->
+
+<!-- wp:list-item -->
+<li>Since the Registry’s dependency was likely a minimum version (<code>1.0</code>), NuGet treats it as&nbsp;<code>&gt;=1.0</code>, allowing&nbsp;<code>v1.1</code>&nbsp;to satisfy both requirements.</li>
+<!-- /wp:list-item --></ul>
+<!-- /wp:list --></li>
+<!-- /wp:list-item --></ol>
+<!-- /wp:list -->
+
+<!-- wp:heading -->
+<h2 class="wp-block-heading">Conclusion</h2>
+<!-- /wp:heading -->
+
+<!-- wp:paragraph -->
+<p>While this was - to me - unexpected, this was a deliberate design decision of the nuget team, which - most of the time - works as expected.</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>It is not without flaws, as Jon Skeet has already pointed out in a blog post (<a href="https://codeblog.jonskeet.uk/2019/06/30/versioning-limitations-in-net/">Versioning limitations in .NET | Jon Skeet's coding blog</a>) and has recommended improvements (<a href="https://codeblog.jonskeet.uk/2019/10/25/options-for-nets-versioning-issues/">Options for .NET’s versioning issues | Jon Skeet's coding blog</a>).</p>
+<!-- /wp:paragraph -->
+
+<!-- wp:paragraph -->
+<p>For now, being aware of the intricacies is the best recommendation.</p>
+<!-- /wp:paragraph -->
