@@ -85,13 +85,13 @@ There is no `Add` method returning a new `FrozenDictionary`. If the data changes
 
 That makes sense for long-lived maps: route tables, schema metadata, code-to-handler maps, keyword maps, and lookup tables built from configuration. It makes much less sense for something you rebuild every request.
 
-## Benchmark
+## Benchmarks
 
 The benchmark code is [here](https://github.com/woutervanranst/woutervanranst.github.io/tree/main/docs/assets/posts/choosing-a-csharp-dictionary/benchmark).
 
 ### Lookup
 
-The lookup benchmark performs 10,000 successful `TryGetValue` calls against string keys in randomized order:
+The lookup benchmark performs `TryGetValue` calls against string keys in randomized order:
 
 ```text
 BenchmarkDotNet v0.14.0, macOS 26.5.1, Apple M4
@@ -132,11 +132,11 @@ In this run, building a `FrozenDictionary` was about 5.7 times slower than build
 Produce a new dictionary-like collection with one extra key:
 
 ```text
-| Method                         | Count | Mean       | Ratio  | Allocated | Alloc Ratio |
-|------------------------------- |------ |-----------:|-------:|----------:|------------:|
-| ImmutableDictionary_Add        | 10000 |   202.3 ns |  0.004 |     872 B |       0.003 |
-| Dictionary_CopyAndAdd          | 10000 | 55.774 us  |  1.005 |  283094 B |       1.000 |
-| FrozenDictionary_RebuildAndAdd | 10000 | 661.273 us | 11.918 | 1129400 B |       3.989 |
+| Method                           | Count | Mean       | Ratio  | Allocated | Alloc Ratio |
+|--------------------------------- |------ |-----------:|-------:|----------:|------------:|
+| ImmutableDictionary_Add          | 10000 |   0.202 us |  0.004 |     872 B |       0.003 | <-- MUCH cheaper vs Dictionary
+| Dictionary_CopyAndAdd            | 10000 |  55.774 us |  1.005 |  283094 B |       1.000 |
+| FrozenDictionary_RebuildAndAdd   | 10000 | 661.273 us | 11.918 | 1129400 B |       3.989 |
 ```
 
 That is the metric where `ImmutableDictionary` wins: producing another version is cheap. It does not copy 10,000 entries to add one key. It creates a new root and a small number of changed nodes. Most of the old structure is shared.
