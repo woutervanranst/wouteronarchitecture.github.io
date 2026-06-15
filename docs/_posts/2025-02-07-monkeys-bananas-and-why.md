@@ -8,7 +8,7 @@ subtitle: 'A short anecdote about how teams keep repeating practices long after 
 
 Once in a while, it happens when I come across a situation where people do things without truly understanding why they do what they do. To lighten the mood after a series of 'Spanish inquisition' why questions, I like to tell this anecdote.
 
-![](/assets/posts/monkeys-bananas-and-why/DALL·E-2025-02-07-08.31.06-A-colorful-cartoon-illustration-of-a-monkey-at-the-top-of-a-ladder-inside-a-cage-being-sprayed-with-cold-water-from-above.-The-monkey-looks-surprised.webp)
+![](/assets/posts/monkeys-bananas-and-why/wet-monkey.webp)
 
 5 monkeys are placed in a cage with a ladder, with a tempting bunch of bananas at its top.
 
